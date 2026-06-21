@@ -1,0 +1,273 @@
+--- PAGE 0 ---
+   
+Contact
+Lalitpur, Nepal
++9779849391375 (Mobile)
+aalooksth@gmail.com
+www.linkedin.com/in/aalooksth
+(LinkedIn)
+aloks.com.np/connect (Personal)
+Top Skills
+People Management
+Microsoft Power Platform
+Python (Programming Language)
+Languages
+English (Professional Working)
+Nepali (Native or Bilingual)
+Hindi (Limited Working)
+Certifications
+Digital Marketing Basics (Certificate)
+SQL (Basic) Certificate
+Workplace Harassment (US - Multi-
+State - 50-Minute)
+Non Professional Driving Licence
+Hands-On Essentials: Collaboration,
+Marketplace & Cost Estimation
+Workshop
+Honors-Awards
+Peter Margaret Social Service Award
+Sujan Tuladhar Memorial Science
+Fair Award
+Employee of the First Quarter 2022
+Value Recognition: Teamwork &
+Collaboration
+Alok Shrestha
+Engineer w/o an Engineering Degree since ’17 |
+SQL•Python•Excel•Power BI Domains: AU, NZ & US Education,
+Healthcare, e-CommerceOpen to Tech Consulting | Process
+Optimization | Part-time Roles
+Lalitpur District, Nepal
+Summary
+, ,   .
+, I've worked on data-driven solutions for clients in , , , and   domains,
+with hands-on experience in the following   & 
+•  ( ) - building custom business applications
+•  &  - data analysis, automation, and web scraping
+•   - turning raw data into insightful dashboards
+Former   in Ad Intelligence and eCommerce, where I helped scale
+human-in-the-loop systems using automation and smart workflows.
+Served as an   , directly supporting US and Australian stakeholders,
+consistently recognized for clear communication and dependable
+delivery.
+⚙⚙  
+⚙ Quick learner with a problem-solving mindset
+Trusted by teams, managers, and clients alike
+Comfortable working across tech stacks and time zones
+thrives in fast-moving, data-centric environments. Regularly
+appreciated by clients, peers, and supervisors for my ability to bridge
+business needs with technical solutions.
+Whether it's automating workflows, building dashboards, or solving
+data puzzles – I bring the tools, mindset, and adaptability to get the
+job done.
+Experience
+Ycotek
+Principal Engineer | BI Developer | Data and Analytics
+  Page 1 of 7
+--- PAGE 1 ---
+   
+July 2025 - Present (11 months)
+Lalitpur District
+Reporting lead for a project in Multinational University based on United States
+and Australia
+Lead a team of over 10 members comprising of Senior, Midlevel, Associate
+Engineers and Interns, managing, providing necessary trainings
+** NOTE: Previous company rebranded
+Freelance
+Data Manager | Retail and eCommerce
+May 2023 - Present (3 years 1 month)
+Lalitpur District, Nepal
+Overall Data management for Shopify based e-Commerce business from
+Product Data Extraction, Transformation (mapping, cleaning) of attributes,
+pricing, inventory updates and Loading
+Automation Script development and maintenance 
+Infrequent works on Google Search indexing, Shopify Theme Analysis,
+Product and site Analysis
+LIS Nepal Pvt. Ltd.
+2 years 11 months
+Lead Engineer
+January 2025 - July 2025 (7 months)
+Lalitpur District, Nepal
+** The company re-branding updated to YcoTek
+Senior Software Engineer II | Analytics and Data Science
+September 2022 - January 2025 (2 years 5 months)
+Lalitpur District, Nepal
+Consultant | Offshore Technical Lead | Developer - App & Report
+Led Development Team: Directed the conversion of an Excel-based system
+to Azure-based infrastructure, enabling streamlined data management and
+reporting capabilities.
+ETL & Data Maintenance: Developed robust ETL scripts using Python to
+maintain data, manage warehouse-based lookups, and automate the scanning
+process.
+PowerApps Canvas App: Designed, developed, and tested a PowerApps
+Canvas App to improve client’s inventory/stock-keeping processes, enhancing
+operational efficiency.
+  Page 2 of 7
+--- PAGE 2 ---
+   
+Power BI Reports: Designed and developed paginated/non-paginated Power
+BI reports, improving data visualization and reporting accuracy for clients.
+⚙⚙ CI/CD Pipelines: Built and implemented CI/CD pipelines to deploy apps
+and reports seamlessly across multiple client instances, ensuring smooth and
+reliable updates.
+Team Leadership: Guided, mentored, and trained the development team,
+fostering a collaborative environment and ensuring timely delivery of solutions.
+Client & Team Collaboration: Regularly interacted with clients and onshore
+teams based in the United States, ensuring alignment with project
+requirements and priorities.
+Project Support: Addressed bugs and issue fixes, providing continuous support
+to ensure the system’s reliability and optimal performance.
+Domain Knowledge Growth: Expanded expertise in US education, healthcare
+inventory, and retail industry domains, providing tailored solutions for these
+industries.
+‍ Training on ELK Stack: Participated in a 6-day ELK Stack training conducted
+by Logic India, enhancing capabilities in log management and data analysis.
+St. Xavier's College, Kathmandu - Alumni
+ChiyaGuff Contact Person and Financial Coordinator
+December 2022 - March 2024 (1 year 4 months)
+Kathmandu, Bāgmatī, Nepal
+GrowByData
+6 years 1 month
+Senior Data Analyst | Competitive Ad Intelligence/Market Intel/Customer
+Success
+September 2021 - September 2022 (1 year 1 month)
+Lalitpur District, Nepal
+Prepared Dashboards & Reports: Analyzed data and delivered business
+insights to support strategic decision-making.
+Quality Assurance: Conducted in-depth analysis to ensure data quality,
+identifying issues and optimizing data collection processes.
+Market Research & Client Onboarding: Worked closely with clients
+to understand market needs, delivering tailored insights, reports, and
+presentations for presales projects.
+Process Optimization: Streamlined workflows, optimized data analysis
+methods, and provided continuous feedback for process improvement.
+Team Leadership: Led, assisted, and trained team members, fostering
+collaboration and enhancing team capabilities.
+  Page 3 of 7
+--- PAGE 3 ---
+   
+Cross-functional Communication: Coordinated with multiple departments,
+ensuring successful project completion through regular communication with
+both onshore and offshore teams and clients based in the United States.
+Senior Data Analyst | e-Commerce Catalog Management
+April 2021 - March 2022 (1 year)
+Lalitpur District, Nepal
+In addition to the responsibilities of the Data Analyst,
+* Analyzed and managed multiple projects independently as well as in the
+team dealing with clients, their vendors and required associates
+* Located and defined new process improvement opportunities
+* Assist in pre sales tasks
+* Assist in hiring process, train, and delegate task to intakes based on the
+constraints
+* Lead client-based teams; coordinate, communicate tasks and train
+accordingly
+Tools/Technologies worked with
+• Microsoft Excel: for ETL Analysis
+• Python: automation (pandas, requests and several other modules)
+• Screaming Frog: for web scraping, website analysis
+• Visual Basic for Applications (VBA) for Excel: for Excel automation and
+creating custom functions (UDF)
+• Shopify, BigCommerce and Amazon Store Management
+Data Analyst | e-Commerce Catalog Management
+March 2019 - March 2021 (2 years 1 month)
+Lalitpur, Bāgmatī, Nepal
+• Acquired data from primary/secondary sources and maintained databases/
+data systems including developing custom scripts for automation and web
+scraping
+• Gathered and processed both structured and unstructured data in a way that
+is useful for analysis
+• Automation of tasks using Python, VBA for MS Excel to write scripts, UDF
+• Located and defined new process improvement opportunities
+• Delivered to and communicated with team members and client on/offshore
+effectively, regularly, and professionally
+• Completed assigned projects and initiatives in a timely and efficient manner
+• Oversaw clients and their work requirements via off-site calls, performed,
+trained resources and delegated the tasks for their successful completion
+  Page 4 of 7
+--- PAGE 4 ---
+   
+Tools/Technologies worked with
+• Microsoft Excel: for ETL Analysis
+• Python: automation (pandas, requests and several other modules)
+• Screaming Frog: for web scraping, website analysis
+• Visual Basic for Applications (VBA) for Excel: for Excel automation and
+creating custom functions (UDF)
+• Adobe Photoshop: Image editing (Also for image automation)
+• Atlassian JIRA, Basecamp 2: for project management
+• Shopify, Americommerce and Amazon Store Management
+Associate Data Analyst | e-Commerce Catalog Management
+December 2017 - February 2019 (1 year 3 months)
+Lalitpur, Bāgmatī, Nepal
+Associate Data Analyst | e-Commerce Catalog Management
+September 2017 - November 2017 (3 months)
+Lalitpur District, Nepal
+Cloud Analyst
+September 2016 - August 2017 (1 year)
+Lalitpur, Bāgmatī, Nepal
+Worked on
+- Image Editing
+- Template Filling
+- QA (Data, Livesite)
+- Data Enrichment
+St. Xavier's College, Kathmandu - Alumni
+8 years 11 months
+SXC Alumni | Adhoc Committee Member
+January 2019 - December 2021 (3 years)
+Kathmandu, Nepal
+As an adhoc committee member, my role has been to coordinate with the
+senior and junior alumni members in the team to strengthen the Alumni
+Committee.
+Tasks Accomplished
+- Maintained a healthy relationship among the committee, alumni and the
+college
+- Organised Workshop on Stress Management
+- Drafted Constitution for Alumni
+  Page 5 of 7
+--- PAGE 5 ---
+   
+SXC Alumni | Volunteer
+November 2017 - December 2018 (1 year 2 months)
+Kathmandu, Nepal
+- Aided the events management committee in successful conduction of events
+SXC Alumni | Founding President
+February 2013 - November 2017 (4 years 10 months)
+Kathmandu, Nepal
+- Coordinating and communicating with organisations, College and Alumni of
+the college over email, phone and in person
+- Organizing various programs to collaborate with Alumni
+- Leading and assisting a team to coordinate events
+- Gathering and maintaining alumni data
+- Documentation and maintaining records
+- Developing and launching Website (alumni.sxc.edu.np)
+- Extending the Alumni concept beyond Kathmandu
+Upwork.com
+Freelancer
+July 2019 - October 2020 (1 year 4 months)
+Completed web scraping from complex sites
+* Rising Talent: 21 June 2020
+* First Project: May 2020
+* See my works at my profile: https://www.upwork.com/freelancers/
+~011a84c852d9ea4222
+Technorio Inc.
+Wordpress Developer
+June 2017 - August 2017 (3 months)
+Kathmandu, Nepal
+Customizing the Templates, using various plugins, Website development,
+Basic Theme Development
+CSIT Association of Nepal
+Executive Member
+August 2015 - April 2016 (9 months)
+Kathmandu Nepal
+Documentation, Workshop conduction, university relation, Social media
+management
+  Page 6 of 7
+--- PAGE 6 ---
+   
+Education
+St. Xavier's College, Maitighar
+Bachelor of Science (B.Sc.), Computer Science and Information
+Technology · (2013 - 2018)
+St. Xavier's College, Maitighar
+Plus Two, Science · (2011 - 2013)
+St. Xavier's School, Jawalakhel
+School Leaving Certificate  · (2008 - 2011)
+  Page 7 of 7
