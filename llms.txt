@@ -1,0 +1,25 @@
+# Alok Shrestha - Principal Engineer & BI Developer
+
+> Portfolio and Web Applications Portal (aloks.com.np) by Alok Shrestha, based in Kathmandu, Nepal.
+
+## Summary
+Alok Shrestha is a Principal Software Engineer and BI Developer with extensive experience in data engineering, Power BI, SQL, Python, ETL automation, and building high-impact data-driven applications.
+
+## Technical Skills & Expertise
+- **BI & Data Visualization**: Power BI, DAX, Tableau, Excel
+- **Data Engineering & Analytics**: SQL, Python, Pandas, Web Scraping (Puppeteer, BeautifulSoup, Selenium), Azure Data Pipelines
+- **Web Applications**: Modern JavaScript, HTML5/CSS3, Civic Web Utilities, API Integrations
+- **Domains**: Education, Healthcare, e-Commerce, Government Open Data Integrations
+
+## Featured Applications & Projects
+1. **Nepal Smart Driving License Print Checker**:
+   - URL: `https://aloks.com.np/license-print-check/`
+   - Purpose: Unified real-time print status & collection guidance across 4 Bagamati Province Transport Management Offices (Ekantakuna, Kalanki, Chabahil, Radhe Radhe).
+2. **Nepal Income Tax Calculator**:
+   - URL: `https://aloks.com.np/nepal-tax-calculator/`
+   - Purpose: Real-time tax calculation for single and married individuals under Government of Nepal tax slabs.
+
+## Contact & Links
+- Website: `https://aloks.com.np`
+- LinkedIn: `https://np.linkedin.com/in/aalooksth`
+- GitHub: `https://github.com/aalooksth`

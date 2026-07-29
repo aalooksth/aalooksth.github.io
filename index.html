@@ -4,50 +4,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Alok Shrestha - Principal Software Engineer and Data Analyst based in Nepal. Expertise in Power BI, SQL, Python, and building impactful data-driven solutions.">
-    <meta name="keywords" content="Alok Shrestha, Data Analyst, Principal Engineer, Power BI, SQL, Python, Nepal, Data Visualization">
-    <meta name="author" content="Alok Shrestha">
+    
+    <!-- Primary Meta Tags -->
     <title>Alok Shrestha | Principal Engineer & BI Developer</title>
+    <meta name="title" content="Alok Shrestha | Principal Engineer & BI Developer">
+    <meta name="description" content="Alok Shrestha - Principal Software Engineer and BI Developer based in Nepal. Expertise in Power BI, SQL, Python, ETL automation, and building impactful data-driven solutions.">
+    <meta name="keywords" content="Alok Shrestha, Data Analyst, Principal Engineer, Power BI, SQL, Python, Nepal, Data Visualization, License Print Check Nepal">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="author" content="Alok Shrestha">
+
+    <!-- Canonical & AI Context Links -->
+    <link rel="canonical" href="https://aloks.com.np/">
+    <link rel="alternate" type="text/plain" href="llms.txt" title="LLM Context Prompt">
+    <link rel="sitemap" type="application/xml" href="sitemap.xml">
+
+    <!-- Open Graph / Social Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Alok Shrestha Portfolio">
+    <meta property="og:url" content="https://aloks.com.np/">
+    <meta property="og:title" content="Alok Shrestha | Principal Engineer & BI Developer">
+    <meta property="og:description" content="Principal Software Engineer and BI Developer specializing in Power BI, SQL, Python, automation, and data web applications.">
+    <meta property="og:image" content="https://github.com/aalooksth.png">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://aloks.com.np/">
+    <meta name="twitter:title" content="Alok Shrestha | Principal Engineer & BI Developer">
+    <meta name="twitter:description" content="Principal Software Engineer and BI Developer specializing in Power BI, SQL, Python, automation, and data web applications.">
+    <meta name="twitter:image" content="https://github.com/aalooksth.png">
+    
+    <!-- Preload fonts and styles -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    <!-- Preload critical fonts and styles -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" as="style">
-    <link rel="preload" href="css/styles.css" as="style">
-    
-    <!-- Load fonts asynchronously to prevent render blocking -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript>
-        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    </noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <!-- Load main stylesheet -->
     <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Schema.org Microdata & Person JSON-LD for AI Search Engines -->
+    <script type="application/ld+json">
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Alok Shrestha",
+        "jobTitle": "Principal Engineer & BI Developer",
+        "worksFor": {
+          "@type": "Organization",
+          "name": "Ycotek"
+        },
+        "url": "https://aloks.com.np",
+        "sameAs": [
+          "https://github.com/aalooksth",
+          "https://np.linkedin.com/in/aalooksth"
+        ],
+        "knowsAbout": ["Power BI", "SQL", "Python", "Data Analysis", "Web Development", "Automations"]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Alok Shrestha Portfolio & Web Portal",
+        "url": "https://aloks.com.np/"
+      }
+    ]
+    </script>
 </head>
 
 <body>
+    <canvas id="three-canvas"></canvas>
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
 
     <nav class="navbar">
         <div class="container nav-container">
-            <a href="#" class="logo">A<span>.</span></a>
+            <a href="#" class="logo">Alok<span>.</span></a>
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#experience">Experience</a></li>
                 <li><a href="#education">Education</a></li>
-                <li><a href="/nepal-tax-calculator">Tax Calculator</a></li>
+                <li><a href="/license-print-check">License Check</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle">Portals ▼</a>
                     <ul class="dropdown-menu">
+                        <li><a href="/license-print-check" aria-label="License Print Check">Smart License Checker</a></li>
                         <li><a href="https://blog.aloks.com.np" target="_blank" aria-label="Blog Subdomain">Blog</a></li>
                         <li><a href="https://api.aloks.com.np" target="_blank" aria-label="API Subdomain">API Tester</a></li>
                         <li><a href="https://connect.aloks.com.np" target="_blank" aria-label="Connect Subdomain">Connect</a></li>
                     </ul>
                 </li>
                 <li><a href="#contact" class="btn btn-outline">Contact</a></li>
+                
+                <!-- Manual Theme Switcher Button -->
+                <li>
+                    <button type="button" id="themeToggleBtn" class="btn-icon" title="Toggle Theme">
+                        <i class="fa-solid fa-moon dark-icon"></i>
+                        <i class="fa-solid fa-sun light-icon"></i>
+                    </button>
+                </li>
             </ul>
+
             <div class="hamburger">
                 <div class="line1"></div>
                 <div class="line2"></div>
@@ -68,27 +125,14 @@
                         Principal Engineer | BI Developer. I've worked on data-driven solutions across Education, Healthcare, and e-Commerce domains. I specialize in data analysis, automation, web scraping, and turning raw data into insightful dashboards.
                     </p>
                     <div class="hero-actions">
-                        <a href="#projects" class="btn btn-primary">View My Work</a>
+                        <a href="#experience" class="btn btn-primary">View Experience</a>
+                        <a href="/license-print-check" class="btn btn-secondary"><i class="fa-solid fa-id-card"></i> License Checker</a>
                         <a href="https://np.linkedin.com/in/aalooksth" target="_blank" class="social-link"
                             aria-label="LinkedIn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path
-                                    d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z">
-                                </path>
-                                <rect x="2" y="9" width="4" height="12"></rect>
-                                <circle cx="4" cy="4" r="2"></circle>
-                            </svg>
+                            <i class="fa-brands fa-linkedin-in"></i>
                         </a>
                         <a href="https://github.com/aalooksth" target="_blank" class="social-link" aria-label="GitHub">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path
-                                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
-                                </path>
-                            </svg>
+                            <i class="fa-brands fa-github"></i>
                         </a>
                     </div>
                 </div>
@@ -103,38 +147,37 @@
         <!-- Skills Section -->
         <section id="skills" class="skills">
             <div class="container">
-                <h2 class="section-title">Tools I Know</h2>
+                <h2 class="section-title">Tools & Skills</h2>
                 <div class="skills-container">
                     <div class="skill-category">
                         <h3>Data Visualization & BI</h3>
                         <div class="tech-stack" style="margin-top: 1rem;">
-                            <span class="skill-item"><img src="https://cdn.simpleicons.org/powerbi/8b5cf6" alt="Power BI" class="skill-icon"> Power BI</span>
-                            <span class="skill-item"><img src="https://cdn.simpleicons.org/microsoft/8b5cf6" alt="DAX" class="skill-icon"> DAX</span>
-                            <span class="skill-item"><img src="https://cdn.simpleicons.org/tableau/8b5cf6" alt="Tableau" class="skill-icon"> Tableau</span>
-                            <span class="skill-item"><img src="https://cdn.simpleicons.org/microsoftexcel/8b5cf6" alt="Excel" class="skill-icon"> Excel</span>
+                            <span class="skill-item"><img src="https://cdn.simpleicons.org/powerbi/1e40af" alt="Power BI" class="skill-icon"> Power BI</span>
+                            <span class="skill-item"><img src="https://cdn.simpleicons.org/microsoft/1e40af" alt="DAX" class="skill-icon"> DAX</span>
+                            <span class="skill-item"><img src="https://cdn.simpleicons.org/tableau/1e40af" alt="Tableau" class="skill-icon"> Tableau</span>
+                            <span class="skill-item"><img src="https://cdn.simpleicons.org/microsoftexcel/1e40af" alt="Excel" class="skill-icon"> Excel</span>
                         </div>
                     </div>
                     <div class="skill-category">
                         <h3>Data Engineering & Analysis</h3>
                         <div class="tech-stack" style="margin-top: 1rem;">
-                            <span class="skill-item"><img src="https://cdn.simpleicons.org/mysql/8b5cf6" alt="SQL" class="skill-icon"> SQL</span>
-                            <span class="skill-item"><img src="https://cdn.simpleicons.org/python/8b5cf6" alt="Python" class="skill-icon"> Python</span>
-                            <span class="skill-item"><img src="https://cdn.simpleicons.org/pandas/8b5cf6" alt="Pandas" class="skill-icon"> Pandas</span>
-                            <span class="skill-item"><img src="https://cdn.simpleicons.org/puppeteer/8b5cf6" alt="Data Scraping" class="skill-icon"> Data Scraping</span>
+                            <span class="skill-item"><img src="https://cdn.simpleicons.org/mysql/1e40af" alt="SQL" class="skill-icon"> SQL</span>
+                            <span class="skill-item"><img src="https://cdn.simpleicons.org/python/1e40af" alt="Python" class="skill-icon"> Python</span>
+                            <span class="skill-item"><img src="https://cdn.simpleicons.org/pandas/1e40af" alt="Pandas" class="skill-icon"> Pandas</span>
+                            <span class="skill-item"><img src="https://cdn.simpleicons.org/puppeteer/1e40af" alt="Data Scraping" class="skill-icon"> Data Scraping</span>
                         </div>
                     </div>
                     <div class="skill-category">
-                        <h3>Other Tools</h3>
+                        <h3>Other Tools & Web Apps</h3>
                         <div class="tech-stack" style="margin-top: 1rem;">
-                            <span class="skill-item"><img src="https://cdn.simpleicons.org/github/8b5cf6" alt="Git / GitHub" class="skill-icon"> Git / GitHub</span>
-                            <span class="skill-item"><img src="https://cdn.simpleicons.org/javascript/8b5cf6" alt="JavaScript" class="skill-icon"> JavaScript</span>
-                            <span class="skill-item"><img src="https://cdn.simpleicons.org/powerautomate/8b5cf6" alt="Power Automate" class="skill-icon"> Power Automate</span>
+                            <span class="skill-item"><img src="https://cdn.simpleicons.org/github/1e40af" alt="Git / GitHub" class="skill-icon"> Git / GitHub</span>
+                            <span class="skill-item"><img src="https://cdn.simpleicons.org/javascript/1e40af" alt="JavaScript" class="skill-icon"> JavaScript</span>
+                            <span class="skill-item"><img src="https://cdn.simpleicons.org/powerautomate/1e40af" alt="Power Automate" class="skill-icon"> Power Automate</span>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-
 
         <!-- Experience Section -->
         <section id="experience" class="experience">
@@ -237,11 +280,12 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 Alok Shrestha. Built for GitHub Pages.</p>
+            <p>&copy; 2026 Alok Shrestha. Built for GitHub Pages (aloks.com.np).</p>
         </div>
     </footer>
 
     <script src="js/script.js"></script>
+    <script type="module" src="js/three-journey.js"></script>
 </body>
 
 </html>

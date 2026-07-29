@@ -1,0 +1,70 @@
+# Nepal Driving License Print Status Checker API
+
+> Unified Smart Driving License Print Status API for Transport Management Offices (Bagamati Province, Nepal: Ekantakuna, Thulobharyang, Chabahil, Radhe Radhe).
+
+## Overview
+This service queries government and office endpoints to verify whether a Smart Driving License card has been printed and is ready for collection at Transport Management Offices (TMO Ekantakuna, TMO Thulobharyang / Kalanki, TMO Chabahil, TMO Radhe Radhe / Bhaktapur, etc.).
+
+## Direct Query via Web URL
+AI Agents, LLMs, and Web Browsers can query license status by sending GET requests to:
+
+```
+https://aloks.com.np/license-print-check/?q={LICENSE_NUMBER}&format=json
+```
+
+### Parameters:
+- `q` (string, required): Driving license number in format `XX-XX-XXXXXXXX` (e.g. `01-06-00000000`).
+- `format` (string, optional): Set to `json` for machine-readable JSON response or `html` for UI.
+
+### Example JSON Response Format:
+```json
+{
+  "query": "01-06-00000000",
+  "searchedAt": "2026-07-29T22:00:00.000Z",
+  "summary": {
+    "isPrinted": true,
+    "totalOfficesChecked": 4
+  },
+  "results": [
+    {
+      "officeId": "ekantakuna",
+      "officeName": "TMO Ekantakuna (Lalitpur)",
+      "officialWebsite": "https://tmopl.bagamati.gov.np",
+      "found": true,
+      "status": "Pending Counter Pickup",
+      "isPrinted": true,
+      "details": {
+        "name": "SAMPLE APPLICANT",
+        "licenseNumber": "01-06-00000000",
+        "category": "K",
+        "printedDate": "(2026-07-11)",
+        "blockNumber": "E",
+        "counterRoom": "N/A",
+        "sn": "28"
+      }
+    },
+    {
+      "officeId": "thulobharyang",
+      "officeName": "TMO Thulobharyang (Kalanki)",
+      "officialWebsite": "https://tmokalanki.bagamati.gov.np",
+      "found": false,
+      "status": "Not Found",
+      "isPrinted": false,
+      "details": null
+    }
+  ]
+}
+```
+
+## Underlying Transport Office Endpoints
+- **Ekantakuna**: `GET https://printekantakuna.bagamati.gov.np/api/api/public/{license_number}`
+- **Thulobharyang**: `POST https://gbuvycslvvqaafwnugsi.supabase.co/rest/v1/rpc/search_license_public` (With Supabase anon key)
+- **Chabahil**: `GET https://foaajwxymscuzdluzmxp.supabase.co/rest/v1/tblLicenseRecords?select=%22license_no%22%2C%22name%22&license_no=eq.{license_number}` (With Supabase anon key)
+- **Radhe Radhe**: `GET https://sanjibsimdotmlicense-portal-iota.vercel.app/licenses.csv` (CSV search: 1st column is license number)
+
+## Collection Guidance for Users
+When a license is marked as printed, the applicant must visit the respective office during working hours (10:00 AM – 4:00 PM, Sun–Fri) with:
+1. Original Citizenship Certificate
+2. Original Revenue Payment / Trial Receipt
+3. Old Driving License (if renewing/adding category)
+4. For TMO Kalanki: Complete pre-collection collector registration at `https://tmokalanki.bagamati.gov.np/pages/searchList/`

@@ -5,10 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const links = document.querySelectorAll('.nav-links li');
 
     hamburger.addEventListener('click', () => {
-        // Toggle Nav
         navLinks.classList.toggle('active');
-
-        // Burger Animation
         hamburger.classList.toggle('toggle');
     });
 
@@ -29,6 +26,44 @@ document.addEventListener('DOMContentLoaded', () => {
             navbar.classList.remove('scrolled');
         }
     });
+
+    // Theme Toggle Functionality
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    
+    function initTheme() {
+        const saved = localStorage.getItem('alok_site_theme');
+        if (saved === 'dark') {
+            document.body.classList.remove('light-theme');
+            document.body.classList.add('dark-theme');
+        } else if (saved === 'light') {
+            document.body.classList.remove('dark-theme');
+            document.body.classList.add('light-theme');
+        } else {
+            // Default to dark theme for main portfolio site or system preference
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.body.classList.add('dark-theme');
+            } else {
+                document.body.classList.add('light-theme');
+            }
+        }
+    }
+
+    initTheme();
+
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+            const isDark = document.body.classList.contains('dark-theme');
+            if (isDark) {
+                document.body.classList.remove('dark-theme');
+                document.body.classList.add('light-theme');
+                localStorage.setItem('alok_site_theme', 'light');
+            } else {
+                document.body.classList.remove('light-theme');
+                document.body.classList.add('dark-theme');
+                localStorage.setItem('alok_site_theme', 'dark');
+            }
+        });
+    }
 
     // Smooth scrolling for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -55,7 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
-                // Stop observing after the animation triggers once (optional, remove to animate every scroll)
                 observer.unobserve(entry.target);
             }
         });
