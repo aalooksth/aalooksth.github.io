@@ -110,10 +110,14 @@ body {
 }
 
 .nav-container {
-    height: 64px;
+    min-height: 64px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
 }
 
 .brand {
@@ -122,11 +126,13 @@ body {
     gap: 0.65rem;
     text-decoration: none;
     color: var(--text-main);
+    min-width: 0;
 }
 
 .brand-icon {
     width: 36px;
     height: 36px;
+    min-width: 36px;
     border-radius: var(--radius-sm);
     background-color: var(--brand-primary);
     color: #ffffff;
@@ -138,13 +144,17 @@ body {
 
 .brand-name {
     font-weight: 700;
-    font-size: 1.15rem;
+    font-size: 1.05rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .nav-controls {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.4rem;
+    flex-wrap: wrap;
 }
 
 /* Buttons */
@@ -192,15 +202,24 @@ body {
     background: transparent;
     border: 1px solid var(--border-strong);
     color: var(--text-main);
+    padding: 0.4rem 0.65rem;
+    font-size: 0.82rem;
+    min-height: 36px;
+    white-space: nowrap;
 }
 
 .btn-outline-sm:hover {
     background-color: var(--bg-subtle);
 }
 
+.btn-back-main span {
+    display: none;
+}
+
 .btn-icon {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
     border-radius: var(--radius-sm);
     border: 1px solid var(--border-strong);
     background: var(--bg-surface);
@@ -277,6 +296,9 @@ body.light-theme .dark-icon { display: block; }
     border-radius: var(--radius-sm);
     color: var(--text-main);
     outline: none;
+    /* Prevent iOS zoom-in on focus (font-size must be >= 16px equivalent) */
+    -webkit-appearance: none;
+    appearance: none;
 }
 
 .search-input:focus {
@@ -470,6 +492,13 @@ body.light-theme .dark-icon { display: block; }
     display: flex;
     gap: 0.75rem;
     flex-wrap: wrap;
+}
+
+.hero-action-row .btn {
+    flex: 1 1 auto;
+    min-width: 120px;
+    text-align: center;
+    justify-content: center;
 }
 
 /* Action Bar */
@@ -947,9 +976,258 @@ body.light-theme .dark-icon { display: block; }
     body { background: #fff !important; color: #000 !important; }
 }
 
+/* ==========================================================================
+   Mobile Responsive Styles — 480px and below (most phones)
+   ========================================================================== */
 @media (max-width: 640px) {
-    .hero-title { font-size: 1.6rem; }
-    .search-form { flex-direction: column; }
-    .search-btn { width: 100%; }
-    .compact-feedback-bar { flex-direction: column; text-align: center; }
+    /* Container padding tightened */
+    .container {
+        padding: 0 0.9rem;
+    }
+
+    /* Navbar: hide brand subtitle, shrink brand name */
+    .nav-container {
+        min-height: auto;
+        padding-top: 0.6rem;
+        padding-bottom: 0.6rem;
+    }
+
+    .brand-name {
+        font-size: 0.88rem;
+        max-width: 130px;
+    }
+
+    /* Hide verbose nav labels on smallest screens */
+    #navSub { display: none; }
+    .btn-back-main span,
+    #navFeedbackText { display: none; }
+
+    /* Nav controls: tighten gap, keep icons touch-friendly */
+    .nav-controls {
+        gap: 0.3rem;
+    }
+
+    .btn-outline-sm {
+        padding: 0.45rem 0.55rem;
+        min-height: 40px;
+        min-width: 40px;
+    }
+
+    /* Hero section spacing */
+    .main-content {
+        padding-top: 1.25rem;
+        padding-bottom: 3rem;
+    }
+
+    .hero-section {
+        margin-bottom: 1.25rem;
+    }
+
+    .hero-title {
+        font-size: 1.55rem;
+        line-height: 1.2;
+    }
+
+    .hero-subtitle {
+        font-size: 0.88rem;
+    }
+
+    /* Search form: stack vertically */
+    .search-form {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .search-input {
+        /* 16px prevents iOS auto-zoom on focus */
+        font-size: 16px;
+        padding: 0.9rem 2.5rem 0.9rem 2.5rem;
+    }
+
+    .search-btn,
+    button[type="submit"] {
+        width: 100%;
+        padding: 0.9rem 1rem;
+        font-size: 1rem;
+        min-height: 48px;
+    }
+
+    /* Feedback bar: stack */
+    .compact-feedback-bar {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.35rem;
+        padding: 0.65rem 0.85rem;
+    }
+
+    /* Summary card: tighten padding */
+    .summary-card {
+        padding: 1.1rem;
+    }
+
+    .hero-card-header {
+        gap: 0.65rem;
+    }
+
+    .hero-status-avatar {
+        width: 36px;
+        height: 36px;
+        font-size: 1.1rem;
+    }
+
+    .hero-greeting-title {
+        font-size: 1.1rem;
+    }
+
+    .hero-greeting-sub {
+        font-size: 0.88rem;
+    }
+
+    /* Box code: smaller font on tiny screens */
+    .hero-box-code-value {
+        font-size: 1.3rem;
+    }
+
+    /* Instructions box */
+    .hero-instruction-box {
+        font-size: 0.84rem;
+    }
+
+    /* Action buttons: full-width stack */
+    .hero-action-row {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .hero-action-row .btn {
+        width: 100%;
+        min-height: 48px;
+        font-size: 0.95rem;
+    }
+
+    /* Office cards */
+    .office-card {
+        padding: 1rem;
+    }
+
+    .office-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.65rem;
+    }
+
+    .office-name {
+        font-size: 0.98rem;
+    }
+
+    /* Details grid: single column */
+    .details-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.65rem;
+    }
+
+    /* Office footer info: stack vertically */
+    .office-footer-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    /* Office links: ensure min tap target */
+    .office-link,
+    .portal-text-link,
+    .compact-link {
+        min-height: 36px;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    /* Directory grid: single column */
+    .directory-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .directory-card {
+        padding: 1rem;
+    }
+
+    /* Guide grid: single column */
+    .guide-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Portals grid: 2 columns on phones, 1 below 360px */
+    .portals-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.65rem;
+    }
+
+    /* Sections: tighter top margins */
+    .tmo-directory-section,
+    .guide-section,
+    .portals-section,
+    .history-section {
+        margin-top: 2rem;
+    }
+
+    /* Section title */
+    .section-title h2 {
+        font-size: 1.15rem;
+    }
+
+    /* History chips: smaller */
+    .history-item {
+        font-size: 0.8rem;
+        padding: 0.35rem 0.65rem;
+    }
+
+    /* Placeholder card */
+    .placeholder-card {
+        padding: 2rem 1rem;
+    }
+
+    .placeholder-card h3 {
+        font-size: 1.05rem;
+    }
+
+    /* Footer */
+    .footer {
+        padding: 1.25rem 0;
+        font-size: 0.78rem;
+        /* Safe area inset for notched phones */
+        padding-bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+    }
+
+    .footer-disclaimer-box {
+        font-size: 0.75rem !important;
+        padding: 0.65rem 0.75rem !important;
+    }
+
+    /* Action bar: stack */
+    .action-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+}
+
+/* Tiny phones: below 360px */
+@media (max-width: 360px) {
+    .portals-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .details-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-title {
+        font-size: 1.35rem;
+    }
+
+    .hero-box-code-value {
+        font-size: 1.1rem;
+    }
 }
