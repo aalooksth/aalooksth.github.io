@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const langLabel = document.getElementById('langLabel');
     const themeToggleBtn = document.getElementById('themeToggleBtn');
 
-    let currentLang = localStorage.getItem('license_check_lang') || 'ne';
+    let currentLang = localStorage.getItem('license_check_lang') || 'en';
     let currentResults = [];
     const csvCache = {};
 
