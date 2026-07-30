@@ -44,9 +44,18 @@ const DEFAULT_OFFICES = [
         },
         parseResponse: function (data, targetLicense) {
             const targetClean = cleanLicNo(targetLicense);
-            if (Array.isArray(data) && data.length > 0) {
-                const item = data.find(i => cleanLicNo(i.licenseNumber) === targetClean);
-                if (item) {
+
+            // /request/{license} returns a single object; older endpoint returned an array
+            let item = null;
+            if (Array.isArray(data)) {
+                item = data.find(i => cleanLicNo(i.licenseNumber) === targetClean) || null;
+            } else if (data && typeof data === 'object' && !data.error) {
+                // Single-object response — use it directly (already filtered by license on server)
+                item = data;
+            }
+
+            if (item) {
+
                     const rawStatus = (item.status || "").toLowerCase();
                     const isPending = rawStatus.includes("pending");
                     const isDistributed = rawStatus.includes("distributed");
@@ -137,8 +146,6 @@ const DEFAULT_OFFICES = [
                         instructionEn: `Present original payment receipt and RECEIVED ID = ${receivedId} at ${roomNo} to collect your license.`,
                         raw: item
                     };
-
-                }
             }
             return {
                 found: false,
