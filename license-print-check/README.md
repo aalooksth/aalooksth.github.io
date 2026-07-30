@@ -1,46 +1,56 @@
-# Unified Smart Driving License Print Status Checker
+# Nepal Smart Driving License Print & Collection Status Checker
 
-A high-performance, responsive static web application hostable on **GitHub Pages** to provide unified license print status checking across Transport Management Offices (TMOs) in Nepal (Bagamati Province: **Ekantakuna**, **Thulobharyang / Kalanki**, **Chabahil**, and **Radhe Radhe / Bhaktapur**).
+An independent civic web utility to check Smart Driving License print and collection status across Transport Management Offices (TMOs) in Bagamati Province, Nepal (**Ekantakuna**, **Thulobharyang / Kalanki**, **Chabahil**, and **Radhe Radhe / Bhaktapur**).
 
----
-
-## 🚀 Pre-configured Transport Offices
-
-1. **Ekantakuna (Lalitpur)**: `GET https://printekantakuna.bagamati.gov.np/api/api/public/{license_number}`
-2. **Thulobharyang (Kalanki)**: `POST https://gbuvycslvvqaafwnugsi.supabase.co/rest/v1/rpc/search_license_public`
-3. **Chabahil (Kathmandu)**: `GET https://foaajwxymscuzdluzmxp.supabase.co/rest/v1/tblLicenseRecords?select="license_no","name"&license_no=eq.{license_number}`
-4. **Radhe Radhe (Bhaktapur)**: `GET https://sanjibsimdotmlicense-portal-iota.vercel.app/licenses.csv`
+**Live App:** [https://aloks.com.np/license-print-check/](https://aloks.com.np/license-print-check/)
 
 ---
 
-## 🔒 Exact Match Enforcement
+## 🚀 Pre-configured Transport Offices & APIs
 
-- Enforces strict string equality matching between the searched license number and returned database records.
-- Prevents partial/prefix matches (e.g. searching `01-06-0006240` will not match `01-06-00062408`).
+1. **TMO Ekantakuna (Lalitpur)**:
+   - Primary: `GET https://printekantakuna.bagamati.gov.np/api/api/public/{license_number}` (License & Applicant Details)
+   - Secondary: `GET https://printekantakuna.bagamati.gov.np/api/api/public/request/{license_number}` (RECEIVED ID / Request Tracking)
+2. **TMO Thulobharyang (Kalanki)**:
+   - RPC: `POST https://gbuvycslvvqaafwnugsi.supabase.co/rest/v1/rpc/search_license_public`
+3. **TMO Chabahil (Kathmandu)**:
+   - REST: `GET https://foaajwxymscuzdluzmxp.supabase.co/rest/v1/tblLicenseRecords`
+4. **TMO Radhe Radhe (Bhaktapur)**:
+   - CSV: `GET https://sanjibsimdotmlicense-portal-iota.vercel.app/licenses.csv`
 
 ---
 
-## 🔗 Official Portals Included
+## ✨ Features & Architecture
 
-- **Bagamati Province Driving License Portal**: [dl.bagamati.gov.np](https://dl.bagamati.gov.np)
-- **Department of Transport Management (DoTM)**: [dotm.gov.np](https://www.dotm.gov.np)
-- **TMO Ekantakuna Site**: [tmopl.bagamati.gov.np](https://tmopl.bagamati.gov.np)
-- **TMO Kalanki / Thulobharyang Site**: [tmokalanki.github.io](https://tmokalanki.github.io/)
-- **TMO Chabahil Site**: [thapasanjay23.github.io](https://thapasanjay23.github.io/)
-- **TMO Radhe Radhe / Bhaktapur Site**: [tmobkt.bagamati.gov.np](https://tmobkt.bagamati.gov.np)
+- **Exact License Format & Input Helper**: Enforces 12-character format (`XX-XX-XXXXXXXX`) with auto-hyphenation and cursor position preservation while editing/deleting.
+- **Floating Bookmarklet & Native Web Share**: 
+  - On Desktop: Draggable pill pre-titled with the applicant's name (e.g. `📌 ALOK SHRESTHA (01-06-00062402) - License Status`).
+  - On Mobile: Triggers native OS Web Share API sheet to share direct search links.
+- **Dual-Language Support**: Complete English (`en`) and Nepali (`ne`) localization.
+- **Auto OS System Theme & Manual Toggle**: Follows device `prefers-color-scheme` with live switching and `localStorage` preference overrides.
+- **AEO / SEO & LLM Ready**: Comprehensive meta tags, structured JSON-LD data, `robots.txt`, `sitemap.xml`, and `llms.txt`.
+
+---
+
+## 🔗 Official TMO Portals & Resources
+
+- **Bagamati Province License Portal**: [dl.bagamati.gov.np](https://dl.bagamati.gov.np)
+- **DoTM Official Site**: [dotm.gov.np](https://www.dotm.gov.np)
+- **TMO Ekantakuna Portal**: [printekantakuna.bagamati.gov.np](https://printekantakuna.bagamati.gov.np)
+- **TMO Kalanki Portal**: [tmokalanki.bagamati.gov.np](https://tmokalanki.bagamati.gov.np/pages/searchList/)
 
 ---
 
 ## 📋 Required Documents for Smart Card Collection
 
-When a license card is printed and ready:
+When your license card status shows **Printed & Ready**:
 1. **Original Citizenship Certificate** (नेपाली नागरिकता)
 2. **Original Revenue Payment / Trial Receipt** (राजस्व रसिद)
-3. **Old License** (if renewing or adding category)
+3. **RECEIVED ID / Box Code** (if registered at Ekantakuna or Kalanki)
+4. **Old License** (if renewing or adding category)
 
 ---
 
-## 🌐 GitHub Pages Deployment
+## ⚠️ Disclaimer
 
-1. Commit and push contents to your GitHub Pages repository (`aloks.com.np/license-print-check`).
-2. Live at: `https://aloks.com.np/license-print-check/`
+This website is an **independent civic web utility** developed for public convenience. It is **not affiliated with or an official representative of the Department of Transport Management (DoTM)** or any government authority. Data is queried live from public office endpoints.
