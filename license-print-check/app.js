@@ -588,8 +588,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const isMobile = window.matchMedia('(max-width: 640px)').matches || navigator.maxTouchPoints > 0;
         const hasShare = !!navigator.share;
 
-        // Determine Name label
-        const applicantName = (foundItem && foundItem.name && foundItem.name !== 'N/A') ? foundItem.name : '';
+        // Determine Name label from foundItem or currentResults
+        let applicantName = '';
+        if (foundItem && foundItem.name && foundItem.name !== 'N/A') {
+            applicantName = foundItem.name;
+        } else if (Array.isArray(currentResults)) {
+            const match = currentResults.find(r => r.name && r.name !== 'N/A');
+            if (match) applicantName = match.name;
+        }
+
         const bookmarkTitle = applicantName 
             ? `${applicantName} (${licenseNo}) - License Status` 
             : (isNe ? `लाइसेन्स ${licenseNo} — स्थिति जाँच` : `License ${licenseNo} — Status Check`);
@@ -633,7 +640,6 @@ document.addEventListener('DOMContentLoaded', () => {
             fab.addEventListener('dragstart', e => {
                 e.dataTransfer.setData('text/uri-list', searchUrl);
                 e.dataTransfer.setData('text/plain', searchUrl);
-                // Providing HTML formatted link ensures browser extracts bookmarkTitle as the bookmark name when dragged to bookmarks bar
                 e.dataTransfer.setData('text/html', `<a href="${searchUrl}">${bookmarkTitle}</a>`);
             });
         }
