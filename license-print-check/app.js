@@ -567,45 +567,66 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Bookmarklet: drag-to-bookmark link for the current search
+    // Bookmarklet: floating pill — drag on desktop, Share/Copy on mobile
     function renderBookmarklet(licenseNo) {
+        // Remove any previous FAB
+        const existing = document.getElementById('bookmarkletFab');
+        if (existing) existing.remove();
+
         const bar = document.getElementById('bookmarkletBar');
-        if (!bar) return;
+        if (bar) bar.classList.add('hidden'); // keep old inline bar hidden
 
         const searchUrl = `https://aloks.com.np/license-print-check/?q=${encodeURIComponent(licenseNo)}`;
-        // Bookmarklet href: clicking the saved bookmark opens the direct search URL
         const bookmarkletHref = `javascript:(function(){window.open('${searchUrl}','_blank');})();`;
         const isNe = currentLang === 'ne';
+        const isMobile = window.matchMedia('(max-width: 640px)').matches || navigator.maxTouchPoints > 0;
+        const hasShare = !!navigator.share;
 
-        bar.innerHTML = `
-            <span class="bookmarklet-label">
-                <i class="fa-solid fa-bookmark"></i>
-                ${isNe ? 'यो खोज बुकमार्क गर्नुहोस्:' : 'Save this search:'}
-            </span>
-            <a id="bookmarkletLink"
-               class="bookmarklet-link"
-               href="${bookmarkletHref}"
-               title="${isNe ? 'यो लिङ्क बुकमार्क बारमा तान्नुहोस् वा Right-click → Bookmark' : 'Drag this to your bookmarks bar, or Right-click → Bookmark this link'}"
-               draggable="true"
-               onclick="return false;">
-                <i class="fa-solid fa-id-card"></i>
-                ${isNe ? `लाइसेन्स ${licenseNo} — स्थिति जाँच` : `License ${licenseNo} — Status Check`}
-            </a>
-            <span class="bookmarklet-hint">
-                <i class="fa-solid fa-hand-pointer"></i>
-                ${isNe
-                    ? 'माथिको लिङ्क बुकमार्क बारमा <strong>तान्नुस्</strong>, वा Right-click → Bookmark this link'
-                    : '<strong>Drag</strong> the link above to your bookmarks bar to save this search'}
-            </span>
-        `;
-        bar.classList.remove('hidden');
+        const fab = document.createElement(isMobile ? 'button' : 'a');
+        fab.id = 'bookmarkletFab';
+        fab.className = 'bookmarklet-fab hidden';
 
-        // Drag-start: set drag data to the direct URL (so it opens the URL, not the bookmarklet)
-        const link = bar.querySelector('#bookmarkletLink');
-        link.addEventListener('dragstart', e => {
-            e.dataTransfer.setData('text/uri-list', searchUrl);
-            e.dataTransfer.setData('text/plain', searchUrl);
-        });
+        if (isMobile) {
+            fab.type = 'button';
+            const label = hasShare
+                ? (isNe ? '🔗 यो खोज सेयर गर्नुहोस्' : '🔗 Share this Search')
+                : (isNe ? '📋 लिङ्क कपी गर्नुहोस्' : '📋 Copy Search Link');
+            fab.innerHTML = `<i class="fa-solid ${hasShare ? 'fa-share-nodes' : 'fa-link'} bookmarklet-fab-icon"></i><span class="bookmarklet-fab-label">${label}</span>`;
+
+            fab.addEventListener('click', async () => {
+                if (hasShare) {
+                    try {
+                        await navigator.share({
+                            title: isNe ? `लाइसेन्स स्थिति जाँच — ${licenseNo}` : `License Status — ${licenseNo}`,
+                            text: isNe ? 'बागमती प्रदेश स्मार्ट लाइसेन्स छापा स्थिति' : 'Bagamati Province Smart License Print Status',
+                            url: searchUrl
+                        });
+                    } catch (_) { /* user cancelled */ }
+                } else {
+                    try {
+                        await navigator.clipboard.writeText(searchUrl);
+                        const orig = fab.querySelector('.bookmarklet-fab-label').textContent;
+                        fab.querySelector('.bookmarklet-fab-label').textContent = isNe ? '✅ कपी भयो!' : '✅ Copied!';
+                        setTimeout(() => { fab.querySelector('.bookmarklet-fab-label').textContent = orig; }, 2000);
+                    } catch (_) { /* fallback: do nothing */ }
+                }
+            });
+        } else {
+            // Desktop: draggable bookmarklet <a>
+            fab.href = bookmarkletHref;
+            fab.draggable = true;
+            fab.title = isNe ? 'बुकमार्क बारमा तान्नुहोस् — Right-click → Bookmark this link' : 'Drag to bookmarks bar — or Right-click → Bookmark this link';
+            fab.innerHTML = `<i class="fa-solid fa-bookmark bookmarklet-fab-icon"></i><span class="bookmarklet-fab-label">${isNe ? `लाइसेन्स ${licenseNo} बुकमार्क` : `Bookmark: License ${licenseNo}`}</span>`;
+            fab.addEventListener('click', e => e.preventDefault());
+            fab.addEventListener('dragstart', e => {
+                e.dataTransfer.setData('text/uri-list', searchUrl);
+                e.dataTransfer.setData('text/plain', searchUrl);
+            });
+        }
+
+        document.body.appendChild(fab);
+        // Slight delay so CSS transition fires
+        requestAnimationFrame(() => fab.classList.remove('hidden'));
     }
 
     // Office Card Template Generator tailored to specific case rules

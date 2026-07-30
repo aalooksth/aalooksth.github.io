@@ -397,7 +397,7 @@ const OFFICIAL_PORTALS = [
         nameNp: "या.व्य.का. एकान्तकुना, ललितपुर",
         nameEn: "TMO Ekantakuna (Lalitpur)",
         url: "https://ekantakunalicense.bagamati.gov.np/",
-        printPortal: "https://printekantakuna.bahttps://ekantakunalicense.bagamati.gov.np/gamati.gov.np",
+        printPortal: "https://ekantakunalicense.bagamati.gov.np/",
         phone: "01-5522114",
         address: "Ekantakuna, Lalitpur",
         descNp: "एकान्तकुना कार्यालय आधिकारिक वेबसाइट",
