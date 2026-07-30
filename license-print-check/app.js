@@ -556,7 +556,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // ── Bookmarklet Banner ─────────────────────────────────────────────────
-        renderBookmarklet(licenseNo);
+        renderBookmarklet(licenseNo, foundItem);
 
         // Attach Portal Opener Event Listeners with clipboard helper
         document.querySelectorAll('.btn-open-portal').forEach(btn => {
@@ -574,7 +574,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Bookmarklet: floating pill — drag on desktop, Share/Copy on mobile
-    function renderBookmarklet(licenseNo) {
+    function renderBookmarklet(licenseNo, foundItem) {
         // Remove any previous FAB
         const existing = document.getElementById('bookmarkletFab');
         if (existing) existing.remove();
@@ -588,6 +588,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const isMobile = window.matchMedia('(max-width: 640px)').matches || navigator.maxTouchPoints > 0;
         const hasShare = !!navigator.share;
 
+        // Determine Name label
+        const applicantName = (foundItem && foundItem.name && foundItem.name !== 'N/A') ? foundItem.name : '';
+        const bookmarkTitle = applicantName 
+            ? `${applicantName} (${licenseNo}) - License Status` 
+            : (isNe ? `लाइसेन्स ${licenseNo} — स्थिति जाँच` : `License ${licenseNo} — Status Check`);
+
         const fab = document.createElement(isMobile ? 'button' : 'a');
         fab.id = 'bookmarkletFab';
         fab.className = 'bookmarklet-fab hidden';
@@ -595,7 +601,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isMobile) {
             fab.type = 'button';
             const label = hasShare
-                ? (isNe ? '🔗 यो खोज सेयर गर्नुहोस्' : '🔗 Share this Search')
+                ? (isNe ? `🔗 ${applicantName ? applicantName + ' ' : ''}खोज सेयर गर्नुहोस्` : `🔗 Share ${applicantName || 'Search'}`)
                 : (isNe ? '📋 लिङ्क कपी गर्नुहोस्' : '📋 Copy Search Link');
             fab.innerHTML = `<i class="fa-solid ${hasShare ? 'fa-share-nodes' : 'fa-link'} bookmarklet-fab-icon"></i><span class="bookmarklet-fab-label">${label}</span>`;
 
@@ -603,7 +609,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (hasShare) {
                     try {
                         await navigator.share({
-                            title: isNe ? `लाइसेन्स स्थिति जाँच — ${licenseNo}` : `License Status — ${licenseNo}`,
+                            title: bookmarkTitle,
                             text: isNe ? 'बागमती प्रदेश स्मार्ट लाइसेन्स छापा स्थिति' : 'Bagamati Province Smart License Print Status',
                             url: searchUrl
                         });
@@ -621,17 +627,18 @@ document.addEventListener('DOMContentLoaded', () => {
             // Desktop: draggable bookmarklet <a>
             fab.href = bookmarkletHref;
             fab.draggable = true;
-            fab.title = isNe ? 'बुकमार्क बारमा तान्नुहोस् — Right-click → Bookmark this link' : 'Drag to bookmarks bar — or Right-click → Bookmark this link';
-            fab.innerHTML = `<i class="fa-solid fa-bookmark bookmarklet-fab-icon"></i><span class="bookmarklet-fab-label">${isNe ? `लाइसेन्स ${licenseNo} बुकमार्क` : `Bookmark: License ${licenseNo}`}</span>`;
+            fab.title = isNe ? `बुकमार्क बारमा तान्नुहोस्: ${bookmarkTitle}` : `Drag to bookmarks bar: ${bookmarkTitle}`;
+            fab.innerHTML = `<i class="fa-solid fa-bookmark bookmarklet-fab-icon"></i><span class="bookmarklet-fab-label">📌 ${bookmarkTitle}</span>`;
             fab.addEventListener('click', e => e.preventDefault());
             fab.addEventListener('dragstart', e => {
                 e.dataTransfer.setData('text/uri-list', searchUrl);
                 e.dataTransfer.setData('text/plain', searchUrl);
+                // Providing HTML formatted link ensures browser extracts bookmarkTitle as the bookmark name when dragged to bookmarks bar
+                e.dataTransfer.setData('text/html', `<a href="${searchUrl}">${bookmarkTitle}</a>`);
             });
         }
 
         document.body.appendChild(fab);
-        // Slight delay so CSS transition fires
         requestAnimationFrame(() => fab.classList.remove('hidden'));
     }
 
