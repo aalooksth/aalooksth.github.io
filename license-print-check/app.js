@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
             heroSubtitle: "बागमती प्रदेशका यातायात व्यवस्था कार्यालयहरूमा सवारी चालक अनुमतिपत्र छापा स्थिति हेर्नुहोस्",
             inputPlaceholder: "सवारी चालक अनुमतिपत्र नं. (उदा. 01-06-00000000)",
             searchBtn: "स्थिति खोज्नुहोस्",
-            formatHint: "लाइसेन्स नम्बर १२ अंकको <code>XX-XX-XXXXXXXX</code> ढाँचामा प्रविष्ट गर्नुहोस्।",
+            formatHint: "लाइसेन्स नम्बर १२ अंकका सङ्ख्याहरू (digits) <code>XX-XX-XXXXXXXX</code> ढाँचामा प्रविष्ट गर्नुहोस्।",
             feedbackBarText: "नतिजामा त्रुटि भेटियो वा नयाँ सुझाव छ?",
             fbGithubLink: "सुझाव पठाउनुहोस् (GitHub)",
             fbContactLink: "डेभलपरलाई सम्पर्क गर्नुहोस्",
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
             heroSubtitle: "Check Smart Driving License Print & Collection Status across Bagamati Province Transport Offices",
             inputPlaceholder: "Enter Driving License No. (e.g. 01-06-00000000)",
             searchBtn: "Check Status",
-            formatHint: "Enter 12-character license number in <code>XX-XX-XXXXXXXX</code> format.",
+            formatHint: "Enter 12-digit license number in <code>XX-XX-XXXXXXXX</code> format (numbers only).",
             feedbackBarText: "Notice an inaccuracy or have a feature request?",
             fbGithubLink: "Report Inaccuracy (GitHub)",
             fbContactLink: "Contact Developer",
@@ -161,9 +161,9 @@ document.addEventListener('DOMContentLoaded', () => {
         renderOfficesDirectory();
     }
 
-    // Format Helper & Validation (Nepal format: 12 alphanumeric characters, XX-XX-XXXXXXXX)
+    // Format Helper & Validation (Nepal format: 12 numeric digits, XX-XX-XXXXXXXX)
     function cleanLicenseInput(input) {
-        return (input || '').replace(/[^a-zA-Z0-9]/g, '').trim().toUpperCase();
+        return (input || '').replace(/[^0-9]/g, '').trim();
     }
 
     function isValidLicenseFormat(rawInput) {
@@ -191,11 +191,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const formatted = formatLicenseNumber(raw);
 
         if (formatted !== raw) {
-            // Count characters before cursor in raw input vs formatted to adjust selection position
-            const digitsBeforeCursor = raw.slice(0, selectionStart).replace(/[^a-zA-Z0-9]/g, '').length;
+            // Count digits before cursor in raw input vs formatted to adjust selection position
+            const digitsBeforeCursor = raw.slice(0, selectionStart).replace(/[^0-9]/g, '').length;
             licenseInput.value = formatted;
 
-            // Calculate new cursor position based on clean character count
+            // Calculate new cursor position based on clean digit count
             let newPos = 0;
             let cleanCount = 0;
             for (let i = 0; i < formatted.length; i++) {
@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     newPos = i;
                     break;
                 }
-                if (/[a-zA-Z0-9]/.test(formatted[i])) {
+                if (/[0-9]/.test(formatted[i])) {
                     cleanCount++;
                 }
                 newPos = i + 1;
@@ -227,7 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function formatLicenseNumber(raw) {
         if (!raw) return '';
-        const clean = raw.replace(/[^a-zA-Z0-9]/g, '').toUpperCase().slice(0, 12);
+        const clean = raw.replace(/[^0-9]/g, '').slice(0, 12);
 
         let result = '';
         if (clean.length > 0) result += clean.slice(0, 2);
