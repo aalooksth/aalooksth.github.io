@@ -26,7 +26,7 @@ const DEFAULT_OFFICES = [
         address: "Ekantakuna, Ring Road, Lalitpur (एकान्तकुना, ललितपुर)",
         phone: "01-5522114",
         email: "info.tmopl@bagamati.gov.np",
-        officialWebsite: "https://tmopl.bagamati.gov.np",
+        officialWebsite: "https://ekantakunalicense.bagamati.gov.np/",
         printCheckPortal: "https://printekantakuna.bagamati.gov.np",
         mapUrl: "https://maps.google.com/?q=Transport+Management+Office+Ekantakuna+Lalitpur",
         additionalSteps: {
@@ -396,8 +396,8 @@ const OFFICIAL_PORTALS = [
     {
         nameNp: "या.व्य.का. एकान्तकुना, ललितपुर",
         nameEn: "TMO Ekantakuna (Lalitpur)",
-        url: "https://tmopl.bagamati.gov.np",
-        printPortal: "https://printekantakuna.bagamati.gov.np",
+        url: "https://ekantakunalicense.bagamati.gov.np/",
+        printPortal: "https://printekantakuna.bahttps://ekantakunalicense.bagamati.gov.np/gamati.gov.np",
         phone: "01-5522114",
         address: "Ekantakuna, Lalitpur",
         descNp: "एकान्तकुना कार्यालय आधिकारिक वेबसाइट",

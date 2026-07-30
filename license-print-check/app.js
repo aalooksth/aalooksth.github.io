@@ -549,6 +549,9 @@ document.addEventListener('DOMContentLoaded', () => {
             resultsCount.textContent = `Checked ${results.length} transport offices - No print records found`;
         }
 
+        // ── Bookmarklet Banner ─────────────────────────────────────────────────
+        renderBookmarklet(licenseNo);
+
         // Attach Portal Opener Event Listeners with clipboard helper
         document.querySelectorAll('.btn-open-portal').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -561,6 +564,47 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.open(office.printCheckPortal, '_blank');
                 }
             });
+        });
+    }
+
+    // Bookmarklet: drag-to-bookmark link for the current search
+    function renderBookmarklet(licenseNo) {
+        const bar = document.getElementById('bookmarkletBar');
+        if (!bar) return;
+
+        const searchUrl = `https://aloks.com.np/license-print-check/?q=${encodeURIComponent(licenseNo)}`;
+        // Bookmarklet href: clicking the saved bookmark opens the direct search URL
+        const bookmarkletHref = `javascript:(function(){window.open('${searchUrl}','_blank');})();`;
+        const isNe = currentLang === 'ne';
+
+        bar.innerHTML = `
+            <span class="bookmarklet-label">
+                <i class="fa-solid fa-bookmark"></i>
+                ${isNe ? 'यो खोज बुकमार्क गर्नुहोस्:' : 'Save this search:'}
+            </span>
+            <a id="bookmarkletLink"
+               class="bookmarklet-link"
+               href="${bookmarkletHref}"
+               title="${isNe ? 'यो लिङ्क बुकमार्क बारमा तान्नुहोस् वा Right-click → Bookmark' : 'Drag this to your bookmarks bar, or Right-click → Bookmark this link'}"
+               draggable="true"
+               onclick="return false;">
+                <i class="fa-solid fa-id-card"></i>
+                ${isNe ? `लाइसेन्स ${licenseNo} — स्थिति जाँच` : `License ${licenseNo} — Status Check`}
+            </a>
+            <span class="bookmarklet-hint">
+                <i class="fa-solid fa-hand-pointer"></i>
+                ${isNe
+                    ? 'माथिको लिङ्क बुकमार्क बारमा <strong>तान्नुस्</strong>, वा Right-click → Bookmark this link'
+                    : '<strong>Drag</strong> the link above to your bookmarks bar to save this search'}
+            </span>
+        `;
+        bar.classList.remove('hidden');
+
+        // Drag-start: set drag data to the direct URL (so it opens the URL, not the bookmarklet)
+        const link = bar.querySelector('#bookmarkletLink');
+        link.addEventListener('dragstart', e => {
+            e.dataTransfer.setData('text/uri-list', searchUrl);
+            e.dataTransfer.setData('text/plain', searchUrl);
         });
     }
 
