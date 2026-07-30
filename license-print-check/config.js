@@ -20,7 +20,10 @@ const DEFAULT_OFFICES = [
         enabled: true,
         method: "GET",
         format: "json",
-        urlTemplate: "https://printekantakuna.bagamati.gov.np/api/api/public/request/{license_number}",
+        // Primary endpoint: returns array with name, category, sn, status
+        urlTemplate: "https://printekantakuna.bagamati.gov.np/api/api/public/{license_number}",
+        // Secondary endpoint: returns single object with reqn (the actual RECEIVED ID)
+        requestUrlTemplate: "https://printekantakuna.bagamati.gov.np/api/api/public/request/{license_number}",
         headers: {},
         bodyTemplate: null,
         address: "Ekantakuna, Ring Road, Lalitpur (एकान्तकुना, ललितपुर)",
@@ -42,123 +45,111 @@ const DEFAULT_OFFICES = [
             if (navigator.clipboard) navigator.clipboard.writeText(licenseNo);
             window.open("https://printekantakuna.bagamati.gov.np", "_blank");
         },
-        parseResponse: function (data, targetLicense) {
+        // customFetch: fetches both endpoints in parallel and merges results
+        customFetch: async function (licenseNo) {
+            const enc = encodeURIComponent(licenseNo);
+            const primaryUrl  = this.urlTemplate.replace('{license_number}', enc);
+            const secondaryUrl = this.requestUrlTemplate.replace('{license_number}', enc);
+
+            const [primaryRes, secondaryRes] = await Promise.allSettled([
+                fetch(primaryUrl,  { method: 'GET', signal: AbortSignal.timeout(10000) }).then(r => r.json()),
+                fetch(secondaryUrl, { method: 'GET', signal: AbortSignal.timeout(10000) }).then(r => r.json())
+            ]);
+
+            // Primary array data: [{name, category, status, sn, licenseNumber, printedDate, blocknumber}]
+            const primaryData  = primaryRes.status  === 'fulfilled' ? primaryRes.value  : null;
+            // Secondary object:  {reqn, status, licenseNumber, printedDate, receiverName, receiverMobile}
+            const secondaryData = secondaryRes.status === 'fulfilled' ? secondaryRes.value : null;
+
+            return this.parseResponse(primaryData, licenseNo, secondaryData);
+        },
+        parseResponse: function (data, targetLicense, requestData) {
             const targetClean = cleanLicNo(targetLicense);
 
-            // /request/{license} returns a single object; older endpoint returned an array
+            // Primary endpoint returns array: [{name, category, status, sn, licenseNumber, printedDate}]
             let item = null;
-            if (Array.isArray(data)) {
+            if (Array.isArray(data) && data.length > 0) {
                 item = data.find(i => cleanLicNo(i.licenseNumber) === targetClean) || null;
-            } else if (data && typeof data === 'object' && !data.error) {
-                // Single-object response — use it directly (already filtered by license on server)
-                item = data;
             }
 
-            if (item) {
+            // reqn = the RECEIVED ID from /request/ endpoint (e.g. 8736)
+            const reqn = (requestData && requestData.reqn) ? requestData.reqn : null;
 
-                    const rawStatus = (item.status || "").toLowerCase();
-                    const isPending = rawStatus.includes("pending");
-                    const isDistributed = rawStatus.includes("distributed");
-                    const isPrintedOnly = rawStatus === "printed";
-
-                    // CASE 2: Received but Needs Form Fill (status === 'Printed')
-                    // For Case 2 at Ekantakuna, DO NOT show box code or room number!
-                    if (isPrintedOnly) {
-                        return {
-                            found: true,
-                            caseType: 2,
-                            status: "Printed & Ready (Form Fill Required)",
-                            statusNp: "प्रिन्ट भइसकेको (फारम भर्न बाँकी)",
-                            statusEn: "Printed & Ready (Receiver Form Fill Required)",
-                            isPrinted: true,
-                            isCollected: false,
-                            requiresFormFill: true,
-                            name: item.name ? item.name.trim() : "N/A",
-                            licenseNumber: item.licenseNumber || targetLicense,
-                            category: item.category || "N/A",
-                            printedDate: item.printedDate || "N/A",
-                            blockNumber: null,
-                            boxCode: null,
-                            counterRoom: "लाइसेन्स बुझिलिने व्यक्तिको विवरण भरेपछि कोठा नं. देखाउँछ",
-                            sn: null,
-                            receivedId: null,
-                            instructionNp: `बुझिलिने व्यक्तिको विवरण भरी देखाइएको स्थानमा RECEIVED-ID र रसिद उपलब्ध गराएपछि मात्र लाइसेन्स बुझ्न सकिन्छ ।`,
-                            instructionEn: `Complete receiver details on official portal. Room number & RECEIVED-ID will be shown upon submitting form.`,
-                            raw: item
-                        };
-                    }
-
-                    // CASE 3 Distributed (Collected)
-                    if (isDistributed) {
-                        return {
-                            found: true,
-                            caseType: 3,
-                            status: "Printed & Distributed",
-                            statusNp: "लाइसेन्स बुझिसकेको (Distributed)",
-                            statusEn: "Printed & Collected (Distributed)",
-                            isPrinted: true,
-                            isCollected: true,
-                            requiresFormFill: false,
-                            name: item.name ? item.name.trim() : "N/A",
-                            licenseNumber: item.licenseNumber || targetLicense,
-                            category: item.category || "N/A",
-                            printedDate: item.printedDate || "N/A",
-                            blockNumber: item.blocknumber || null,
-                            boxCode: null,
-                            counterRoom: "Distributed",
-                            sn: item.sn || null,
-                            receivedId: null,
-                            distributedBy: item.distributedBy || "Staff",
-                            receivedDate: item.receivedDate || "N/A",
-                            receiverName: item.receiverName || "Self",
-                            instructionNp: `उक्त लाइसेन्स कार्ड ${item.receivedDate || 'कार्यालयबाट'} मा बुझिसकिएको छ (${item.receiverName || 'Self'} द्वारा प्राप्त)।`,
-                            instructionEn: `This license card was collected on ${item.receivedDate || 'office records'} by ${item.receiverName || 'Self'}.`,
-                            raw: item
-                        };
-                    }
-
-                    // CASE 3 Pending Pickup (Form Submitted)
-                    // item.receivedId / item.requestId = the actual RECEIVED ID shown on portal (e.g. 8736)
-                    // item.sn = just a row serial number — do NOT use as RECEIVED ID
-                    const receivedId = item.receivedId || item.requestId || item.id || item.sn || null;
-                    const roomNo = item.receivedFrom || item.roomNo || "208-(ग)";
-
-                    return {
-                        found: true,
-                        caseType: 3,
-                        status: "Pending Counter Pickup",
-                        statusNp: "फारम दर्ता भइसकेको (Pending Counter Pickup)",
-                        statusEn: "Form Submitted / Pending Counter Pickup",
-                        isPrinted: true,
-                        isCollected: false,
-                        requiresFormFill: false,
-                        name: item.name ? item.name.trim() : "N/A",
-                        licenseNumber: item.licenseNumber || targetLicense,
-                        category: item.category || "N/A",
-                        printedDate: item.printedDate || "N/A",
-                        blockNumber: item.blocknumber || null,
-                        boxCode: null,
-                        // receivedFrom = "एकान्तकुना-208(ग)" — show as-is for counter/room
-                        counterRoom: roomNo,
-                        sn: item.sn || null,
-                        receivedId: receivedId,
-                        instructionNp: `एकान्तकुना ${roomNo} मा सक्कल रसिद र RECEIVED ID = ${receivedId} उपलब्ध गराएपछि मात्र लाइसेन्स बुझ्न सकिन्छ।`,
-                        instructionEn: `Present original payment receipt and RECEIVED ID = ${receivedId} at ${roomNo} to collect your license.`,
-                        raw: item
-                    };
+            if (!item) {
+                return {
+                    found: false, caseType: 1,
+                    status: "Not Found", statusNp: "भेटिएन", statusEn: "Not Found",
+                    isPrinted: false, requiresFormFill: false, raw: data
+                };
             }
+
+            const rawStatus = (item.status || "").toLowerCase();
+            const isDistributed = rawStatus.includes("distributed");
+            const isPrintedOnly = rawStatus === "printed";
+
+            // CASE 2: Printed but receiver form not yet submitted
+            if (isPrintedOnly) {
+                return {
+                    found: true, caseType: 2,
+                    status: "Printed & Ready (Form Fill Required)",
+                    statusNp: "प्रिन्ट भइसकेको (फारम भर्न बाँकी)",
+                    statusEn: "Printed & Ready (Receiver Form Fill Required)",
+                    isPrinted: true, isCollected: false, requiresFormFill: true,
+                    name: item.name ? item.name.trim() : "N/A",
+                    licenseNumber: item.licenseNumber || targetLicense,
+                    category: item.category || "N/A",
+                    printedDate: item.printedDate || "N/A",
+                    blockNumber: null, boxCode: null, sn: null, receivedId: null,
+                    counterRoom: "लाइसेन्स बुझिलिने व्यक्तिको विवरण भरेपछि कोठा नं. देखाउँछ",
+                    instructionNp: `बुझिलिने व्यक्तिको विवरण भरी देखाइएको स्थानमा RECEIVED-ID र रसिद उपलब्ध गराएपछि मात्र लाइसेन्स बुझ्न सकिन्छ ।`,
+                    instructionEn: `Complete receiver details on official portal. Room number & RECEIVED-ID will be shown upon submitting form.`,
+                    raw: item
+                };
+            }
+
+            // CASE 3: Distributed (Collected)
+            if (isDistributed) {
+                return {
+                    found: true, caseType: 3,
+                    status: "Printed & Distributed",
+                    statusNp: "लाइसेन्स बुझिसकेको (Distributed)",
+                    statusEn: "Printed & Collected (Distributed)",
+                    isPrinted: true, isCollected: true, requiresFormFill: false,
+                    name: item.name ? item.name.trim() : "N/A",
+                    licenseNumber: item.licenseNumber || targetLicense,
+                    category: item.category || "N/A",
+                    printedDate: item.printedDate || "N/A",
+                    blockNumber: item.blocknumber || null, boxCode: null,
+                    counterRoom: "Distributed", sn: item.sn || null, receivedId: null,
+                    instructionNp: `उक्त लाइसेन्स कार्ड ${item.receivedDate || 'कार्यालयबाट'} मा बुझिसकिएको छ (${item.receiverName || 'Self'} द्वारा प्राप्त)।`,
+                    instructionEn: `This license card was collected on ${item.receivedDate || 'office records'} by ${item.receiverName || 'Self'}.`,
+                    raw: item
+                };
+            }
+
+            // CASE 3: Pending Counter Pickup — form submitted, reqn is RECEIVED ID
+            const roomNo = item.roomNo || "208-(ग)";
             return {
-                found: false,
-                caseType: 1,
-                status: "Not Found",
-                statusNp: "भेटिएन",
-                statusEn: "Not Found",
-                isPrinted: false,
-                requiresFormFill: false,
-                raw: data
+                found: true, caseType: 3,
+                status: "Pending Counter Pickup",
+                statusNp: "फारम दर्ता भइसकेको (Pending Counter Pickup)",
+                statusEn: "Form Submitted / Pending Counter Pickup",
+                isPrinted: true, isCollected: false, requiresFormFill: false,
+                name: item.name ? item.name.trim() : "N/A",
+                licenseNumber: item.licenseNumber || targetLicense,
+                category: item.category || "N/A",
+                printedDate: item.printedDate || "N/A",
+                blockNumber: item.blocknumber || null, boxCode: null,
+                counterRoom: roomNo,
+                sn: item.sn || null,
+                receivedId: reqn,   // reqn from /request/ endpoint = the real RECEIVED ID
+                instructionNp: `एकान्तकुना ${roomNo} मा सक्कल रसिद र RECEIVED ID = ${reqn || '—'} उपलब्ध गराएपछि मात्र लाइसेन्स बुझ्न सकिन्छ।`,
+                instructionEn: `Present original payment receipt and RECEIVED ID = ${reqn || '—'} at Room No. ${roomNo} to collect your license.`,
+                raw: item
             };
         }
     },
+
     {
         id: "thulobharyang",
         name: "TMO Thulobharyang (Kalanki)",

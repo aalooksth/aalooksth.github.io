@@ -39,16 +39,27 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.classList.remove('dark-theme');
             document.body.classList.add('light-theme');
         } else {
-            // Default to dark theme for main portfolio site or system preference
+            // Respect system preference (prefers-color-scheme)
             if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.body.classList.remove('light-theme');
                 document.body.classList.add('dark-theme');
             } else {
+                document.body.classList.remove('dark-theme');
                 document.body.classList.add('light-theme');
             }
         }
     }
 
     initTheme();
+
+    // Listen for OS system theme changes dynamically if user hasn't set explicit override
+    if (window.matchMedia) {
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (!localStorage.getItem('alok_site_theme')) {
+                initTheme();
+            }
+        });
+    }
 
     if (themeToggleBtn) {
         themeToggleBtn.addEventListener('click', () => {

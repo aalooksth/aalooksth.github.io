@@ -303,6 +303,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Single Office API Fetcher
     async function fetchOfficeStatus(office, licenseNo) {
+        // If office defines its own async fetch (e.g. multi-endpoint), use it directly
+        if (typeof office.customFetch === 'function') {
+            return office.customFetch(licenseNo);
+        }
+
         if (office.format === 'csv') {
             try {
                 let csvText = csvCache[office.id];
@@ -347,6 +352,7 @@ document.addEventListener('DOMContentLoaded', () => {
             throw err;
         }
     }
+
 
     // Render Skeletons
     function renderSkeletons() {
@@ -968,10 +974,28 @@ document.addEventListener('DOMContentLoaded', () => {
         if (saved === 'dark') {
             document.body.classList.remove('light-theme');
             document.body.classList.add('dark-theme');
-        } else {
+        } else if (saved === 'light') {
             document.body.classList.remove('dark-theme');
             document.body.classList.add('light-theme');
+        } else {
+            // Respect system preference if no explicit user override is saved
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.body.classList.remove('light-theme');
+                document.body.classList.add('dark-theme');
+            } else {
+                document.body.classList.remove('dark-theme');
+                document.body.classList.add('light-theme');
+            }
         }
+    }
+
+    // Listen for OS system theme changes dynamically if user hasn't explicitly set a preference
+    if (window.matchMedia) {
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (!localStorage.getItem('license_check_theme')) {
+                initTheme();
+            }
+        });
     }
 
     // AI & URL Parameters Checker
