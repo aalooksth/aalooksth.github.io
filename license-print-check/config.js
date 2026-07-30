@@ -20,7 +20,7 @@ const DEFAULT_OFFICES = [
         enabled: true,
         method: "GET",
         format: "json",
-        urlTemplate: "https://printekantakuna.bagamati.gov.np/api/api/public/{license_number}",
+        urlTemplate: "https://printekantakuna.bagamati.gov.np/api/api/public/request/{license_number}",
         headers: {},
         bodyTemplate: null,
         address: "Ekantakuna, Ring Road, Lalitpur (एकान्तकुना, ललितपुर)",
@@ -109,8 +109,10 @@ const DEFAULT_OFFICES = [
                     }
 
                     // CASE 3 Pending Pickup (Form Submitted)
-                    const receivedId = item.sn || item.id || "8736";
-                    const roomNo = item.roomNo || "208-(ग)";
+                    // item.receivedId / item.requestId = the actual RECEIVED ID shown on portal (e.g. 8736)
+                    // item.sn = just a row serial number — do NOT use as RECEIVED ID
+                    const receivedId = item.receivedId || item.requestId || item.id || item.sn || null;
+                    const roomNo = item.receivedFrom || item.roomNo || "208-(ग)";
 
                     return {
                         found: true,
@@ -125,15 +127,17 @@ const DEFAULT_OFFICES = [
                         licenseNumber: item.licenseNumber || targetLicense,
                         category: item.category || "N/A",
                         printedDate: item.printedDate || "N/A",
-                        blockNumber: item.blocknumber || "E",
+                        blockNumber: item.blocknumber || null,
                         boxCode: null,
-                        counterRoom: `कोठा नं. ${roomNo}`,
-                        sn: receivedId,
+                        // receivedFrom = "एकान्तकुना-208(ग)" — show as-is for counter/room
+                        counterRoom: roomNo,
+                        sn: item.sn || null,
                         receivedId: receivedId,
-                        instructionNp: `एकान्तकुना कोठा नं. ${roomNo} मा सक्कल रसिद र RECEIVED ID = ${receivedId} उपलब्ध गराएपछि मात्र लाइसेन्स बुझ्न सकिन्छ।`,
-                        instructionEn: `Present original payment receipt and RECEIVED ID = ${receivedId} at Room No. ${roomNo} to collect your license.`,
+                        instructionNp: `एकान्तकुना ${roomNo} मा सक्कल रसिद र RECEIVED ID = ${receivedId} उपलब्ध गराएपछि मात्र लाइसेन्स बुझ्न सकिन्छ।`,
+                        instructionEn: `Present original payment receipt and RECEIVED ID = ${receivedId} at ${roomNo} to collect your license.`,
                         raw: item
                     };
+
                 }
             }
             return {
