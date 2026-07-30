@@ -183,14 +183,32 @@ document.addEventListener('DOMContentLoaded', () => {
         licenseInput.classList.remove('input-error');
     }
 
-    // Auto-formatting Input into XX-XX-XXXXXXXX format as user types
-    licenseInput.addEventListener('input', () => {
+    // Auto-formatting Input into XX-XX-XXXXXXXX format as user types while preserving cursor position
+    licenseInput.addEventListener('input', (e) => {
         hideValidationError();
         const raw = licenseInput.value;
+        const selectionStart = licenseInput.selectionStart;
         const formatted = formatLicenseNumber(raw);
 
         if (formatted !== raw) {
+            // Count characters before cursor in raw input vs formatted to adjust selection position
+            const digitsBeforeCursor = raw.slice(0, selectionStart).replace(/[^a-zA-Z0-9]/g, '').length;
             licenseInput.value = formatted;
+
+            // Calculate new cursor position based on clean character count
+            let newPos = 0;
+            let cleanCount = 0;
+            for (let i = 0; i < formatted.length; i++) {
+                if (cleanCount === digitsBeforeCursor) {
+                    newPos = i;
+                    break;
+                }
+                if (/[a-zA-Z0-9]/.test(formatted[i])) {
+                    cleanCount++;
+                }
+                newPos = i + 1;
+            }
+            licenseInput.setSelectionRange(newPos, newPos);
         }
 
         if (licenseInput.value.trim().length > 0) {
