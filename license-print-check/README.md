@@ -32,6 +32,15 @@ An independent civic web utility to check Smart Driving License print and collec
 
 ---
 
+## 🔒 Privacy, Security & Architecture
+
+- **100% Client-Side Static Execution**: Hosted on GitHub Pages with **zero backend servers or databases**.
+- **No Data Retention or Logging**: Submitted license numbers are processed strictly inside the browser memory. No query logs, personal identifiers, or analytics tracking of search queries exist.
+- **Direct Public API Calls**: Requests (`fetch()`) are dispatched straight from the user's browser to official public endpoints maintained by the respective Transport Management Offices (`bagamati.gov.np`).
+- **Stateless `&format=json` Parameter**: The `&format=json` URL feature is a pure client-side UI transform module in `app.js` designed for screen readers and AI agents to parse structured status JSON. It does not transmit or record data to any third party.
+
+---
+
 ## 🔗 Official TMO Portals & Resources
 
 - **Bagamati Province License Portal**: [dl.bagamati.gov.np](https://dl.bagamati.gov.np)

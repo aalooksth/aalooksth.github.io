@@ -133,6 +133,17 @@
                 </section>
 
                 <section>
+                    <h2 style="margin-bottom: 0.5rem; color: var(--primary);">Smart License Print Check Privacy & Zero Data Retention</h2>
+                    <p>The <strong>Nepal Smart Driving License Print & Collection Status Checker</strong> utility (`/license-print-check/`) is designed with strict client-side data privacy:</p>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                        <li><strong>No Server-Side Logging or Retention:</strong> Submitted driving license numbers are processed exclusively in your browser memory (`client-side`). No license numbers or search queries are stored, logged, or sent to any custom database or server owned by Alok Shrestha.</li>
+                        <li><strong>Direct Public Endpoints:</strong> All search queries (`fetch()`) are executed directly from your browser to public endpoints maintained by respective Transport Management Offices (TMOs).</li>
+                        <li><strong>Local Browser Storage Only:</strong> Recent search history is stored locally on your device (`localStorage`) for your convenience and can be cleared at any time using the "Clear All" button.</li>
+                        <li><strong>AEO / API Format Parameter (`&format=json`):</strong> The `&format=json` URL parameter is a stateless client-side rendering toggle. It formats the public office response into raw JSON in your browser for assistive tools or automated agents, without transmitting data to any third party.</li>
+                    </ul>
+                </section>
+
+                <section>
                     <h2 style="margin-bottom: 0.5rem; color: var(--primary);">Contact Information</h2>
                     <p>If you have any questions regarding this Privacy Policy, feel free to get in touch via email at
                         <a href="mailto:aalooksth@gmail.com" style="color: var(--secondary);">aalooksth@gmail.com</a>.

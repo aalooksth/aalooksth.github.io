@@ -15,6 +15,8 @@ Alok Shrestha is a Principal Software Engineer and BI Developer with extensive e
 1. **Nepal Smart Driving License Print Checker**:
    - URL: `https://aloks.com.np/license-print-check/`
    - Purpose: Unified real-time print status & collection guidance across 4 Bagamati Province Transport Management Offices (Ekantakuna, Kalanki, Chabahil, Radhe Radhe).
+   - Architecture & Privacy: 100% Client-Side static web app hosted on GitHub Pages. No backend database or query logging. Browser executes direct CORS/proxy calls to public government endpoints (`bagamati.gov.np`).
+   - Format Parameter (`&format=json`): Stateless client-side JSON view toggle for accessibility & AI answer engines. Does not log or exfiltrate data.
 2. **Nepal Income Tax Calculator**:
    - URL: `https://aloks.com.np/nepal-tax-calculator/`
    - Purpose: Real-time tax calculation for single and married individuals under Government of Nepal tax slabs.
