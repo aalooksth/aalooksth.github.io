@@ -90,12 +90,51 @@ class ParticleJourney {
         // Trigger initial scroll calculation
         this.onScroll();
 
+        // Hook up HTML hover interactions to target WebGL particle structures
+        this.setupTimelineInteractions();
+
         // 7. Clock & Animation Loop
         this.clock = new THREE.Clock();
         this.animate();
         
         // Add success class to body
         document.body.classList.add('webgl-initialized');
+    }
+
+    setupTimelineInteractions() {
+        // Query experience timeline items
+        const expItems = document.querySelectorAll('#experience .timeline-item');
+        expItems.forEach((item, index) => {
+            item.addEventListener('mouseenter', () => {
+                if (this.material && this.material.uniforms) {
+                    this.material.uniforms.uActiveNode.value = parseFloat(index);
+                    this.material.uniforms.uActiveType.value = 1.0; // Experience
+                }
+            });
+            item.addEventListener('mouseleave', () => {
+                if (this.material && this.material.uniforms) {
+                    this.material.uniforms.uActiveNode.value = -1.0;
+                    this.material.uniforms.uActiveType.value = 0.0;
+                }
+            });
+        });
+
+        // Query education timeline items
+        const eduItems = document.querySelectorAll('#education .timeline-item');
+        eduItems.forEach((item, index) => {
+            item.addEventListener('mouseenter', () => {
+                if (this.material && this.material.uniforms) {
+                    this.material.uniforms.uActiveNode.value = parseFloat(index);
+                    this.material.uniforms.uActiveType.value = 2.0; // Education
+                }
+            });
+            item.addEventListener('mouseleave', () => {
+                if (this.material && this.material.uniforms) {
+                    this.material.uniforms.uActiveNode.value = -1.0;
+                    this.material.uniforms.uActiveType.value = 0.0;
+                }
+            });
+        });
     }
 
     // Creates a high-quality Canvas-based radial gradient texture for the particles
@@ -199,6 +238,8 @@ class ParticleJourney {
                 uTime: { value: 0 },
                 uScroll: { value: 0 },
                 uMouse: { value: new THREE.Vector2(0, 0) },
+                uActiveNode: { value: -1.0 },
+                uActiveType: { value: 0.0 },
                 uColorPrimary: { value: this.config.colors.primary },
                 uColorSecondary: { value: this.config.colors.secondary },
                 uColorAccent: { value: this.config.colors.accent },
@@ -209,6 +250,8 @@ class ParticleJourney {
                 uniform float uTime;
                 uniform float uScroll;
                 uniform vec2 uMouse;
+                uniform float uActiveNode;
+                uniform float uActiveType;
                 
                 attribute float aRandom;
                 attribute float aGroup;
@@ -466,6 +509,35 @@ class ParticleJourney {
                         float distCenter = length(finalPos.xy);
                         col = mix(uColorHighlight, uColorPrimary, clamp((distCenter - 3.0) / 25.0, 0.0, 1.0));
                     }
+
+                    // --- ACTIVE TIMELINE NODE HIGHLIGHTS ---
+                    float sizeMultiplier = 1.0;
+                    if (uActiveType == 1.0 && progress > 1.2 && progress < 2.8) {
+                        float nodeIdx = -1.0;
+                        if (position.y > 15.0) nodeIdx = 0.0;
+                        else if (position.y > 0.0) nodeIdx = 1.0;
+                        else if (position.y > -15.0) nodeIdx = 2.0;
+                        else nodeIdx = 3.0;
+                        
+                        if (abs(nodeIdx - uActiveNode) < 0.1) {
+                            sizeMultiplier = 2.5;
+                            col = mix(col, uColorHighlight, 0.85);
+                            finalPos.z += sin(uTime * 8.0 + position.y) * 3.0; // active ripple
+                        }
+                    }
+                    else if (uActiveType == 2.0 && progress > 2.2 && progress < 3.8) {
+                        float nodeIdx = -1.0;
+                        if (position.y > 10.0) nodeIdx = 0.0;
+                        else if (position.y > -10.0) nodeIdx = 1.0;
+                        else nodeIdx = 2.0;
+                        
+                        if (abs(nodeIdx - uActiveNode) < 0.1) {
+                            sizeMultiplier = 2.8;
+                            col = mix(col, uColorHighlight, 0.9);
+                            finalPos.x += sin(uTime * 9.0 + position.y) * 2.0; // active helix oscillation
+                            finalPos.z += cos(uTime * 9.0 + position.y) * 2.0;
+                        }
+                    }
                     
                     vColor = col;
                     
@@ -473,8 +545,8 @@ class ParticleJourney {
                     vec4 mvPosition = modelViewMatrix * vec4(finalPos, 1.0);
                     gl_Position = projectionMatrix * mvPosition;
                     
-                    // High-quality size decay (closer is larger)
-                    gl_PointSize = (10.0 + aRandom * 7.0) * (330.0 / -mvPosition.z);
+                    // High-quality size decay (closer is larger) * sizeMultiplier
+                    gl_PointSize = (10.0 + aRandom * 7.0) * (330.0 / -mvPosition.z) * sizeMultiplier;
                 }
             `,
             fragmentShader: `

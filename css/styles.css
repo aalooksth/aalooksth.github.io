@@ -563,28 +563,60 @@ section {
 
 .timeline-item {
     position: relative;
-    padding-left: 50px;
-    margin-bottom: 2.5rem;
+    padding-left: 60px;
+    margin-bottom: 3rem;
 }
 
 .timeline-dot {
+    display: none; /* Replaced by timeline-badge */
+}
+
+.timeline-badge {
     position: absolute;
-    left: 13px;
-    top: 5px;
-    width: 16px;
-    height: 16px;
+    left: 2px;
+    top: 3px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
-    background: var(--primary);
-    border: 3px solid var(--bg-color);
-    box-shadow: 0 0 0 2px var(--primary);
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-sm);
+    z-index: 2;
+    transition: var(--transition);
+}
+
+.timeline-item:hover .timeline-badge {
+    border-color: var(--primary);
+    background: var(--bg-surface);
+    transform: scale(1.18);
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+}
+
+.timeline-badge i {
+    font-size: 0.95rem;
+    transition: var(--transition);
+}
+
+.timeline-item:hover .timeline-badge i {
+    transform: rotate(10deg);
 }
 
 .timeline-content {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
-    padding: 1.5rem;
+    padding: 1.75rem;
     box-shadow: var(--shadow-sm);
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.timeline-item:hover .timeline-content {
+    border-color: var(--primary);
+    box-shadow: 0 12px 28px -6px rgba(59, 130, 246, 0.16);
+    transform: translateX(4px);
 }
 
 .timeline-content h3 {
@@ -604,6 +636,197 @@ section {
     font-size: 0.82rem;
     color: var(--text-subtle);
     font-weight: 600;
+}
+
+/* Timeline Work & Education Visualizations */
+.work-visuals {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.visuals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 0.65rem;
+}
+
+.visual-metric {
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 0.55rem;
+    text-align: center;
+    transition: var(--transition);
+}
+
+.timeline-item:hover .visual-metric {
+    background: var(--bg-surface);
+    border-color: var(--border-strong);
+}
+
+.metric-val {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--primary);
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.15rem;
+}
+
+.metric-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--text-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.visuals-chart-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-top: 0.25rem;
+}
+
+.visuals-chart-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    display: flex;
+    justify-content: space-between;
+}
+
+.visuals-sparkline {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    height: 32px;
+    background: rgba(59, 130, 246, 0.03);
+    border-radius: var(--radius-sm);
+    padding: 6px;
+    border: 1px solid var(--border-color);
+}
+
+.spark-bar {
+    flex: 1;
+    height: var(--height);
+    background: linear-gradient(to top, var(--secondary), var(--primary));
+    border-radius: 1px;
+    transform-origin: bottom;
+    transform: scaleY(0.1);
+    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.timeline-item:hover .spark-bar {
+    transform: scaleY(1);
+}
+
+.spark-bar:nth-child(1) { transition-delay: 0.05s; }
+.spark-bar:nth-child(2) { transition-delay: 0.1s; }
+.spark-bar:nth-child(3) { transition-delay: 0.15s; }
+.spark-bar:nth-child(4) { transition-delay: 0.2s; }
+.spark-bar:nth-child(5) { transition-delay: 0.25s; }
+.spark-bar:nth-child(6) { transition-delay: 0.3s; }
+
+.visuals-progress-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.progress-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.progress-bar-wrapper {
+    height: 6px;
+    background: var(--bg-subtle);
+    border-radius: 3px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(to right, var(--secondary), var(--accent));
+    width: 0% !important;
+    transition: width 1s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.timeline-item:hover .progress-bar-fill {
+    width: var(--target-width) !important;
+}
+
+.visuals-nodes {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.45rem 0.65rem;
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
+}
+
+.node-badge {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    padding: 0.2rem 0.45rem;
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+}
+
+.node-badge.active {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.timeline-item:hover .node-badge.active {
+    background: var(--primary);
+    color: #ffffff;
+    border-color: var(--primary);
+}
+
+/* Tool / Skill badges within cards */
+.work-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.85rem;
+}
+
+.tool-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.65rem;
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-color);
+    transition: var(--transition);
+}
+
+.timeline-item:hover .tool-tag {
+    border-color: var(--border-strong);
+    background: var(--bg-surface);
+}
+
+.tool-icon {
+    width: 13px;
+    height: 13px;
 }
 
 /* Contact Section */
