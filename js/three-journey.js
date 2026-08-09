@@ -10,7 +10,7 @@ class ParticleJourney {
         this.config = {
             mainCount: 40000,      // Main morphing liquid wave
             bgCount: 15000,        // Starfield background
-            fgCount: 800,          // Floating foreground dust orbs
+            fgCount: 50,          // Floating foreground dust orbs
             colors: {
                 primary: new THREE.Color('#8b5cf6'),   // Violet
                 secondary: new THREE.Color('#3b82f6'), // Blue
@@ -571,36 +571,89 @@ class ParticleJourney {
         this.scene.add(this.mainPoints);
     }
 
-    // Layer 3: Foreground Dust (Slow floating orbs drifting close to camera)
+    // Layer 3: Foreground Dust / Fireflies
     createForegroundDust() {
         const count = this.config.fgCount;
         this.fgGeometry = new THREE.BufferGeometry();
         const positions = new Float32Array(count * 3);
         const randoms = new Float32Array(count);
+        // Additional arrays for firefly behavior
+        const colors = new Float32Array(count * 3);
+        const opacities = new Float32Array(count);
+
+        const orbColor = this.config.colors.cyan;
+        const fireflyColor = new THREE.Color('#bef264'); // Yellow-green
 
         for (let i = 0; i < count; i++) {
-            // Distribute close to the camera field of view
             positions[i * 3] = (Math.random() - 0.5) * 75;
             positions[i * 3 + 1] = (Math.random() - 0.5) * 75;
-            positions[i * 3 + 2] = Math.random() * 40; // close to camera (which sits at z=32-45)
-
+            positions[i * 3 + 2] = Math.random() * 40;
             randoms[i] = Math.random();
+            opacities[i] = Math.random();
+            // Start with orb color
+            colors[i * 3] = orbColor.r;
+            colors[i * 3 + 1] = orbColor.g;
+            colors[i * 3 + 2] = orbColor.b;
         }
 
         this.fgGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        this.fgGeometry.setAttribute('aRandom', new THREE.BufferAttribute(randoms, 1));
+        this.fgGeometry.setAttribute('aColor', new THREE.BufferAttribute(colors, 3));
+        this.fgGeometry.setAttribute('aOpacityOffset', new THREE.BufferAttribute(opacities, 1));
 
-        // Use custom material for fuzzy big orbs
-        const material = new THREE.PointsMaterial({
-            size: 0.9,
-            map: this.particleTexture,
+        // Use a ShaderMaterial for dynamic transitions between Orbs (Light) and Fireflies (Dark)
+        this.fgMaterial = new THREE.ShaderMaterial({
             transparent: true,
-            opacity: 0.38,
-            color: this.config.colors.cyan,
+            depthWrite: false,
             blending: THREE.AdditiveBlending,
-            depthWrite: false
+            uniforms: {
+                uTime: { value: 0 },
+                uTexture: { value: this.particleTexture },
+                uIsNight: { value: 0.0 }
+            },
+            vertexShader: `
+                uniform float uTime;
+                uniform float uIsNight;
+                attribute float aRandom;
+                attribute float aOpacityOffset;
+                attribute vec3 aColor;
+                varying vec3 vColor;
+                varying float vAlpha;
+                void main() {
+                    vColor = aColor;
+                    
+                    // Firefly pulsing
+                    float pulse = (sin(uTime * 3.0 + aOpacityOffset * 10.0) + 1.0) * 0.5;
+                    float baseAlpha = pulse * 0.8 * uIsNight; // Only visible in the dark
+                    vAlpha = baseAlpha;
+                    
+                    // Firefly jitter (only apply at night)
+                    vec3 pos = position;
+                    float jitterX = sin(uTime * 5.0 + aRandom * 20.0) * 0.5 * uIsNight;
+                    float jitterY = cos(uTime * 4.3 + aRandom * 20.0) * 0.5 * uIsNight;
+                    pos.x += jitterX;
+                    pos.y += jitterY;
+                    
+                    vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
+                    gl_Position = projectionMatrix * mvPosition;
+                    
+                    // Size is smaller for fireflies, larger for orbs
+                    float targetSize = mix(0.9, 0.4, uIsNight);
+                    gl_PointSize = (targetSize * 600.0) / -mvPosition.z; // Increased multiplier so they are visible!
+                }
+            `,
+            fragmentShader: `
+                uniform sampler2D uTexture;
+                varying vec3 vColor;
+                varying float vAlpha;
+                void main() {
+                    vec4 texColor = texture2D(uTexture, gl_PointCoord);
+                    gl_FragColor = vec4(vColor, vAlpha * texColor.a);
+                }
+            `
         });
 
-        this.fgPoints = new THREE.Points(this.fgGeometry, material);
+        this.fgPoints = new THREE.Points(this.fgGeometry, this.fgMaterial);
         this.scene.add(this.fgPoints);
         this.fgRandoms = randoms;
     }
@@ -684,22 +737,41 @@ class ParticleJourney {
         this.bgPoints.rotation.y = time * 0.003;
         this.bgPoints.rotation.x = time * 0.001;
 
-        // 5. Animate Foreground Dust
+        // 5. Animate Foreground Dust / Fireflies
+        const isNight = document.body.classList.contains('theme-auto') ? document.body.classList.contains('time-night') : document.body.classList.contains('dark-theme');
+        // Smoothly interpolate the night uniform
+        this.fgMaterial.uniforms.uIsNight.value += ( (isNight ? 1.0 : 0.0) - this.fgMaterial.uniforms.uIsNight.value ) * 0.05;
+        this.fgMaterial.uniforms.uTime.value = time;
+        
+        const nightRatio = this.fgMaterial.uniforms.uIsNight.value;
+        const orbColor = this.config.colors.cyan;
+        const fireflyColor = new THREE.Color('#bef264');
+        
         const fgPositions = this.fgGeometry.attributes.position.array;
+        const fgColors = this.fgGeometry.attributes.aColor.array;
+        
         for (let i = 0; i < this.config.fgCount; i++) {
             const rand = this.fgRandoms[i];
             
             // Apply drift animation in all axes
-            fgPositions[i * 3 + 1] += Math.sin(time * 0.15 + rand * 100.0) * 0.012; // drift Y
-            fgPositions[i * 3] += Math.cos(time * 0.1 + rand * 100.0) * 0.012;     // drift X
+            // Fireflies drift slightly faster and randomly
+            const driftSpeed = 0.012 + (0.01 * nightRatio);
+            fgPositions[i * 3 + 1] += Math.sin(time * 0.15 + rand * 100.0) * driftSpeed; // drift Y
+            fgPositions[i * 3] += Math.cos(time * 0.1 + rand * 100.0) * driftSpeed;     // drift X
             
             // Loop particles back to bottom/top if they wander too far
             if (fgPositions[i * 3 + 1] > 40) fgPositions[i * 3 + 1] = -40;
             if (fgPositions[i * 3 + 1] < -40) fgPositions[i * 3 + 1] = 40;
             if (fgPositions[i * 3] > 40) fgPositions[i * 3] = -40;
             if (fgPositions[i * 3] < -40) fgPositions[i * 3] = 40;
+            
+            // Interpolate color dynamically on CPU
+            fgColors[i * 3] = orbColor.r + (fireflyColor.r - orbColor.r) * nightRatio;
+            fgColors[i * 3 + 1] = orbColor.g + (fireflyColor.g - orbColor.g) * nightRatio;
+            fgColors[i * 3 + 2] = orbColor.b + (fireflyColor.b - orbColor.b) * nightRatio;
         }
         this.fgGeometry.attributes.position.needsUpdate = true;
+        this.fgGeometry.attributes.aColor.needsUpdate = true;
         
         // Rotate main mesh slightly
         this.mainPoints.rotation.z = time * 0.015;

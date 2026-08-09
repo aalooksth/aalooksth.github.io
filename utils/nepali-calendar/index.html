@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nepali Calendar | Alok Shrestha</title>
+    <meta name="description" content="Helpful utilities including a Title Bar Text Changer and a custom Nepali Date Calendar & Converter.">
+    
+    <!-- PWA & Mobile Meta Tags -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#1e40af">
+    <link rel="apple-touch-icon" href="https://github.com/aalooksth.png">
+    
+    <!-- Fonts and Styles -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../../css/styles.css">
+    
+    <!-- SEO / AEO Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Utilities | Alok Shrestha",
+      "description": "Helpful utilities including a Title Bar Text Changer and a custom Nepali Date Calendar & Converter.",
+      "url": "https://aloks.com.np/utils/"
+    }
+    </script>
+    
+    <style>
+        .utils-container {
+            padding: 8rem 1.5rem 4rem;
+            max-width: 800px;
+            margin: 0 auto;
+            min-height: 80vh;
+        }
+        .util-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+        .util-card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+        }
+        .util-card h2 {
+            margin-bottom: 1rem;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .util-card h2 i {
+            color: var(--primary);
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-strong);
+            border-radius: var(--radius-sm);
+            background: var(--bg-surface);
+            color: var(--text-color);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.1);
+        }
+        .converter-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        @media (max-width: 600px) {
+            .converter-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Custom Calendar Styles ported from workspace */
+        .calendar-container {
+            margin-top: 1.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            background: var(--bg-surface);
+        }
+        .cal-header-cols {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            background: var(--bg-subtle);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .cal-header-day {
+            padding: 0.75rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .cal-weeks-container {
+            display: flex;
+            flex-direction: column;
+        }
+        .cal-week-row {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+        }
+        .cal-day {
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.5rem;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .cal-day.weekend {
+            color: #ef4444; /* red for weekend */
+        }
+        .cal-day.weekend .date-main, 
+        .cal-day.weekend .date-sub {
+            color: #ef4444;
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--border-color);
+            transition: .3s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: var(--primary);
+        }
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+        .cal-day:nth-child(7n) {
+            border-right: none;
+        }
+        .cal-day:hover {
+            background: var(--bg-subtle);
+        }
+        .cal-day.today {
+            background: rgba(30, 64, 175, 0.05);
+            border: 1px solid var(--primary);
+        }
+        .cal-day.selected {
+            background: rgba(59, 130, 246, 0.1);
+        }
+        .cal-day.other-month {
+            opacity: 0.4;
+        }
+        .cal-day .date-main {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+        .cal-day .date-sub {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: auto;
+        }
+        .cal-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: var(--bg-subtle);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .cal-title {
+            font-weight: 700;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="../../" class="logo">Alok<span>.</span></a>
+            <ul class="nav-links">
+                <li><a href="../../#home">Home</a></li>
+                <li><a href="../../#skills">Skills</a></li>
+                <li><a href="../../#experience">Experience</a></li>
+                <li><a href="../../#education">Education</a></li>
+                <li><a href="../../license-print-check" class="btn btn-secondary" aria-label="License Print Check"><i class="fa-solid fa-id-card"></i> License Print Checker</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle">Portals ▼</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="https://blog.aloks.com.np" target="_blank">Blog</a></li>
+                        <li><a href="https://api.aloks.com.np" target="_blank">API Tester</a></li>
+                        <li><a href="https://connect.aloks.com.np" target="_blank">Connect</a></li>
+                        <li><a href="../../utils/">Utilities</a></li>
+                    </ul>
+                </li>
+                <li><a href="../../#contact" class="btn btn-outline">Contact</a></li>
+                <li id="siteClock" style="font-size: 0.85rem; font-weight: 600; color: var(--primary); text-align: center; margin: 0 1rem; display: flex; flex-direction: column; justify-content: center;"></li>
+                <li>
+                    <button type="button" id="themeToggleBtn" class="btn-icon" title="Toggle Theme">
+                        <i class="fa-solid fa-moon dark-icon"></i>
+                        <i class="fa-solid fa-sun light-icon"></i>
+                    </button>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="utils-container">
+        <h1 class="section-title">Utilities</h1>
+        
+        <!-- Utility 2: Custom Nepali Calendar -->
+        <div class="util-card">
+            <h2><i class="fa-solid fa-calendar-days"></i> Nepali Date Calendar & Converter</h2>
+            <p style="margin-bottom: 1.5rem; color: var(--text-muted);">Custom built Calendar displaying both AD and BS dates natively.</p>
+            
+            <div class="converter-grid">
+                <div class="form-group">
+                    <label for="adDate">AD Date</label>
+                    <input type="date" id="adDate">
+                </div>
+                <div class="form-group">
+                    <label>BS Date</label>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <select id="bsYear" class="form-control" style="flex: 2; padding: 0.5rem; border-radius: var(--radius); border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-color);"></select>
+                        <select id="bsMonth" class="form-control" style="flex: 2; padding: 0.5rem; border-radius: var(--radius); border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-color);"></select>
+                        <select id="bsDay" class="form-control" style="flex: 1; padding: 0.5rem; border-radius: var(--radius); border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-color);"></select>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem; justify-content: flex-end; align-items: center;">
+                <span style="font-size: 0.9rem; font-weight: 500;">AD Calendar</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="calendarModeToggle" checked>
+                    <span class="slider"></span>
+                </label>
+                <span style="font-size: 0.9rem; font-weight: 500;">BS Calendar</span>
+            </div>
+            
+            <div class="calendar-container">
+                <div class="cal-controls">
+                    <button class="btn btn-outline btn-sm" id="prevMonth">&lt; Prev</button>
+                    <div class="cal-title" id="calTitle">Month Year</div>
+                    <button class="btn btn-outline btn-sm" id="nextMonth">Next &gt;</button>
+                </div>
+                <div class="cal-header-cols" id="cal-header-cols"></div>
+                <div class="cal-weeks-container" id="cal-weeks-container"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding: 2rem 1.5rem;">
+            <p>&copy; 2026 Alok Shrestha. Built for GitHub Pages (aloks.com.np).</p>
+            <p><a href="../../privacy/" style="color: var(--text-muted); text-decoration: underline;">Privacy Policy</a></p>
+        </div>
+    </footer>
+
+    <!-- Core Site Scripts -->
+    <script src="../../js/nepali-date-converter.umd.js"></script>
+    <script src="../../js/script.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const BS_MONTH_LABELS = [
+                "वैशाख", "जेठ", "असार", "साउन", "भदौ", "असोज",
+                "कात्तिक", "मंसिर", "पुष", "माघ", "फागुन", "चैत"
+            ];
+            const weekdaysList = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const bsWeekdaysList = ["आइत", "सोम", "मङ्गल", "बुध", "बिही", "शुक्र", "शनि"];
+            const nepaliDigits = ['०', '१', '२', '३', '४', '५', '६', '७', '८', '९'];
+            function toNepaliDigits(num) {
+                return num.toString().replace(/[0-9]/g, match => nepaliDigits[match]);
+            }
+            
+            // Allow time for umd to load, then init
+            setTimeout(() => {
+                const converter = window['@sbmdkl/nepali-date-converter'];
+
+                function parseDateLocal(dateStr) {
+                    if (!dateStr) return new Date();
+                    const parts = dateStr.split('-');
+                    if(parts.length !== 3) return new Date();
+                    return new Date(parts[0], parts[1] - 1, parts[2]);
+                }
+                
+                function formatDateLocal(dt) {
+                    const y = dt.getFullYear();
+                    const m = String(dt.getMonth() + 1).padStart(2, '0');
+                    const d = String(dt.getDate()).padStart(2, '0');
+                    return `${y}-${m}-${d}`;
+                }
+
+                function getNepaliDateStr(dateStr, returnObj = false) {
+                    if (!dateStr || !converter) return returnObj ? null : "";
+                    try {
+                        const bsStr = converter.adToBs(dateStr);
+                        const parts = bsStr.split('-');
+                        const year = parseInt(parts[0], 10);
+                        const month = parseInt(parts[1], 10);
+                        const day = parseInt(parts[2], 10);
+                        const bsMonthStr = BS_MONTH_LABELS[month - 1];
+                        if (returnObj) {
+                            return { year, month, day, bsMonthStr };
+                        }
+                        return `${bsMonthStr} ${day}, ${year}`;
+                    } catch(e) {
+                        return returnObj ? null : "";
+                    }
+                }
+
+                // Calendar UI
+                let calendarMode = 'BS'; 
+                let selectedDateStr = formatDateLocal(new Date()); 
+                
+                let currentAdDisplayDate = new Date();
+                let currentBsDisplayYear = 2083;
+                let currentBsDisplayMonth = 1;
+                
+                const initBs = getNepaliDateStr(selectedDateStr, true);
+                if(initBs) {
+                    currentBsDisplayYear = initBs.year;
+                    currentBsDisplayMonth = initBs.month;
+                }
+                
+                const adDateInput = document.getElementById('adDate');
+                const bsYearSelect = document.getElementById('bsYear');
+                const bsMonthSelect = document.getElementById('bsMonth');
+                const bsDaySelect = document.getElementById('bsDay');
+                const modeToggle = document.getElementById('calendarModeToggle');
+
+                // Populate Dropdowns
+                for(let y=1978; y<=2099; y++) {
+                    bsYearSelect.options.add(new Option(toNepaliDigits(y), y));
+                }
+                for(let m=1; m<=12; m++) {
+                    bsMonthSelect.options.add(new Option(BS_MONTH_LABELS[m-1], m));
+                }
+                function updateBsDaysDropdown(year, month) {
+                    let maxDays = 32;
+                    if (converter) {
+                        for(let d=32; d>=29; d--) {
+                            try {
+                                converter.bsToAd(`${year}-${String(month).padStart(2,'0')}-${String(d).padStart(2,'0')}`);
+                                maxDays = d;
+                                break;
+                            } catch(e) {}
+                        }
+                    }
+                    const currentVal = parseInt(bsDaySelect.value);
+                    bsDaySelect.innerHTML = '';
+                    for(let d=1; d<=maxDays; d++) {
+                        bsDaySelect.options.add(new Option(toNepaliDigits(d), d));
+                    }
+                    if (currentVal && currentVal <= maxDays) bsDaySelect.value = currentVal;
+                }
+                
+                function updateInputs() {
+                    adDateInput.value = selectedDateStr;
+                    const bsObj = getNepaliDateStr(selectedDateStr, true);
+                    if(bsObj) {
+                        bsYearSelect.value = bsObj.year;
+                        bsMonthSelect.value = bsObj.month;
+                        updateBsDaysDropdown(bsObj.year, bsObj.month);
+                        bsDaySelect.value = bsObj.day;
+                    }
+                }
+                
+                function setMode(mode) {
+                    calendarMode = mode;
+                    modeToggle.checked = (mode === 'BS');
+                    renderCalendar();
+                }
+                
+                modeToggle.addEventListener('change', (e) => {
+                    setMode(e.target.checked ? 'BS' : 'AD');
+                });
+                
+                updateInputs();
+                
+                adDateInput.addEventListener('change', (e) => {
+                    if (e.target.value) {
+                        selectedDateStr = e.target.value;
+                        const bsObj = getNepaliDateStr(selectedDateStr, true);
+                        if(bsObj) {
+                            currentBsDisplayYear = bsObj.year;
+                            currentBsDisplayMonth = bsObj.month;
+                        }
+                        currentAdDisplayDate = parseDateLocal(selectedDateStr);
+                        updateInputs();
+                        renderCalendar();
+                    }
+                });
+                
+                function handleBsDropdownChange() {
+                    const y = parseInt(bsYearSelect.value);
+                    const m = parseInt(bsMonthSelect.value);
+                    const d = parseInt(bsDaySelect.value);
+                    if(y && m && d) {
+                        try {
+                            const adConverted = converter.bsToAd(`${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`);
+                            if (adConverted) {
+                                selectedDateStr = adConverted;
+                                currentAdDisplayDate = parseDateLocal(selectedDateStr);
+                                currentBsDisplayYear = y;
+                                currentBsDisplayMonth = m;
+                                updateInputs();
+                                renderCalendar();
+                            }
+                        } catch(e) {
+                            updateBsDaysDropdown(y, m);
+                        }
+                    }
+                }
+                
+                bsYearSelect.addEventListener('change', () => { updateBsDaysDropdown(bsYearSelect.value, bsMonthSelect.value); handleBsDropdownChange(); });
+                bsMonthSelect.addEventListener('change', () => { updateBsDaysDropdown(bsYearSelect.value, bsMonthSelect.value); handleBsDropdownChange(); });
+                bsDaySelect.addEventListener('change', handleBsDropdownChange);
+                
+                function renderCalendar() {
+                    const headerRow = document.getElementById("cal-header-cols");
+                    headerRow.innerHTML = '';
+                    weekdaysList.forEach((day, index) => {
+                        const div = document.createElement('div');
+                        div.className = 'cal-header-day';
+                        div.textContent = calendarMode === 'BS' ? bsWeekdaysList[index] : day.substring(0, 3);
+                        headerRow.appendChild(div);
+                    });
+                    
+                    const calTitle = document.getElementById("calTitle");
+                    const weeksContainer = document.getElementById("cal-weeks-container");
+                    weeksContainer.innerHTML = '';
+                    
+                    const todayStr = formatDateLocal(new Date());
+                    
+                    if (calendarMode === 'AD') {
+                        calTitle.textContent = currentAdDisplayDate.toLocaleString('default', { month: 'long', year: 'numeric' });
+                        
+                        const firstDayOfMonth = new Date(currentAdDisplayDate.getFullYear(), currentAdDisplayDate.getMonth(), 1);
+                        const startOffset = firstDayOfMonth.getDay(); 
+                        let runningDate = new Date(firstDayOfMonth);
+                        runningDate.setDate(firstDayOfMonth.getDate() - startOffset);
+                        
+                        for (let w = 0; w < 6; w++) {
+                            const weekRow = document.createElement('div');
+                            weekRow.className = 'cal-week-row';
+                            for (let d = 0; d < 7; d++) {
+                                const dateStr = formatDateLocal(runningDate);
+                                const cell = document.createElement('div');
+                                cell.className = 'cal-day';
+                                
+                                if (d === 6) cell.classList.add('weekend');
+                                if (dateStr === todayStr) cell.classList.add('today');
+                                if (dateStr === selectedDateStr) cell.classList.add('selected');
+                                if (runningDate.getMonth() !== currentAdDisplayDate.getMonth()) {
+                                    cell.classList.add('other-month');
+                                }
+                                
+                                const adSpan = document.createElement('div');
+                                adSpan.className = 'date-main';
+                                let adLabel = runningDate.getDate().toString();
+                                if (runningDate.getDate() === 1) adLabel += ' ' + runningDate.toLocaleString('default', { month: 'short' });
+                                adSpan.textContent = adLabel;
+                                
+                                const bsSpan = document.createElement('div');
+                                bsSpan.className = 'date-sub';
+                                const nepaliObj = getNepaliDateStr(dateStr, true);
+                                if (nepaliObj) {
+                                    let label = toNepaliDigits(nepaliObj.day);
+                                    if (nepaliObj.day === 1) label += ' ' + nepaliObj.bsMonthStr;
+                                    bsSpan.textContent = label;
+                                }
+                                
+                                cell.appendChild(adSpan);
+                                cell.appendChild(bsSpan);
+                                
+                                cell.addEventListener('click', () => {
+                                    selectedDateStr = dateStr;
+                                    if (nepaliObj) {
+                                        currentBsDisplayYear = nepaliObj.year;
+                                        currentBsDisplayMonth = nepaliObj.month;
+                                    }
+                                    if (runningDate.getMonth() !== currentAdDisplayDate.getMonth()) {
+                                        currentAdDisplayDate = parseDateLocal(selectedDateStr);
+                                    }
+                                    updateInputs();
+                                    renderCalendar();
+                                });
+                                
+                                weekRow.appendChild(cell);
+                                runningDate.setDate(runningDate.getDate() + 1);
+                            }
+                            weeksContainer.appendChild(weekRow);
+                        }
+                    } else {
+                        // BS Mode
+                        if(!converter) {
+                            calTitle.textContent = "Loading...";
+                            return;
+                        }
+                        calTitle.textContent = `${BS_MONTH_LABELS[currentBsDisplayMonth-1]} ${toNepaliDigits(currentBsDisplayYear)}`;
+                        
+                        let firstAdStr = "";
+                        try {
+                            firstAdStr = converter.bsToAd(`${currentBsDisplayYear}-${String(currentBsDisplayMonth).padStart(2,'0')}-01`);
+                        } catch(e) {
+                            calTitle.textContent = "Out of Range";
+                            return;
+                        }
+                        
+                        const firstDayAd = parseDateLocal(firstAdStr);
+                        const startOffset = firstDayAd.getDay();
+                        
+                        let runningAdDate = new Date(firstDayAd);
+                        runningAdDate.setDate(firstDayAd.getDate() - startOffset);
+                        
+                        for (let w = 0; w < 6; w++) {
+                            const weekRow = document.createElement('div');
+                            weekRow.className = 'cal-week-row';
+                            
+                            let hasDaysInThisWeek = false;
+                            for (let d = 0; d < 7; d++) {
+                                const dateStr = formatDateLocal(runningAdDate);
+                                const cell = document.createElement('div');
+                                cell.className = 'cal-day';
+                                
+                                if (d === 6) cell.classList.add('weekend');
+                                if (dateStr === todayStr) cell.classList.add('today');
+                                if (dateStr === selectedDateStr) cell.classList.add('selected');
+                                
+                                const bsObj = getNepaliDateStr(dateStr, true);
+                                const isCurrentBsMonth = bsObj && bsObj.year === currentBsDisplayYear && bsObj.month === currentBsDisplayMonth;
+                                
+                                if (!isCurrentBsMonth) {
+                                    cell.classList.add('other-month');
+                                } else {
+                                    hasDaysInThisWeek = true;
+                                }
+                                
+                                const bsSpan = document.createElement('div');
+                                bsSpan.className = 'date-main';
+                                if (bsObj) {
+                                    let label = toNepaliDigits(bsObj.day);
+                                    if (bsObj.day === 1) label += ' ' + bsObj.bsMonthStr;
+                                    bsSpan.textContent = label;
+                                }
+                                
+                                const adSpan = document.createElement('div');
+                                adSpan.className = 'date-sub';
+                                let adLabel = runningAdDate.getDate().toString();
+                                if (runningAdDate.getDate() === 1) {
+                                    adLabel += ' ' + runningAdDate.toLocaleString('default', { month: 'short' });
+                                }
+                                adSpan.textContent = adLabel;
+                                
+                                cell.appendChild(bsSpan);
+                                cell.appendChild(adSpan);
+                                
+                                cell.addEventListener('click', () => {
+                                    selectedDateStr = dateStr;
+                                    currentAdDisplayDate = parseDateLocal(selectedDateStr);
+                                    if (bsObj && !isCurrentBsMonth) {
+                                        currentBsDisplayYear = bsObj.year;
+                                        currentBsDisplayMonth = bsObj.month;
+                                    }
+                                    updateInputs();
+                                    renderCalendar();
+                                });
+                                
+                                weekRow.appendChild(cell);
+                                runningAdDate.setDate(runningAdDate.getDate() + 1);
+                            }
+                            if(w < 5 || hasDaysInThisWeek) {
+                                weeksContainer.appendChild(weekRow);
+                            }
+                        }
+                    }
+                }
+                
+                document.getElementById('prevMonth').addEventListener('click', () => {
+                    if (calendarMode === 'AD') {
+                        currentAdDisplayDate.setMonth(currentAdDisplayDate.getMonth() - 1);
+                    } else {
+                        currentBsDisplayMonth -= 1;
+                        if (currentBsDisplayMonth < 1) {
+                            currentBsDisplayMonth = 12;
+                            currentBsDisplayYear -= 1;
+                        }
+                    }
+                    renderCalendar();
+                });
+                document.getElementById('nextMonth').addEventListener('click', () => {
+                    if (calendarMode === 'AD') {
+                        currentAdDisplayDate.setMonth(currentAdDisplayDate.getMonth() + 1);
+                    } else {
+                        currentBsDisplayMonth += 1;
+                        if (currentBsDisplayMonth > 12) {
+                            currentBsDisplayMonth = 1;
+                            currentBsDisplayYear += 1;
+                        }
+                    }
+                    renderCalendar();
+                });
+                
+                setMode('BS');
+            }, 100);
+        });
+    </script>
+</body>
+</html>

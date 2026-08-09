@@ -936,3 +936,321 @@ footer {
         font-size: 1.8rem;
     }
 }
+
+/* ==========================================================================
+   Seasonal Theme Elements (Auto Mode Only)
+   ========================================================================== */
+#seasonal-top, #seasonal-bottom {
+    position: fixed;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
+}
+
+/* TOP ELEMENTS (Sun, Moon, Sky) */
+#seasonal-top {
+    top: 0;
+    height: 100vh;
+}
+
+#seasonal-top::after {
+    content: '';
+    position: absolute;
+    top: 40px;
+    right: 8%;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    transition: all 1s ease-in-out;
+}
+
+/* Day/Night Sun & Moon */
+body.time-day #seasonal-top::after {
+    background: radial-gradient(circle, #fde047 0%, #eab308 60%, transparent 100%);
+    box-shadow: 0 0 60px 30px rgba(234, 179, 8, 0.4);
+    transform: scale(1.5);
+}
+body.season-winter.time-day #seasonal-top::after {
+    background: radial-gradient(circle, #fef08a 0%, #fde047 60%, transparent 100%);
+    box-shadow: 0 0 40px 20px rgba(253, 224, 71, 0.3);
+    transform: scale(1.2);
+}
+body.time-night #seasonal-top::after {
+    background: radial-gradient(circle, #ffffff 0%, #cbd5e1 60%, transparent 100%);
+    box-shadow: 0 0 60px 20px rgba(255, 255, 255, 0.4);
+    transform: scale(1.3);
+}
+
+/* BOTTOM ELEMENTS (Ground, Hills, Snow, Leaves) */
+#seasonal-bottom {
+    bottom: 0;
+    height: 30vh;
+    overflow: hidden;
+}
+
+/* Spring & Summer Grass */
+body.season-spring #seasonal-bottom::before,
+body.season-summer #seasonal-bottom::before {
+    content: '';
+    position: absolute;
+    bottom: -5vh;
+    left: -10%;
+    width: 120%;
+    height: 20vh;
+    background: radial-gradient(ellipse at center top, #10b981 0%, #059669 100%);
+    border-radius: 50% 50% 0 0;
+    opacity: 0.4; 
+    filter: blur(2px);
+}
+
+/* Winter Snow Mounds */
+body.season-winter #seasonal-bottom::before {
+    content: '';
+    position: absolute;
+    bottom: -5vh;
+    left: -10%;
+    width: 120%;
+    height: 20vh;
+    background: #e2e8f0;
+    border-radius: 50% 50% 0 0;
+    opacity: 0.5;
+}
+
+/* Fall Leaves/Ground */
+body.season-fall #seasonal-bottom::before {
+    content: '';
+    position: absolute;
+    bottom: -5vh;
+    left: -10%;
+    width: 120%;
+    height: 20vh;
+    background: radial-gradient(ellipse at center top, #f59e0b 0%, #d97706 100%);
+    border-radius: 50% 50% 0 0;
+    opacity: 0.4;
+}
+
+/* Fall Leaf Particles */
+body.season-fall #seasonal-top::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 10%;
+    width: 15px;
+    height: 15px;
+    background: #fbbf24;
+    border-radius: 50% 0 50% 0;
+    box-shadow: 
+        15vw 5vh 0 0 #f59e0b,
+        35vw 15vh 0 0 #fcd34d,
+        55vw 10vh 0 0 #d97706,
+        75vw 20vh 0 0 #f59e0b,
+        90vw 5vh 0 0 #fcd34d,
+        25vw -10vh 0 0 #f59e0b,
+        45vw -5vh 0 0 #d97706,
+        85vw -15vh 0 0 #fbbf24;
+    animation: fall-leaves 15s linear infinite;
+    opacity: 0.6;
+}
+
+@keyframes fall-leaves {
+    0% { transform: translateY(-10vh) rotate(0deg); }
+    100% { transform: translateY(110vh) rotate(360deg); }
+}
+
+/* Background Hills */
+#seasonal-bottom::after {
+    content: '';
+    position: absolute;
+    bottom: -5vh;
+    left: -10%;
+    width: 120%;
+    height: 25vh;
+    border-radius: 50% 50% 0 0;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    z-index: -1;
+}
+
+/* Green hills for Spring/Summer */
+body.season-spring #seasonal-bottom::after,
+body.season-summer #seasonal-bottom::after {
+    background: radial-gradient(ellipse at center top, #059669 0%, #047857 100%);
+    opacity: 0.3;
+    filter: blur(1px);
+    transform: rotate(3deg) translateY(-3vh);
+}
+
+/* Snowy mountains for Winter */
+body.season-winter #seasonal-bottom::after {
+    background: linear-gradient(to bottom, #f1f5f9 0%, #cbd5e1 100%);
+    opacity: 0.4;
+    transform: rotate(-2deg) translateY(-2vh);
+    clip-path: polygon(0% 100%, 15% 40%, 30% 80%, 50% 20%, 70% 70%, 85% 30%, 100% 100%);
+    border-radius: 0;
+}
+
+/* ==========================================================================
+   Seasonal Theme Elements (Auto Mode Only)
+   ========================================================================== */
+#seasonal-top, #seasonal-bottom {
+    position: fixed;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+body.theme-auto #seasonal-top,
+body.theme-auto #seasonal-bottom {
+    opacity: 1;
+}
+
+/* TOP ELEMENTS (Sun, Moon, Sky) */
+#seasonal-top {
+    top: 0;
+    height: 100vh;
+}
+
+#seasonal-top::after {
+    content: '';
+    position: absolute;
+    top: 40px;
+    right: 8%;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    transition: all 1s ease-in-out;
+}
+
+/* Day/Night Sun & Moon */
+body.time-day #seasonal-top::after {
+    background: radial-gradient(circle, #fde047 0%, #eab308 60%, transparent 100%);
+    box-shadow: 0 0 60px 30px rgba(234, 179, 8, 0.4);
+    transform: scale(1.5);
+}
+body.season-winter.time-day #seasonal-top::after {
+    background: radial-gradient(circle, #fef08a 0%, #fde047 60%, transparent 100%);
+    box-shadow: 0 0 40px 20px rgba(253, 224, 71, 0.3);
+    transform: scale(1.2);
+}
+body.time-night #seasonal-top::after {
+    background: radial-gradient(circle, #ffffff 0%, #cbd5e1 60%, transparent 100%);
+    box-shadow: 0 0 60px 20px rgba(255, 255, 255, 0.4);
+    transform: scale(1.3);
+}
+
+/* BOTTOM ELEMENTS (Ground, Hills, Snow, Leaves) */
+#seasonal-bottom {
+    bottom: 0;
+    height: 40vh; /* Increased to allow taller hills */
+    overflow: hidden;
+}
+
+/* Foreground Hill (Right side sweeping left) */
+#seasonal-bottom::before {
+    content: '';
+    position: absolute;
+    bottom: -10vh;
+    left: 10%;
+    width: 130%;
+    height: 35vh;
+    border-radius: 50% 50% 0 0;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    z-index: -1;
+    transform: rotate(-4deg);
+}
+
+/* Background Hill (Left side sweeping right) */
+#seasonal-bottom::after {
+    content: '';
+    position: absolute;
+    bottom: -5vh;
+    left: -40%;
+    width: 140%;
+    height: 45vh;
+    border-radius: 50% 50% 0 0;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    z-index: -2;
+    transform: rotate(6deg);
+}
+
+/* --- SPRING/SUMMER (Microsoft Bliss style) --- */
+body.season-spring #seasonal-bottom::before,
+body.season-summer #seasonal-bottom::before {
+    background: radial-gradient(ellipse at center top, #4ade80 0%, #16a34a 100%);
+    opacity: 0.6; 
+    filter: blur(1px);
+}
+body.season-spring #seasonal-bottom::after,
+body.season-summer #seasonal-bottom::after {
+    background: radial-gradient(ellipse at center top, #22c55e 0%, #15803d 100%);
+    opacity: 0.5;
+    filter: blur(2px);
+}
+
+/* --- WINTER (Snowy Mountains style) --- */
+body.season-winter #seasonal-bottom::before {
+    background: #f1f5f9;
+    opacity: 0.7;
+    border-radius: 50% 40% 0 0;
+}
+body.season-winter #seasonal-bottom::after {
+    background: linear-gradient(to bottom, #e2e8f0 0%, #cbd5e1 100%);
+    opacity: 0.6;
+    /* Jagged peaks for winter instead of smooth rolling hills */
+    clip-path: polygon(0% 100%, 15% 30%, 25% 60%, 40% 10%, 60% 70%, 75% 20%, 100% 100%);
+    border-radius: 0;
+    transform: rotate(0deg) translateY(-2vh);
+    left: -10%;
+    width: 120%;
+}
+
+/* --- FALL (Autumn mounds) --- */
+body.season-fall #seasonal-bottom::before {
+    background: radial-gradient(ellipse at center top, #f59e0b 0%, #b45309 100%);
+    opacity: 0.5;
+}
+body.season-fall #seasonal-bottom::after {
+    background: radial-gradient(ellipse at center top, #d97706 0%, #92400e 100%);
+    opacity: 0.4;
+}
+
+/* Fall Leaf Particles */
+body.season-fall #seasonal-top::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 10%;
+    width: 15px;
+    height: 15px;
+    background: #fbbf24;
+    border-radius: 50% 0 50% 0;
+    box-shadow: 
+        15vw 5vh 0 0 #f59e0b,
+        35vw 15vh 0 0 #fcd34d,
+        55vw 10vh 0 0 #d97706,
+        75vw 20vh 0 0 #f59e0b,
+        90vw 5vh 0 0 #fcd34d,
+        25vw -10vh 0 0 #f59e0b,
+        45vw -5vh 0 0 #d97706,
+        85vw -15vh 0 0 #fbbf24;
+    animation: fall-leaves 15s linear infinite;
+    opacity: 0.6;
+}
+
+@keyframes fall-leaves {
+    0% { transform: translateY(-10vh) rotate(0deg); }
+    100% { transform: translateY(110vh) rotate(360deg); }
+}
+
+/* Darken all landscape elements at night */
+body.time-night #seasonal-bottom {
+    filter: brightness(0.3) saturate(0.5) contrast(1.2);
+}

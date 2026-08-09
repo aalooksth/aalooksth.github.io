@@ -20,6 +20,11 @@
     <link rel="alternate" type="text/plain" href="llms.txt" title="LLM Context Prompt">
     <link rel="sitemap" type="application/xml" href="sitemap.xml">
 
+    <!-- PWA & Mobile Meta Tags -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#1e40af">
+    <link rel="apple-touch-icon" href="https://github.com/aalooksth.png">
+
     <!-- Open Graph / Social Meta Tags -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Alok Shrestha Portfolio">
@@ -112,6 +117,7 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle">Portals ▼</a>
                     <ul class="dropdown-menu">
+                        <li><a href="utils/" aria-label="Utilities">Utilities</a></li>
                         <li><a href="https://blog.aloks.com.np" target="_blank" aria-label="Blog Subdomain">Blog</a>
                         </li>
                         <li><a href="https://api.aloks.com.np" target="_blank" aria-label="API Subdomain">API Tester</a>
@@ -121,6 +127,9 @@
                     </ul>
                 </li>
                 <li><a href="#contact" class="btn btn-outline">Contact</a></li>
+                <li id="siteClock"
+                    style="font-size: 0.85rem; font-weight: 600; color: var(--primary); text-align: center; margin: 0 1rem; display: flex; flex-direction: column; justify-content: center;">
+                </li>
 
                 <!-- Manual Theme Switcher Button -->
                 <li>
@@ -551,8 +560,11 @@
         </div>
     </footer>
 
+    <!-- Core Site Scripts -->
+    <script src="js/nepali-date-converter.umd.js"></script>
     <script src="js/script.js"></script>
     <script type="module" src="js/three-journey.js"></script>
+    <script src="js/bugs.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utilities | Alok Shrestha</title>
+    <meta name="description" content="Helpful utilities including a Title Bar Text Changer and a custom Nepali Date Calendar & Converter.">
+    
+    <!-- PWA & Mobile Meta Tags -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#1e40af">
+    <link rel="apple-touch-icon" href="https://github.com/aalooksth.png">
+    
+    <!-- Fonts and Styles -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    
+    <!-- SEO / AEO Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Utilities | Alok Shrestha",
+      "description": "Helpful utilities including a Title Bar Text Changer and a custom Nepali Date Calendar & Converter.",
+      "url": "https://aloks.com.np/utils/"
+    }
+    </script>
+    
+    <style>
+        .utils-container {
+            padding: 8rem 1.5rem 4rem;
+            max-width: 800px;
+            margin: 0 auto;
+            min-height: 80vh;
+        }
+        .util-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+        .util-card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+        }
+        .util-card h2 {
+            margin-bottom: 1rem;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .util-card h2 i {
+            color: var(--primary);
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-strong);
+            border-radius: var(--radius-sm);
+            background: var(--bg-surface);
+            color: var(--text-color);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.1);
+        }
+        .converter-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        @media (max-width: 600px) {
+            .converter-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        </style>
+</head>
+<body>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="../" class="logo">Alok<span>.</span></a>
+            <ul class="nav-links">
+                <li><a href="../#home">Home</a></li>
+                <li><a href="../#skills">Skills</a></li>
+                <li><a href="../#experience">Experience</a></li>
+                <li><a href="../#education">Education</a></li>
+                <li><a href="../license-print-check" class="btn btn-secondary" aria-label="License Print Check"><i class="fa-solid fa-id-card"></i> License Print Checker</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle">Portals ▼</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="https://blog.aloks.com.np" target="_blank">Blog</a></li>
+                        <li><a href="https://api.aloks.com.np" target="_blank">API Tester</a></li>
+                        <li><a href="https://connect.aloks.com.np" target="_blank">Connect</a></li>
+                        <li><a href="../utils/">Utilities</a></li>
+                    </ul>
+                </li>
+                <li><a href="../#contact" class="btn btn-outline">Contact</a></li>
+                <li id="siteClock" style="font-size: 0.85rem; font-weight: 600; color: var(--primary); text-align: center; margin: 0 1rem; display: flex; flex-direction: column; justify-content: center;"></li>
+                <li>
+                    <button type="button" id="themeToggleBtn" class="btn-icon" title="Toggle Theme">
+                        <i class="fa-solid fa-moon dark-icon"></i>
+                        <i class="fa-solid fa-sun light-icon"></i>
+                    </button>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="utils-container">
+        <h1 class="section-title">Utilities</h1>
+        
+        <!-- Utility 1: Title Bar Changer -->
+        <div class="util-card">
+            <h2><i class="fa-solid fa-text-width"></i> Title Bar Text Changer</h2>
+            <p style="margin-bottom: 1.5rem; color: var(--text-muted);">Change the browser tab title in real-time by typing in the input field below.</p>
+            <div class="form-group">
+                <label for="titleInput">Tab Title</label>
+                <input type="text" id="titleInput" placeholder="Enter custom title..." oninput="document.title = this.value || 'Utilities | Alok Shrestha';">
+            </div>
+        </div>
+
+        <!-- Link to Calendar -->
+        <div class="util-card">
+            <h2><i class="fa-solid fa-calendar-days"></i> Nepali Date Calendar & Converter</h2>
+            <p style="margin-bottom: 1.5rem; color: var(--text-muted);">Our custom-built Calendar displaying both AD and BS dates natively has been moved to its own dedicated page.</p>
+            <a href="nepali-calendar/" class="btn btn-primary"><i class="fa-solid fa-arrow-right"></i> Open Nepali Calendar</a>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding: 2rem 1.5rem;">
+            <p>&copy; 2026 Alok Shrestha. Built for GitHub Pages (aloks.com.np).</p>
+            <p><a href="../privacy/" style="color: var(--text-muted); text-decoration: underline;">Privacy Policy</a></p>
+        </div>
+    </footer>
+
+    <!-- Core Site Scripts -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            </script>
+</body>
+</html>
