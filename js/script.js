@@ -269,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const totalExpEl = document.getElementById('totalExpDisplay');
         if (totalExpEl) {
-            const careerStart = new Date(2017, 9, 1); // Sep 2017
+            const careerStart = new Date(2017, 8, 1); // Sep 2017 (0-indexed: 8 is Sept)
             const now = new Date();
             const totalMonths = (now.getFullYear() - careerStart.getFullYear()) * 12 + (now.getMonth() - careerStart.getMonth()) + 1;
             const totalYrs = Math.floor(totalMonths / 12);

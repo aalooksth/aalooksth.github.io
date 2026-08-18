@@ -24,6 +24,12 @@ Alok Shrestha is a Principal Software Engineer and BI Developer with extensive e
    - URL: `https://aloks.com.np/utils/laptop-migrator/` (Documentation) & `https://github.com/aalooksth/laptop-migrator` (Repository)
    - Purpose: Intelligent Windows migration utility for seamless environment synchronization. Backs up & restores IDE unsaved buffers (Antigravity AI, VS Code, Notepad++), Microsoft Office custom ribbons & Excel macros, multi-profile browsers (Chrome, Edge, Firefox), multi-timezone clocks, Wi-Fi network passwords, dotfiles, and Winget application manifests.
    - Packaging: Standalone `.exe` with zero Python dependencies and automated GitHub Actions releases.
+4. **Nepali Date Calendar & Festival Planner**:
+   - URL: `https://aloks.com.np/utils/nepali-calendar/`
+   - Purpose: Dual Bikram Sambat (BS) and AD calendar with tithi markers, repeating events, phone calendar (.ics) export, BS age calculator, and full-screen kiosk display.
+5. **Meeting in Progress & Do Not Disturb Desk Sign**:
+   - URL: `https://aloks.com.np/utils/meeting-dnd/`
+   - Purpose: Smart full-screen desk sign & ON AIR meeting indicator. Keeps screen awake with live countdown timer, custom status presets, and glowing indicators for remote workers and office desks.
 
 ## Contact & Links
 - Website: `https://aloks.com.np`
