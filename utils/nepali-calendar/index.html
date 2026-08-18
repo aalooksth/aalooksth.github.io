@@ -3,103 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nepali Calendar | Alok Shrestha</title>
-    <meta name="description" content="Helpful utilities including a Title Bar Text Changer and a custom Nepali Date Calendar & Converter.">
+    <title>Nepali Calendar, Festival Planner & Date Tools | Alok Shrestha</title>
+    <meta name="description" content="Interactive bilingual Nepali Date Calendar (Bikram Sambat) and AD/BS Converter with Nepali festivals, Tithi indicators, repeating events, BS age calculator, A4 print, and full-screen kiosk display.">
     
     <!-- PWA & Mobile Meta Tags -->
     <link rel="manifest" href="/manifest.json">
+    <link rel="canonical" href="https://aloks.com.np/utils/nepali-calendar/">
     <meta name="theme-color" content="#1e40af">
     <link rel="apple-touch-icon" href="https://github.com/aalooksth.png">
     
     <!-- Fonts and Styles -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Mukta:wght@400;600;700;800&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="../../css/styles.css">
     
-    <!-- SEO / AEO Structured Data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      "name": "Utilities | Alok Shrestha",
-      "description": "Helpful utilities including a Title Bar Text Changer and a custom Nepali Date Calendar & Converter.",
-      "url": "https://aloks.com.np/utils/"
-    }
-    </script>
-    
     <style>
         .utils-container {
-            padding: 8rem 1.5rem 4rem;
-            max-width: 800px;
+            padding: 7.5rem 1.5rem 4rem;
+            max-width: 980px;
             margin: 0 auto;
             min-height: 80vh;
         }
         .util-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
+            border-radius: var(--radius-lg);
             padding: 2rem;
             margin-bottom: 2rem;
             box-shadow: var(--shadow-sm);
             transition: var(--transition);
         }
-        .util-card:hover {
-            box-shadow: var(--shadow-md);
-            border-color: var(--primary);
-        }
         .util-card h2 {
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
             color: var(--text-color);
             display: flex;
             align-items: center;
             gap: 0.75rem;
         }
-        .util-card h2 i {
-            color: var(--primary);
+        
+        /* Upcoming Event Highlight Banner */
+        .next-event-banner {
+            background: linear-gradient(135deg, rgba(30, 64, 175, 0.08) 0%, rgba(2, 132, 199, 0.12) 100%);
+            border: 1px solid var(--secondary);
+            border-radius: var(--radius-md);
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: var(--transition);
         }
-        .form-group {
+        .next-event-banner:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .next-event-pill {
+            background: var(--secondary);
+            color: #ffffff;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 0.35rem 0.85rem;
+            border-radius: 9999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        /* 12-Month Quick Strip */
+        .month-strip {
+            display: flex;
+            gap: 0.35rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
             margin-bottom: 1rem;
+            scrollbar-width: thin;
+        }
+        .month-chip {
+            padding: 0.35rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
+            background: var(--bg-subtle);
+            color: var(--text-color);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: var(--transition);
+        }
+        .month-chip:hover, .month-chip.active {
+            background: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+        }
+
+        .converter-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+        @media (max-width: 650px) {
+            .converter-grid {
+                grid-template-columns: 1fr;
+            }
         }
         .form-group label {
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
             font-weight: 600;
+            font-size: 0.9rem;
             color: var(--text-muted);
         }
-        .form-group input {
+        .form-group input, .form-group select {
             width: 100%;
-            padding: 0.75rem 1rem;
+            padding: 0.65rem 0.85rem;
             border: 1px solid var(--border-strong);
             border-radius: var(--radius-sm);
             background: var(--bg-surface);
             color: var(--text-color);
             font-family: inherit;
-            font-size: 1rem;
+            font-size: 0.95rem;
             transition: var(--transition);
         }
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.1);
-        }
-        .converter-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-        }
-        @media (max-width: 600px) {
-            .converter-grid {
-                grid-template-columns: 1fr;
-            }
-        }
         
-        /* Custom Calendar Styles ported from workspace */
+        /* Calendar Styles */
         .calendar-container {
-            margin-top: 1.5rem;
+            margin-top: 1.25rem;
             border: 1px solid var(--border-color);
-            border-radius: var(--radius-sm);
+            border-radius: var(--radius-md);
             overflow: hidden;
             background: var(--bg-surface);
+            box-shadow: var(--shadow-sm);
+        }
+        .cal-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.85rem 1.25rem;
+            background: var(--bg-subtle);
+            border-bottom: 1px solid var(--border-color);
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        .cal-title-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .cal-title {
+            font-weight: 800;
+            font-size: 1.15rem;
+            color: var(--primary);
         }
         .cal-header-cols {
             display: grid;
@@ -108,9 +165,9 @@
             border-bottom: 1px solid var(--border-color);
         }
         .cal-header-day {
-            padding: 0.75rem;
+            padding: 0.65rem 0.25rem;
             text-align: center;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 0.85rem;
             color: var(--text-muted);
         }
@@ -125,93 +182,238 @@
         .cal-day {
             border-right: 1px solid var(--border-color);
             border-bottom: 1px solid var(--border-color);
-            padding: 0.5rem;
-            min-height: 80px;
+            padding: 0.45rem 0.4rem;
+            min-height: 86px;
             display: flex;
             flex-direction: column;
             cursor: pointer;
-            transition: var(--transition);
-        }
-        .cal-day.weekend {
-            color: #ef4444; /* red for weekend */
-        }
-        .cal-day.weekend .date-main, 
-        .cal-day.weekend .date-sub {
-            color: #ef4444;
-        }
-        .toggle-switch {
             position: relative;
-            display: inline-block;
-            width: 44px;
-            height: 24px;
+            transition: var(--transition);
+            background: var(--bg-surface);
         }
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: var(--border-color);
-            transition: .3s;
-            border-radius: 24px;
-        }
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: .3s;
-            border-radius: 50%;
-        }
-        input:checked + .slider {
-            background-color: var(--primary);
-        }
-        input:checked + .slider:before {
-            transform: translateX(20px);
-        }
-        .cal-day:nth-child(7n) {
+        .cal-day:nth-child(7) {
             border-right: none;
         }
         .cal-day:hover {
             background: var(--bg-subtle);
         }
-        .cal-day.today {
-            background: rgba(30, 64, 175, 0.05);
-            border: 1px solid var(--primary);
+        .cal-day.weekend {
+            color: #ef4444;
         }
-        .cal-day.selected {
-            background: rgba(59, 130, 246, 0.1);
+        .cal-day.weekend .date-main, 
+        .cal-day.weekend .date-sub {
+            color: #ef4444;
         }
         .cal-day.other-month {
-            opacity: 0.4;
+            opacity: 0.35;
         }
-        .cal-day .date-main {
-            font-size: 1.1rem;
+        .cal-day.today {
+            background: rgba(30, 64, 175, 0.08);
+            box-shadow: inset 0 0 0 2px var(--primary);
+        }
+        .cal-day.selected {
+            background: rgba(2, 132, 199, 0.18);
+            box-shadow: inset 0 0 0 2px var(--secondary);
+        }
+        .date-main {
             font-weight: 700;
-            color: var(--text-color);
+            font-size: 1.05rem;
+            line-height: 1.2;
         }
-        .cal-day .date-sub {
+        .date-sub {
             font-size: 0.75rem;
             color: var(--text-muted);
-            margin-top: auto;
+            margin-top: 0.15rem;
         }
-        .cal-controls {
+        .tithi-tag {
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 1px 4px;
+            border-radius: 3px;
+            margin-top: 2px;
+            width: fit-content;
+        }
+        .tithi-tag.purnima { background: #fef08a; color: #854d0e; }
+        .tithi-tag.aunsi { background: #e2e8f0; color: #1e293b; }
+        .tithi-tag.ekadashi { background: #fed7aa; color: #9a3412; }
+
+        .event-dot-container {
+            margin-top: auto;
+            display: flex;
+            gap: 3px;
+            flex-wrap: wrap;
+        }
+        .event-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--secondary);
+        }
+        .event-dot.holiday { background: #ef4444; }
+        .event-dot.festival { background: #f59e0b; }
+        .event-dot.meeting { background: #6366f1; }
+        .event-dot.birthday { background: #10b981; }
+        .event-dot.personal { background: #0284c7; }
+
+        /* Date Diff & Event Card */
+        .date-info-panel {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1.25rem 1.5rem;
+            margin-top: 1.25rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem;
-            background: var(--bg-subtle);
-            border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 1rem;
         }
-        .cal-title {
+        .diff-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.35rem 0.85rem;
+            border-radius: 9999px;
+            font-size: 0.88rem;
             font-weight: 700;
-            color: var(--primary);
+        }
+        .diff-today {
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+        }
+        .diff-future {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
+        }
+        .diff-past {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+        }
+
+        /* Event List & Modal */
+        .events-section {
+            margin-top: 1.5rem;
+        }
+        .event-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-sm);
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-color);
+            margin-bottom: 0.5rem;
+        }
+        .event-badge {
+            font-size: 0.75rem;
+            padding: 0.2rem 0.55rem;
+            border-radius: 4px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .event-badge.personal { background: #dbeafe; color: #1e40af; }
+        .event-badge.holiday { background: #fee2e2; color: #b91c1c; }
+        .event-badge.festival { background: #fef3c7; color: #b45309; }
+        .event-badge.meeting { background: #ede9fe; color: #5b21b6; }
+        .event-badge.birthday { background: #d1fae5; color: #065f46; }
+
+        /* Age Calculator Mini Card */
+        .age-calc-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Full Screen Kiosk Display Modal */
+        .kiosk-overlay {
+            position: fixed;
+            inset: 0;
+            background: #090d16;
+            color: #ffffff;
+            z-index: 99999;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            text-align: center;
+        }
+        .kiosk-time {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(3.5rem, 12vw, 8.5rem);
+            font-weight: 800;
+            color: #38bdf8;
+            text-shadow: 0 0 35px rgba(56, 189, 248, 0.4);
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+        .kiosk-bs-date {
+            font-size: clamp(1.5rem, 4.5vw, 3rem);
+            font-weight: 700;
+            color: #fbbf24;
+            margin-bottom: 0.5rem;
+        }
+        .kiosk-ad-date {
+            font-size: clamp(1rem, 2.5vw, 1.6rem);
+            color: #94a3b8;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+        .kiosk-event {
+            font-size: clamp(1rem, 2vw, 1.4rem);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 0.75rem 1.75rem;
+            border-radius: 9999px;
+            color: #34d399;
+            max-width: 800px;
+        }
+        .kiosk-controls {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        /* Print Media Styles */
+        @media print {
+            .navbar, footer, .month-strip, .converter-grid, .cal-controls button, 
+            #dateInfoPanel, #addEventFormWrapper, .events-section, .age-calc-card,
+            .blob, #todayBtn, #exportIcsBtn, #exportEventsBtn, #importEventsTriggerBtn, 
+            #printBtn, #kioskBtn, .toggle-switch, .next-event-banner {
+                display: none !important;
+            }
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+            }
+            .utils-container {
+                padding: 0 !important;
+                max-width: 100% !important;
+            }
+            .util-card {
+                border: none !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+            }
+            .calendar-container {
+                border: 2px solid #000000 !important;
+                page-break-inside: avoid;
+            }
+            .cal-day {
+                min-height: 100px !important;
+                border-color: #000000 !important;
+            }
+            .cal-header-cols {
+                background: #f1f5f9 !important;
+                border-color: #000000 !important;
+            }
         }
     </style>
 </head>
@@ -219,22 +421,27 @@
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
 
+    <!-- Navigation -->
     <nav class="navbar">
         <div class="container nav-container">
             <a href="../../" class="logo">Alok<span>.</span></a>
             <ul class="nav-links">
                 <li><a href="../../#home">Home</a></li>
                 <li><a href="../../#skills">Skills</a></li>
+                <li><a href="../../#projects">Projects</a></li>
                 <li><a href="../../#experience">Experience</a></li>
                 <li><a href="../../#education">Education</a></li>
-                <li><a href="../../license-print-check" class="btn btn-secondary" aria-label="License Print Check"><i class="fa-solid fa-id-card"></i> License Print Checker</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle">Portals ▼</a>
                     <ul class="dropdown-menu">
+                        <li><a href="../">Utilities Hub</a></li>
+                        <li><a href="../laptop-migrator/">Laptop Migration Hub</a></li>
+                        <li><a href="../license-print-check/">License Print Checker</a></li>
+                        <li><a href="../nepal-tax-calculator/">Tax Calculator</a></li>
+                        <li><a href="./">Nepali Calendar</a></li>
                         <li><a href="https://blog.aloks.com.np" target="_blank">Blog</a></li>
                         <li><a href="https://api.aloks.com.np" target="_blank">API Tester</a></li>
                         <li><a href="https://connect.aloks.com.np" target="_blank">Connect</a></li>
-                        <li><a href="../../utils/">Utilities</a></li>
                     </ul>
                 </li>
                 <li><a href="../../#contact" class="btn btn-outline">Contact</a></li>
@@ -255,57 +462,225 @@
     </nav>
 
     <main class="utils-container">
-        <h1 class="section-title">Utilities</h1>
+        <h1 class="section-title">Nepali Date Calendar & Planner</h1>
         
-        <!-- Utility 2: Custom Nepali Calendar -->
         <div class="util-card">
-            <h2><i class="fa-solid fa-calendar-days"></i> Nepali Date Calendar & Converter</h2>
-            <p style="margin-bottom: 1.5rem; color: var(--text-muted);">Custom built Calendar displaying both AD and BS dates natively.</p>
+            <h2><i class="fa-solid fa-calendar-days"></i> Bikram Sambat (BS) & AD Calendar</h2>
+            <p style="margin-bottom: 1.25rem; color: var(--text-muted);">
+                Full interactive Nepali Calendar with two-way date conversion, Tithi highlights, recurring event scheduler, phone calendar (.ics) export, and BS age tools.
+            </p>
+
+            <!-- Next Upcoming Event Widget -->
+            <div id="nextEventBanner" class="next-event-banner" style="display: none;">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <div style="font-size: 1.5rem;">🎉</div>
+                    <div>
+                        <div style="font-size: 0.78rem; text-transform: uppercase; font-weight: 700; color: var(--secondary);">Next Upcoming Event / Festival</div>
+                        <div style="font-size: 1.05rem; font-weight: 800; color: var(--text-color);" id="nextEventTitle">...</div>
+                        <div style="font-size: 0.85rem; color: var(--text-muted);" id="nextEventDateDetails">...</div>
+                    </div>
+                </div>
+                <div class="next-event-pill" id="nextEventDiffPill">
+                    <i class="fa-solid fa-hourglass-half"></i> <span id="nextEventDaysText">...</span>
+                </div>
+            </div>
+
+            <!-- 12-Month BS Quick Jump Strip -->
+            <div class="month-strip" id="monthStrip"></div>
             
+            <!-- Converter Row -->
             <div class="converter-grid">
                 <div class="form-group">
-                    <label for="adDate">AD Date</label>
+                    <label for="adDate"><i class="fa-regular fa-calendar"></i> English (AD) Date</label>
                     <input type="date" id="adDate">
                 </div>
                 <div class="form-group">
-                    <label>BS Date</label>
+                    <label><i class="fa-solid fa-calendar-day"></i> Nepali (BS) Date</label>
                     <div style="display: flex; gap: 0.5rem;">
-                        <select id="bsYear" class="form-control" style="flex: 2; padding: 0.5rem; border-radius: var(--radius); border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-color);"></select>
-                        <select id="bsMonth" class="form-control" style="flex: 2; padding: 0.5rem; border-radius: var(--radius); border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-color);"></select>
-                        <select id="bsDay" class="form-control" style="flex: 1; padding: 0.5rem; border-radius: var(--radius); border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-color);"></select>
+                        <select id="bsYear" style="flex: 2;"></select>
+                        <select id="bsMonth" style="flex: 2;"></select>
+                        <select id="bsDay" style="flex: 1.5;"></select>
                     </div>
                 </div>
             </div>
             
-            <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem; justify-content: flex-end; align-items: center;">
-                <span style="font-size: 0.9rem; font-weight: 500;">AD Calendar</span>
-                <label class="toggle-switch">
-                    <input type="checkbox" id="calendarModeToggle" checked>
-                    <span class="slider"></span>
-                </label>
-                <span style="font-size: 0.9rem; font-weight: 500;">BS Calendar</span>
+            <!-- Mode Switch & Action Controls -->
+            <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                    <button type="button" id="todayBtn" class="btn btn-secondary btn-sm">
+                        <i class="fa-solid fa-calendar-check"></i> Go to Today (आज)
+                    </button>
+                    <button type="button" id="kioskBtn" class="btn btn-outline btn-sm" title="Full screen desk display mode">
+                        <i class="fa-solid fa-desktop"></i> Kiosk Mode
+                    </button>
+                    <button type="button" id="printBtn" class="btn btn-outline btn-sm" title="Print clean A4 calendar">
+                        <i class="fa-solid fa-print"></i> Print (A4)
+                    </button>
+                    <button type="button" id="exportIcsBtn" class="btn btn-outline btn-sm" title="Sync with Google Calendar / iOS / Outlook">
+                        <i class="fa-solid fa-calendar-plus"></i> Export iCal (.ics)
+                    </button>
+                    <button type="button" id="exportEventsBtn" class="btn btn-outline btn-sm" title="Export events to JSON file">
+                        <i class="fa-solid fa-download"></i> JSON
+                    </button>
+                    <button type="button" id="importEventsTriggerBtn" class="btn btn-outline btn-sm" title="Import events from JSON file">
+                        <i class="fa-solid fa-upload"></i>
+                    </button>
+                    <input type="file" id="importEventsFileInput" accept=".json" style="display: none;">
+                </div>
+                <div style="display: flex; gap: 0.75rem; align-items: center;">
+                    <span style="font-size: 0.9rem; font-weight: 500;">AD View</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="calendarModeToggle" checked>
+                        <span class="slider"></span>
+                    </label>
+                    <span style="font-size: 0.9rem; font-weight: 500;">BS View</span>
+                </div>
             </div>
             
+            <!-- Calendar View Container -->
             <div class="calendar-container">
                 <div class="cal-controls">
-                    <button class="btn btn-outline btn-sm" id="prevMonth">&lt; Prev</button>
-                    <div class="cal-title" id="calTitle">Month Year</div>
-                    <button class="btn btn-outline btn-sm" id="nextMonth">Next &gt;</button>
+                    <button class="btn btn-outline btn-sm" id="prevMonth"><i class="fa-solid fa-chevron-left"></i> Prev</button>
+                    <div class="cal-title-wrapper">
+                        <div class="cal-title" id="calTitle">Month Year</div>
+                    </div>
+                    <button class="btn btn-outline btn-sm" id="nextMonth">Next <i class="fa-solid fa-chevron-right"></i></button>
                 </div>
                 <div class="cal-header-cols" id="cal-header-cols"></div>
                 <div class="cal-weeks-container" id="cal-weeks-container"></div>
             </div>
+
+            <!-- Selected Date Info & Day Difference Card -->
+            <div class="date-info-panel" id="dateInfoPanel">
+                <div>
+                    <div style="font-size: 0.82rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 0.25rem;">Selected Date</div>
+                    <div style="font-size: 1.15rem; font-weight: 800; color: var(--text-color);" id="selectedDateTitle">...</div>
+                    <div style="font-size: 0.9rem; color: var(--text-muted);" id="selectedDateSubtitle">...</div>
+                    <div id="selectedDateTithiBadge" style="margin-top: 0.35rem;"></div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                    <div id="diffBadgeContainer"></div>
+                    <button type="button" id="openAddEventBtn" class="btn btn-primary btn-sm">
+                        <i class="fa-solid fa-plus"></i> Add Event
+                    </button>
+                </div>
+            </div>
+
+            <!-- Add Event Inline Form with Repeating Options -->
+            <div id="addEventFormWrapper" style="display: none; margin-top: 1.25rem; padding: 1.25rem; background: var(--bg-subtle); border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                <h3 style="font-size: 1.05rem; margin-bottom: 0.75rem;"><i class="fa-regular fa-calendar-plus"></i> Add Event on <span id="eventFormDateLabel"></span></h3>
+                <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem;">
+                    <input type="text" id="eventTitleInput" placeholder="Event Title / Description (e.g. Birthday, Team Sync, Festival)" style="padding: 0.6rem; border-radius: 4px; border: 1px solid var(--border-strong);">
+                    <select id="eventCategorySelect" style="padding: 0.6rem; border-radius: 4px; border: 1px solid var(--border-strong); background: var(--bg-surface); color: var(--text-color);">
+                        <option value="personal">📌 Personal Reminder</option>
+                        <option value="festival">🎉 Festival / Celebration</option>
+                        <option value="holiday">🔴 Public Holiday</option>
+                        <option value="meeting">💼 Meeting / Review</option>
+                        <option value="birthday">🎂 Birthday / Anniversary</option>
+                    </select>
+                    <select id="eventRepeatSelect" style="padding: 0.6rem; border-radius: 4px; border: 1px solid var(--border-strong); background: var(--bg-surface); color: var(--text-color);">
+                        <option value="none">🔁 One-time (एक पटक)</option>
+                        <option value="yearly">📅 Repeat Yearly (वार्षिक)</option>
+                        <option value="monthly_same_day">🔄 Repeat Monthly (महिनेपिच्छे)</option>
+                        <option value="monthly_last_day">🔚 Every Month Last Day (महिनाको अन्तिम दिन)</option>
+                        <option value="monthly_last_saturday">🏖️ Every Month Last Saturday (अन्तिम शनिबार)</option>
+                    </select>
+                </div>
+                <div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+                    <button type="button" id="cancelEventBtn" class="btn btn-outline btn-sm">Cancel</button>
+                    <button type="button" id="saveEventBtn" class="btn btn-primary btn-sm"><i class="fa-solid fa-check"></i> Save Event</button>
+                </div>
+            </div>
+
+            <!-- Events List on Selected Date -->
+            <div class="events-section">
+                <h3 style="font-size: 1.05rem; margin-bottom: 0.75rem; color: var(--text-color);"><i class="fa-solid fa-list-check"></i> Events on this Date</h3>
+                <div id="eventsListContainer">
+                    <p style="color: var(--text-muted); font-size: 0.9rem; font-style: italic;">No events scheduled for this date.</p>
+                </div>
+            </div>
+
+            <!-- Age & Date Span Calculator (Dual BS & AD Support) -->
+            <div class="age-calc-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem;">
+                    <h3 style="font-size: 1.05rem; color: var(--primary); display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fa-solid fa-calculator"></i> Age & Date Span Calculator (उमेर तथा मिति फरक)
+                    </h3>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button type="button" id="spanModeBs" class="btn btn-primary btn-sm">Bikram Sambat (BS)</button>
+                        <button type="button" id="spanModeAd" class="btn btn-outline btn-sm">English (AD)</button>
+                    </div>
+                </div>
+
+                <!-- BS Inputs Form -->
+                <div id="spanBsInputs" style="display: block;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div>
+                            <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">From BS Date (जन्म मिति / सुरु मिति)</label>
+                            <div style="display: flex; gap: 0.35rem;">
+                                <select id="spanBsYear1" style="flex: 2; padding: 0.45rem; border-radius: 4px;"></select>
+                                <select id="spanBsMonth1" style="flex: 2; padding: 0.45rem; border-radius: 4px;"></select>
+                                <select id="spanBsDay1" style="flex: 1.5; padding: 0.45rem; border-radius: 4px;"></select>
+                            </div>
+                        </div>
+                        <div>
+                            <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">To BS Date (अन्तिम मिति / आज)</label>
+                            <div style="display: flex; gap: 0.35rem;">
+                                <select id="spanBsYear2" style="flex: 2; padding: 0.45rem; border-radius: 4px;"></select>
+                                <select id="spanBsMonth2" style="flex: 2; padding: 0.45rem; border-radius: 4px;"></select>
+                                <select id="spanBsDay2" style="flex: 1.5; padding: 0.45rem; border-radius: 4px;"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AD Inputs Form -->
+                <div id="spanAdInputs" style="display: none;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                        <div>
+                            <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">From AD Date (Start)</label>
+                            <input type="date" id="spanStartDate" style="width: 100%; padding: 0.55rem; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-subtle); color: var(--text-color);">
+                        </div>
+                        <div>
+                            <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">To AD Date (Default: Today)</label>
+                            <input type="date" id="spanEndDate" style="width: 100%; padding: 0.55rem; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-subtle); color: var(--text-color);">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="spanResultBox" style="background: var(--bg-subtle); padding: 0.85rem 1rem; border-radius: 6px; border: 1px solid var(--border-color); font-size: 0.95rem; font-weight: 600; color: var(--text-color); display: none;"></div>
+            </div>
         </div>
     </main>
 
-    <footer>
-        <div class="container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; padding: 2rem 1.5rem;">
-            <p>&copy; 2026 Alok Shrestha. Built for GitHub Pages (aloks.com.np).</p>
-            <p><a href="../../privacy/" style="color: var(--text-muted); text-decoration: underline;">Privacy Policy</a></p>
+    <!-- Fullscreen Desk Kiosk Display Overlay -->
+    <div id="kioskOverlay" class="kiosk-overlay">
+        <div class="kiosk-controls">
+            <button type="button" id="kioskToggleSec" class="btn btn-outline btn-sm" style="color: #ffffff; border-color: rgba(255,255,255,0.3);">Toggle Sec</button>
+            <button type="button" id="kioskExitBtn" class="btn btn-primary btn-sm"><i class="fa-solid fa-xmark"></i> Exit (Esc)</button>
+        </div>
+        <div class="kiosk-time" id="kioskTime">00:00:00</div>
+        <div class="kiosk-bs-date" id="kioskBsDate">...</div>
+        <div class="kiosk-ad-date" id="kioskAdDate">...</div>
+        <div class="kiosk-event" id="kioskEventText">...</div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container footer-container">
+            <div class="footer-left">
+                <p class="footer-copy">&copy; 2026 <strong>Alok Shrestha</strong> &bull; <a href="https://aloks.com.np" class="footer-link">aloks.com.np</a></p>
+                <p class="footer-help">For assistance contact Alok &mdash; <a href="mailto:hello@aloks.com.np" class="footer-link">hello@aloks.com.np</a></p>
+            </div>
+            <div class="footer-right">
+                <a href="https://github.com/aalooksth" target="_blank" class="footer-link" title="GitHub"><i class="fa-brands fa-github"></i> GitHub</a>
+                <a href="https://np.linkedin.com/in/aalooksth" target="_blank" class="footer-link" title="LinkedIn"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+                <a href="../../privacy/" class="footer-link">Privacy Policy</a>
+            </div>
         </div>
     </footer>
 
-    <!-- Core Site Scripts -->
+    <!-- Scripts -->
     <script src="../../js/nepali-date-converter.umd.js"></script>
     <script src="../../js/script.js"></script>
     
@@ -317,12 +692,77 @@
             ];
             const weekdaysList = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
             const bsWeekdaysList = ["आइत", "सोम", "मङ्गल", "बुध", "बिही", "शुक्र", "शनि"];
+            const bsFullWeekdaysList = ["आइतबार", "सोमबार", "मङ्गलबार", "बुधबार", "बिहीबार", "शुक्रबार", "शनिबार"];
             const nepaliDigits = ['०', '१', '२', '३', '४', '५', '६', '७', '८', '९'];
+            
             function toNepaliDigits(num) {
                 return num.toString().replace(/[0-9]/g, match => nepaliDigits[match]);
             }
+
+            // Default Major Nepali Festivals & Holidays
+            const DEFAULT_FESTIVALS = {
+                // 2026 AD / 2083 BS Festivals
+                "2026-04-14": [{ title: "नयाँ वर्ष (Nepali New Year 2083)", category: "holiday" }],
+                "2026-05-01": [{ title: "अन्तर्राष्ट्रिय मजदुर दिवस (Labour Day)", category: "holiday" }],
+                "2026-05-31": [{ title: "बुद्ध जयन्ती (Buddha Jayanti / Ubhauli)", category: "festival" }],
+                "2026-08-28": [{ title: "जनै पूर्णिमा / रक्षाबन्धन (Janai Purnima)", category: "festival" }],
+                "2026-09-04": [{ title: "श्रीकृष्ण जन्माष्टमी (Krishna Janmashtami)", category: "festival" }],
+                "2026-09-14": [{ title: "हरितालिका तीज (Haritalika Teej)", category: "festival" }],
+                "2026-09-16": [{ title: "ऋषिपञ्चमी (Rishi Panchami)", category: "festival" }],
+                "2026-09-19": [{ title: "संविधान दिवस (Constitution Day)", category: "holiday" }],
+                "2026-10-11": [{ title: "घटस्थापना (Ghatasthapana - Dashain Start)", category: "festival" }],
+                "2026-10-17": [{ title: "फूलपाती (Phulpati)", category: "holiday" }],
+                "2026-10-18": [{ title: "महाअष्टमी (Maha Ashtami)", category: "holiday" }],
+                "2026-10-19": [{ title: "महानवमी (Maha Navami)", category: "holiday" }],
+                "2026-10-20": [{ title: "विजया दशमी (Vijaya Dashami - Tika)", category: "holiday" }],
+                "2026-10-21": [{ title: "दशैं एकादशी (Dashain Ekadashi)", category: "holiday" }],
+                "2026-11-08": [{ title: "काग तिहार (Kag Tihar)", category: "festival" }],
+                "2026-11-09": [{ title: "कुकुर तिहार / लक्ष्मी पूजा (Laxmi Puja)", category: "holiday" }],
+                "2026-11-10": [{ title: "गोवर्धन पूजा / म्ह: पूजा (Mha Puja)", category: "holiday" }],
+                "2026-11-11": [{ title: "भाईटीका (Bhai Tika - Tihar)", category: "holiday" }],
+                "2026-11-15": [{ title: "छठ पर्व (Chhath Puja)", category: "holiday" }],
+                "2026-12-25": [{ title: "क्रिसमस डे (Christmas Day)", category: "holiday" }],
+                "2027-01-01": [{ title: "अंग्रेजी नयाँ वर्ष (English New Year 2027)", category: "festival" }],
+                "2027-01-11": [{ title: "पृथ्वी जयन्ती / राष्ट्रिय एकता दिवस (Prithvi Jayanti)", category: "holiday" }],
+                "2027-01-15": [{ title: "माघे संक्रान्ति (Maghe Sankranti)", category: "holiday" }],
+                "2027-01-30": [{ title: "शहीद दिवस (Martyrs' Day)", category: "holiday" }],
+                "2027-02-19": [{ title: "राष्ट्रिय प्रजातन्त्र दिवस (Democracy Day)", category: "holiday" }],
+                "2027-03-06": [{ title: "महाशिवरात्रि (Maha Shivaratri)", category: "holiday" }],
+                "2027-03-08": [{ title: "अन्तर्राष्ट्रिय महिला दिवस (Women's Day)", category: "holiday" }],
+                "2027-03-22": [{ title: "होली - फागु पूर्णिमा (Holi / Fagu Purnima)", category: "holiday" }]
+            };
+
+            // Recurring Events Store
+            function getRecurringEvents() {
+                try {
+                    return JSON.parse(localStorage.getItem('alok_calendar_recurring') || '[]');
+                } catch(e) {
+                    return [];
+                }
+            }
+
+            function saveRecurringEvents(recList) {
+                localStorage.setItem('alok_calendar_recurring', JSON.stringify(recList));
+            }
+
+            // Events Store in LocalStorage (Initialized with defaults)
+            function getStoredEvents() {
+                try {
+                    const raw = localStorage.getItem('alok_calendar_events');
+                    if (!raw) {
+                        localStorage.setItem('alok_calendar_events', JSON.stringify(DEFAULT_FESTIVALS));
+                        return JSON.parse(JSON.stringify(DEFAULT_FESTIVALS));
+                    }
+                    return JSON.parse(raw);
+                } catch(e) {
+                    return JSON.parse(JSON.stringify(DEFAULT_FESTIVALS));
+                }
+            }
+
+            function saveStoredEvents(eventsObj) {
+                localStorage.setItem('alok_calendar_events', JSON.stringify(eventsObj));
+            }
             
-            // Allow time for umd to load, then init
             setTimeout(() => {
                 const converter = window['@sbmdkl/nepali-date-converter'];
 
@@ -358,7 +798,23 @@
                     }
                 }
 
-                // Calendar UI
+                // Tithi Estimation (Synodic lunar phase based on AD reference)
+                function getTithiMarker(dateStr) {
+                    const dt = parseDateLocal(dateStr);
+                    // Approximate synodic month 29.53058867 days
+                    // Reference new moon (Aunsi): Jan 11 2024 11:57 UTC
+                    const refAunsi = new Date(Date.UTC(2024, 0, 11, 11, 57));
+                    const diffDays = (dt - refAunsi) / (1000 * 60 * 60 * 24);
+                    const phase = (diffDays % 29.53058867 + 29.53058867) % 29.53058867;
+                    const tithiDay = Math.floor(phase) + 1; // 1 to 30
+
+                    if (tithiDay === 15) return { type: 'purnima', label: '🌕 पूर्णिमा (Purnima)' };
+                    if (tithiDay === 30 || tithiDay === 29) return { type: 'aunsi', label: '🌑 औंसी (Aunsi)' };
+                    if (tithiDay === 11 || tithiDay === 26) return { type: 'ekadashi', label: '🕉️ एकादशी (Ekadashi)' };
+                    return null;
+                }
+
+                // Calendar UI State
                 let calendarMode = 'BS'; 
                 let selectedDateStr = formatDateLocal(new Date()); 
                 
@@ -377,14 +833,36 @@
                 const bsMonthSelect = document.getElementById('bsMonth');
                 const bsDaySelect = document.getElementById('bsDay');
                 const modeToggle = document.getElementById('calendarModeToggle');
+                const todayBtn = document.getElementById('todayBtn');
+                const monthStrip = document.getElementById('monthStrip');
+
+                // Render Month Strip
+                function renderMonthStrip() {
+                    monthStrip.innerHTML = '';
+                    BS_MONTH_LABELS.forEach((mLabel, idx) => {
+                        const mNum = idx + 1;
+                        const btn = document.createElement('button');
+                        btn.type = 'button';
+                        btn.className = `month-chip ${currentBsDisplayMonth === mNum ? 'active' : ''}`;
+                        btn.textContent = `${mLabel}`;
+                        btn.onclick = () => {
+                            currentBsDisplayMonth = mNum;
+                            renderCalendar();
+                            renderMonthStrip();
+                        };
+                        monthStrip.appendChild(btn);
+                    });
+                }
+                renderMonthStrip();
 
                 // Populate Dropdowns
                 for(let y=1978; y<=2099; y++) {
-                    bsYearSelect.options.add(new Option(toNepaliDigits(y), y));
+                    bsYearSelect.options.add(new Option(toNepaliDigits(y) + " (" + y + ")", y));
                 }
                 for(let m=1; m<=12; m++) {
                     bsMonthSelect.options.add(new Option(BS_MONTH_LABELS[m-1], m));
                 }
+
                 function updateBsDaysDropdown(year, month) {
                     let maxDays = 32;
                     if (converter) {
@@ -413,6 +891,10 @@
                         updateBsDaysDropdown(bsObj.year, bsObj.month);
                         bsDaySelect.value = bsObj.day;
                     }
+                    updateDateInfoPanel();
+                    renderEventsList();
+                    updateNextEventWidget();
+                    renderMonthStrip();
                 }
                 
                 function setMode(mode) {
@@ -423,6 +905,24 @@
                 
                 modeToggle.addEventListener('change', (e) => {
                     setMode(e.target.checked ? 'BS' : 'AD');
+                });
+
+                // Go to Today Button
+                todayBtn.addEventListener('click', () => {
+                    selectedDateStr = formatDateLocal(new Date());
+                    currentAdDisplayDate = new Date();
+                    const bsObj = getNepaliDateStr(selectedDateStr, true);
+                    if(bsObj) {
+                        currentBsDisplayYear = bsObj.year;
+                        currentBsDisplayMonth = bsObj.month;
+                    }
+                    updateInputs();
+                    renderCalendar();
+                });
+
+                // Print Button
+                document.getElementById('printBtn').addEventListener('click', () => {
+                    window.print();
                 });
                 
                 updateInputs();
@@ -466,6 +966,535 @@
                 bsMonthSelect.addEventListener('change', () => { updateBsDaysDropdown(bsYearSelect.value, bsMonthSelect.value); handleBsDropdownChange(); });
                 bsDaySelect.addEventListener('change', handleBsDropdownChange);
                 
+                // Days Difference Calculation & Info Display
+                function updateDateInfoPanel() {
+                    const dt = parseDateLocal(selectedDateStr);
+                    const today = parseDateLocal(formatDateLocal(new Date()));
+                    
+                    const msPerDay = 1000 * 60 * 60 * 24;
+                    const diffDays = Math.round((dt - today) / msPerDay);
+                    
+                    const bsObj = getNepaliDateStr(selectedDateStr, true);
+                    const weekdayIndex = dt.getDay();
+
+                    const adFormatted = dt.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                    const bsFormatted = bsObj ? `${toNepaliDigits(bsObj.year)} ${bsObj.bsMonthStr} ${toNepaliDigits(bsObj.day)} गते ${bsFullWeekdaysList[weekdayIndex]}` : '';
+
+                    document.getElementById('selectedDateTitle').textContent = bsFormatted || adFormatted;
+                    document.getElementById('selectedDateSubtitle').textContent = bsFormatted ? adFormatted : '';
+
+                    const tithi = getTithiMarker(selectedDateStr);
+                    const tithiBadgeEl = document.getElementById('selectedDateTithiBadge');
+                    if (tithi) {
+                        tithiBadgeEl.innerHTML = `<span class="tithi-tag ${tithi.type}">${tithi.label}</span>`;
+                    } else {
+                        tithiBadgeEl.innerHTML = '';
+                    }
+
+                    const diffBadgeContainer = document.getElementById('diffBadgeContainer');
+                    if (diffDays === 0) {
+                        diffBadgeContainer.innerHTML = `<span class="diff-pill diff-today"><i class="fa-solid fa-star"></i> Today (आज)</span>`;
+                    } else if (diffDays > 0) {
+                        diffBadgeContainer.innerHTML = `<span class="diff-pill diff-future"><i class="fa-solid fa-hourglass-half"></i> In ${diffDays} day${diffDays > 1 ? 's' : ''} (${toNepaliDigits(diffDays)} दिन पछि)</span>`;
+                    } else {
+                        const absDays = Math.abs(diffDays);
+                        diffBadgeContainer.innerHTML = `<span class="diff-pill diff-past"><i class="fa-solid fa-clock-rotate-left"></i> ${absDays} day${absDays > 1 ? 's' : ''} ago (${toNepaliDigits(absDays)} दिन अगाडि)</span>`;
+                    }
+
+                    document.getElementById('eventFormDateLabel').textContent = bsFormatted || selectedDateStr;
+                }
+
+                // Check Events for a Date (including recurring)
+                function getCombinedEventsForDate(dateStr) {
+                    const allEvents = getStoredEvents();
+                    const recurring = getRecurringEvents();
+                    const list = (allEvents[dateStr] || []).slice();
+
+                    const dt = parseDateLocal(dateStr);
+                    const bsObj = getNepaliDateStr(dateStr, true);
+
+                    recurring.forEach(rec => {
+                        let matches = false;
+                        if (rec.repeat === 'yearly' && bsObj && rec.bsMonth === bsObj.month && rec.bsDay === bsObj.day) {
+                            matches = true;
+                        } else if (rec.repeat === 'monthly_same_day' && bsObj && rec.bsDay === bsObj.day) {
+                            matches = true;
+                        } else if (rec.repeat === 'monthly_last_day' && bsObj) {
+                            // Check if next day is month change
+                            try {
+                                const nextBsStr = converter.adToBs(formatDateLocal(new Date(dt.getFullYear(), dt.getMonth(), dt.getDate() + 1)));
+                                if (parseInt(nextBsStr.split('-')[1], 10) !== bsObj.month) matches = true;
+                            } catch(e) {}
+                        } else if (rec.repeat === 'monthly_last_saturday' && bsObj && dt.getDay() === 6) {
+                            // Saturday. Check if next week Saturday is next month
+                            try {
+                                const nextSat = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate() + 7);
+                                const nextBsStr = converter.adToBs(formatDateLocal(nextSat));
+                                if (parseInt(nextBsStr.split('-')[1], 10) !== bsObj.month) matches = true;
+                            } catch(e) {}
+                        }
+
+                        if (matches) {
+                            list.push({ title: `${rec.title} (🔁)`, category: rec.category, isRecurring: true, recId: rec.id });
+                        }
+                    });
+                    return list;
+                }
+
+                // Next Upcoming Event Widget
+                function updateNextEventWidget() {
+                    const allEvents = getStoredEvents();
+                    const today = parseDateLocal(formatDateLocal(new Date()));
+                    const msPerDay = 1000 * 60 * 60 * 24;
+
+                    const upcomingDates = Object.keys(allEvents)
+                        .filter(d => parseDateLocal(d) >= today)
+                        .sort((a, b) => parseDateLocal(a) - parseDateLocal(b));
+
+                    const banner = document.getElementById('nextEventBanner');
+                    if (upcomingDates.length === 0) {
+                        banner.style.display = 'none';
+                        return;
+                    }
+
+                    const nextDateStr = upcomingDates[0];
+                    const nextEvents = allEvents[nextDateStr];
+                    const nextEvt = nextEvents[0];
+                    const nextDate = parseDateLocal(nextDateStr);
+                    const diffDays = Math.round((nextDate - today) / msPerDay);
+                    const nextBsObj = getNepaliDateStr(nextDateStr, true);
+
+                    const title = nextEvt.title + (nextEvents.length > 1 ? ` (+${nextEvents.length - 1} more)` : '');
+                    const bsDetails = nextBsObj ? `${toNepaliDigits(nextBsObj.year)} ${nextBsObj.bsMonthStr} ${toNepaliDigits(nextBsObj.day)} गते` : '';
+                    const adDetails = nextDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+                    document.getElementById('nextEventTitle').textContent = title;
+                    document.getElementById('nextEventDateDetails').textContent = `${bsDetails} (${adDetails})`;
+                    
+                    const daysText = diffDays === 0 ? "Today / आज" : `${diffDays} day${diffDays > 1 ? 's' : ''} remaining (${toNepaliDigits(diffDays)} दिन बाँकी)`;
+                    document.getElementById('nextEventDaysText').textContent = daysText;
+
+                    banner.style.display = 'flex';
+
+                    banner.onclick = () => {
+                        selectedDateStr = nextDateStr;
+                        currentAdDisplayDate = parseDateLocal(selectedDateStr);
+                        if (nextBsObj) {
+                            currentBsDisplayYear = nextBsObj.year;
+                            currentBsDisplayMonth = nextBsObj.month;
+                        }
+                        updateInputs();
+                        renderCalendar();
+                    };
+                }
+
+                // Render Events for Selected Date
+                function renderEventsList() {
+                    const eventsContainer = document.getElementById('eventsListContainer');
+                    const dateEvents = getCombinedEventsForDate(selectedDateStr);
+
+                    if (dateEvents.length === 0) {
+                        eventsContainer.innerHTML = `<p style="color: var(--text-muted); font-size: 0.9rem; font-style: italic;">No events scheduled for this date.</p>`;
+                        return;
+                    }
+
+                    eventsContainer.innerHTML = dateEvents.map((evt, idx) => `
+                        <div class="event-item">
+                            <div>
+                                <span class="event-badge ${evt.category}">${evt.category}</span>
+                                <strong style="margin-left: 0.5rem; color: var(--text-color);">${evt.title}</strong>
+                            </div>
+                            <button type="button" class="btn-icon delete-event-btn" data-index="${idx}" data-recurring="${evt.isRecurring ? evt.recId : ''}" style="color: #ef4444; padding: 0.3rem;" title="Delete Event">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    `).join('');
+
+                    eventsContainer.querySelectorAll('.delete-event-btn').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            const recId = btn.getAttribute('data-recurring');
+                            if (recId) {
+                                let recList = getRecurringEvents().filter(r => r.id !== recId);
+                                saveRecurringEvents(recList);
+                            } else {
+                                const idx = parseInt(btn.getAttribute('data-index'), 10);
+                                const updatedEvents = getStoredEvents();
+                                if (updatedEvents[selectedDateStr]) {
+                                    updatedEvents[selectedDateStr].splice(idx, 1);
+                                    if (updatedEvents[selectedDateStr].length === 0) {
+                                        delete updatedEvents[selectedDateStr];
+                                    }
+                                    saveStoredEvents(updatedEvents);
+                                }
+                            }
+                            renderEventsList();
+                            renderCalendar();
+                            updateNextEventWidget();
+                        });
+                    });
+                }
+
+                // Add Event Handlers
+                const addEventFormWrapper = document.getElementById('addEventFormWrapper');
+                const openAddEventBtn = document.getElementById('openAddEventBtn');
+                const cancelEventBtn = document.getElementById('cancelEventBtn');
+                const saveEventBtn = document.getElementById('saveEventBtn');
+                const eventTitleInput = document.getElementById('eventTitleInput');
+                const eventCategorySelect = document.getElementById('eventCategorySelect');
+                const eventRepeatSelect = document.getElementById('eventRepeatSelect');
+
+                openAddEventBtn.addEventListener('click', () => {
+                    addEventFormWrapper.style.display = 'block';
+                    eventTitleInput.focus();
+                });
+
+                cancelEventBtn.addEventListener('click', () => {
+                    addEventFormWrapper.style.display = 'none';
+                    eventTitleInput.value = '';
+                });
+
+                saveEventBtn.addEventListener('click', () => {
+                    const title = eventTitleInput.value.trim();
+                    if (!title) {
+                        alert('Please enter an event title.');
+                        return;
+                    }
+                    const category = eventCategorySelect.value;
+                    const repeat = eventRepeatSelect.value;
+                    const bsObj = getNepaliDateStr(selectedDateStr, true);
+
+                    if (repeat !== 'none') {
+                        const recList = getRecurringEvents();
+                        recList.push({
+                            id: 'rec_' + Date.now(),
+                            title,
+                            category,
+                            repeat,
+                            bsMonth: bsObj ? bsObj.month : null,
+                            bsDay: bsObj ? bsObj.day : null,
+                            startDate: selectedDateStr
+                        });
+                        saveRecurringEvents(recList);
+                    } else {
+                        const allEvents = getStoredEvents();
+                        if (!allEvents[selectedDateStr]) allEvents[selectedDateStr] = [];
+                        allEvents[selectedDateStr].push({ title, category, createdAt: new Date().toISOString() });
+                        saveStoredEvents(allEvents);
+                    }
+
+                    eventTitleInput.value = '';
+                    addEventFormWrapper.style.display = 'none';
+                    renderEventsList();
+                    renderCalendar();
+                    updateNextEventWidget();
+                });
+
+                // Export to iCal (.ics)
+                document.getElementById('exportIcsBtn').addEventListener('click', () => {
+                    const allEvents = getStoredEvents();
+                    let icsContent = "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Alok Shrestha//Nepali Calendar//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\n";
+                    
+                    for (const dateKey in allEvents) {
+                        const evList = allEvents[dateKey];
+                        const cleanDate = dateKey.replace(/-/g, '');
+                        evList.forEach((ev, i) => {
+                            icsContent += "BEGIN:VEVENT\r\n";
+                            icsContent += `UID:nepali-cal-${cleanDate}-${i}@aloks.com.np\r\n`;
+                            icsContent += `DTSTAMP:${cleanDate}T000000Z\r\n`;
+                            icsContent += `DTSTART;VALUE=DATE:${cleanDate}\r\n`;
+                            icsContent += `SUMMARY:${ev.title}\r\n`;
+                            icsContent += `DESCRIPTION:Category: ${ev.category} - Created via aloks.com.np Nepali Calendar\r\n`;
+                            icsContent += "END:VEVENT\r\n";
+                        });
+                    }
+                    icsContent += "END:VCALENDAR\r\n";
+
+                    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `nepali_calendar_${formatDateLocal(new Date())}.ics`;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                });
+
+                // Export Events to JSON
+                document.getElementById('exportEventsBtn').addEventListener('click', () => {
+                    const allEvents = getStoredEvents();
+                    const recurring = getRecurringEvents();
+                    const exportData = { singleEvents: allEvents, recurringEvents: recurring };
+                    const jsonStr = JSON.stringify(exportData, null, 2);
+                    const blob = new Blob([jsonStr], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `nepali_calendar_events_${formatDateLocal(new Date())}.json`;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                });
+
+                // Import Events from JSON
+                const importBtn = document.getElementById('importEventsTriggerBtn');
+                const importInput = document.getElementById('importEventsFileInput');
+
+                importBtn.addEventListener('click', () => {
+                    importInput.click();
+                });
+
+                importInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        try {
+                            const imported = JSON.parse(event.target.result);
+                            if (typeof imported !== 'object') throw new Error('Invalid format');
+                            const current = getStoredEvents();
+                            
+                            const singles = imported.singleEvents || imported;
+                            for (const dateKey in singles) {
+                                if (Array.isArray(singles[dateKey])) {
+                                    if (!current[dateKey]) current[dateKey] = [];
+                                    current[dateKey] = current[dateKey].concat(singles[dateKey]);
+                                }
+                            }
+                            saveStoredEvents(current);
+
+                            if (imported.recurringEvents && Array.isArray(imported.recurringEvents)) {
+                                const currentRec = getRecurringEvents();
+                                saveRecurringEvents(currentRec.concat(imported.recurringEvents));
+                            }
+
+                            renderEventsList();
+                            renderCalendar();
+                            updateNextEventWidget();
+                            alert('Events imported and merged successfully!');
+                        } catch(err) {
+                            alert('Error parsing JSON file. Please provide a valid calendar events JSON export.');
+                        }
+                    };
+                    reader.readAsText(file);
+                    importInput.value = '';
+                });
+
+                // Kiosk Desk Display
+                const kioskOverlay = document.getElementById('kioskOverlay');
+                const kioskBtn = document.getElementById('kioskBtn');
+                const kioskExitBtn = document.getElementById('kioskExitBtn');
+                const kioskToggleSec = document.getElementById('kioskToggleSec');
+                let showKioskSec = true;
+
+                kioskBtn.addEventListener('click', () => {
+                    kioskOverlay.style.display = 'flex';
+                    if (document.documentElement.requestFullscreen) {
+                        document.documentElement.requestFullscreen().catch(() => {});
+                    }
+                    updateKioskDisplay();
+                });
+
+                function exitKiosk() {
+                    kioskOverlay.style.display = 'none';
+                    if (document.fullscreenElement && document.exitFullscreen) {
+                        document.exitFullscreen().catch(() => {});
+                    }
+                }
+
+                kioskExitBtn.addEventListener('click', exitKiosk);
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && kioskOverlay.style.display === 'flex') exitKiosk();
+                });
+
+                kioskToggleSec.addEventListener('click', () => {
+                    showKioskSec = !showKioskSec;
+                    updateKioskDisplay();
+                });
+
+                function updateKioskDisplay() {
+                    if (kioskOverlay.style.display !== 'flex') return;
+                    const now = new Date();
+                    const timeStr = now.toLocaleTimeString('en-US', { hour12: true, hour: '2-digit', minute: '2-digit', second: showKioskSec ? '2-digit' : undefined });
+                    document.getElementById('kioskTime').textContent = timeStr;
+
+                    const todayAdStr = formatDateLocal(now);
+                    const bsObj = getNepaliDateStr(todayAdStr, true);
+                    const weekdayIndex = now.getDay();
+
+                    if (bsObj) {
+                        document.getElementById('kioskBsDate').textContent = `${toNepaliDigits(bsObj.year)} ${bsObj.bsMonthStr} ${toNepaliDigits(bsObj.day)} गते, ${bsFullWeekdaysList[weekdayIndex]}`;
+                    }
+                    document.getElementById('kioskAdDate').textContent = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+                    const todayEvts = getCombinedEventsForDate(todayAdStr);
+                    const tithi = getTithiMarker(todayAdStr);
+                    let evNote = todayEvts.length > 0 ? `🎉 ${todayEvts.map(e => e.title).join(', ')}` : (tithi ? tithi.label : 'शुभ दिन (Have a wonderful day)');
+                    document.getElementById('kioskEventText').textContent = evNote;
+                }
+                setInterval(updateKioskDisplay, 1000);
+
+                // Age & Date Span Calculator (Dual BS & AD Support)
+                const spanModeBs = document.getElementById('spanModeBs');
+                const spanModeAd = document.getElementById('spanModeAd');
+                const spanBsInputs = document.getElementById('spanBsInputs');
+                const spanAdInputs = document.getElementById('spanAdInputs');
+                const spanResultBox = document.getElementById('spanResultBox');
+
+                const spanBsYear1 = document.getElementById('spanBsYear1');
+                const spanBsMonth1 = document.getElementById('spanBsMonth1');
+                const spanBsDay1 = document.getElementById('spanBsDay1');
+                const spanBsYear2 = document.getElementById('spanBsYear2');
+                const spanBsMonth2 = document.getElementById('spanBsMonth2');
+                const spanBsDay2 = document.getElementById('spanBsDay2');
+
+                // Populate BS Span selects
+                for(let y=1978; y<=2099; y++) {
+                    spanBsYear1.options.add(new Option(toNepaliDigits(y) + " (" + y + ")", y));
+                    spanBsYear2.options.add(new Option(toNepaliDigits(y) + " (" + y + ")", y));
+                }
+                for(let m=1; m<=12; m++) {
+                    spanBsMonth1.options.add(new Option(BS_MONTH_LABELS[m-1], m));
+                    spanBsMonth2.options.add(new Option(BS_MONTH_LABELS[m-1], m));
+                }
+                for(let d=1; d<=32; d++) {
+                    spanBsDay1.options.add(new Option(toNepaliDigits(d), d));
+                    spanBsDay2.options.add(new Option(toNepaliDigits(d), d));
+                }
+
+                // Default Span BS 1 & 2
+                spanBsYear1.value = 2055;
+                spanBsMonth1.value = 1;
+                spanBsDay1.value = 1;
+
+                const todayBs = getNepaliDateStr(formatDateLocal(new Date()), true);
+                if (todayBs) {
+                    spanBsYear2.value = todayBs.year;
+                    spanBsMonth2.value = todayBs.month;
+                    spanBsDay2.value = todayBs.day;
+                }
+
+                spanModeBs.addEventListener('click', () => {
+                    spanModeBs.className = 'btn btn-primary btn-sm';
+                    spanModeAd.className = 'btn btn-outline btn-sm';
+                    spanBsInputs.style.display = 'block';
+                    spanAdInputs.style.display = 'none';
+                    computeSpanBs();
+                });
+
+                spanModeAd.addEventListener('click', () => {
+                    spanModeAd.className = 'btn btn-primary btn-sm';
+                    spanModeBs.className = 'btn btn-outline btn-sm';
+                    spanBsInputs.style.display = 'none';
+                    spanAdInputs.style.display = 'block';
+                    computeSpanAd();
+                });
+
+                function computeSpanBs() {
+                    const y1 = parseInt(spanBsYear1.value);
+                    const m1 = parseInt(spanBsMonth1.value);
+                    const d1 = parseInt(spanBsDay1.value);
+                    const y2 = parseInt(spanBsYear2.value);
+                    const m2 = parseInt(spanBsMonth2.value);
+                    const d2 = parseInt(spanBsDay2.value);
+
+                    try {
+                        const ad1 = converter.bsToAd(`${y1}-${String(m1).padStart(2,'0')}-${String(d1).padStart(2,'0')}`);
+                        const ad2 = converter.bsToAd(`${y2}-${String(m2).padStart(2,'0')}-${String(d2).padStart(2,'0')}`);
+                        const dt1 = parseDateLocal(ad1);
+                        const dt2 = parseDateLocal(ad2);
+
+                        if (dt2 < dt1) {
+                            spanResultBox.style.display = 'block';
+                            spanResultBox.innerHTML = '<span style="color: #ef4444;">अन्तिम मिति सुरु मिति भन्दा पछाडिको हुनुपर्छ। (End date must be after Start date).</span>';
+                            return;
+                        }
+
+                        const totalDays = Math.round((dt2 - dt1) / (1000 * 60 * 60 * 24));
+                        
+                        let yDiff = y2 - y1;
+                        let mDiff = m2 - m1;
+                        let dDiff = d2 - d1;
+
+                        if (dDiff < 0) {
+                            mDiff -= 1;
+                            dDiff += 30; // standard month adjustment
+                        }
+                        if (mDiff < 0) {
+                            yDiff -= 1;
+                            mDiff += 12;
+                        }
+
+                        spanResultBox.style.display = 'block';
+                        spanResultBox.innerHTML = `
+                            <div style="color: var(--secondary); margin-bottom: 0.35rem; font-size: 1.05rem;">
+                                <i class="fa-solid fa-cake-candles"></i> उमेर / मिति फरक: <strong>${toNepaliDigits(yDiff)} वर्ष, ${toNepaliDigits(mDiff)} महिना, ${toNepaliDigits(dDiff)} दिन</strong>
+                                <span style="font-size: 0.85rem; color: var(--text-muted); margin-left: 0.4rem;">(${yDiff} Yrs, ${mDiff} Mos, ${dDiff} Days)</span>
+                            </div>
+                            <div style="font-size: 0.88rem; color: var(--text-muted);">
+                                कुल दिन: <strong>${toNepaliDigits(totalDays)} दिन</strong> (${totalDays.toLocaleString()} days)
+                            </div>
+                        `;
+                    } catch(e) {
+                        spanResultBox.style.display = 'block';
+                        spanResultBox.innerHTML = '<span style="color: #ef4444;">Invalid BS Date selection. Please adjust days.</span>';
+                    }
+                }
+
+                [spanBsYear1, spanBsMonth1, spanBsDay1, spanBsYear2, spanBsMonth2, spanBsDay2].forEach(el => {
+                    el.addEventListener('change', computeSpanBs);
+                });
+                computeSpanBs();
+
+                // AD Span Calculator
+                const spanStartInput = document.getElementById('spanStartDate');
+                const spanEndInput = document.getElementById('spanEndDate');
+                spanEndInput.value = formatDateLocal(new Date());
+
+                function computeSpanAd() {
+                    const startVal = spanStartInput.value;
+                    const endVal = spanEndInput.value;
+                    if (!startVal || !endVal) {
+                        spanResultBox.style.display = 'none';
+                        return;
+                    }
+                    const d1 = parseDateLocal(startVal);
+                    const d2 = parseDateLocal(endVal);
+
+                    if (d2 < d1) {
+                        spanResultBox.style.display = 'block';
+                        spanResultBox.innerHTML = '<span style="color: #ef4444;">End date must be after Start date.</span>';
+                        return;
+                    }
+
+                    const msPerDay = 1000 * 60 * 60 * 24;
+                    const totalDays = Math.round((d2 - d1) / msPerDay);
+
+                    let years = d2.getFullYear() - d1.getFullYear();
+                    let months = d2.getMonth() - d1.getMonth();
+                    let days = d2.getDate() - d1.getDate();
+
+                    if (days < 0) {
+                        months -= 1;
+                        const prevMonthLastDay = new Date(d2.getFullYear(), d2.getMonth(), 0).getDate();
+                        days += prevMonthLastDay;
+                    }
+                    if (months < 0) {
+                        years -= 1;
+                        months += 12;
+                    }
+
+                    spanResultBox.style.display = 'block';
+                    spanResultBox.innerHTML = `
+                        <div style="color: var(--secondary); margin-bottom: 0.25rem;">
+                            <i class="fa-solid fa-clock"></i> Duration: <strong>${years} Years, ${months} Months, ${days} Days</strong>
+                        </div>
+                        <div style="font-size: 0.85rem; color: var(--text-muted);">
+                            Total Days: <strong>${totalDays.toLocaleString()} days</strong> (${toNepaliDigits(totalDays)} दिन)
+                        </div>
+                    `;
+                }
+
+                spanStartInput.addEventListener('change', computeSpanAd);
+                spanEndInput.addEventListener('change', computeSpanAd);
+
                 function renderCalendar() {
                     const headerRow = document.getElementById("cal-header-cols");
                     headerRow.innerHTML = '';
@@ -522,6 +1551,29 @@
                                 
                                 cell.appendChild(adSpan);
                                 cell.appendChild(bsSpan);
+
+                                // Tithi Indicator
+                                const tithi = getTithiMarker(dateStr);
+                                if (tithi) {
+                                    const tSpan = document.createElement('div');
+                                    tSpan.className = `tithi-tag ${tithi.type}`;
+                                    tSpan.textContent = tithi.type === 'purnima' ? '🌕 पूर्णिमा' : (tithi.type === 'aunsi' ? '🌑 औंसी' : '🕉️ एकादशी');
+                                    cell.appendChild(tSpan);
+                                }
+
+                                // Event Dots
+                                const dateEvts = getCombinedEventsForDate(dateStr);
+                                if (dateEvts.length > 0) {
+                                    const dotContainer = document.createElement('div');
+                                    dotContainer.className = 'event-dot-container';
+                                    dateEvts.slice(0, 3).forEach(ev => {
+                                        const dot = document.createElement('div');
+                                        dot.className = `event-dot ${ev.category}`;
+                                        dot.title = ev.title;
+                                        dotContainer.appendChild(dot);
+                                    });
+                                    cell.appendChild(dotContainer);
+                                }
                                 
                                 cell.addEventListener('click', () => {
                                     selectedDateStr = dateStr;
@@ -604,6 +1656,29 @@
                                 
                                 cell.appendChild(bsSpan);
                                 cell.appendChild(adSpan);
+
+                                // Tithi Indicator
+                                const tithi = getTithiMarker(dateStr);
+                                if (tithi) {
+                                    const tSpan = document.createElement('div');
+                                    tSpan.className = `tithi-tag ${tithi.type}`;
+                                    tSpan.textContent = tithi.type === 'purnima' ? '🌕 पूर्णिमा' : (tithi.type === 'aunsi' ? '🌑 औंसी' : '🕉️ एकादशी');
+                                    cell.appendChild(tSpan);
+                                }
+
+                                // Event Dots
+                                const dateEvts = getCombinedEventsForDate(dateStr);
+                                if (dateEvts.length > 0) {
+                                    const dotContainer = document.createElement('div');
+                                    dotContainer.className = 'event-dot-container';
+                                    dateEvts.slice(0, 3).forEach(ev => {
+                                        const dot = document.createElement('div');
+                                        dot.className = `event-dot ${ev.category}`;
+                                        dot.title = ev.title;
+                                        dotContainer.appendChild(dot);
+                                    });
+                                    cell.appendChild(dotContainer);
+                                }
                                 
                                 cell.addEventListener('click', () => {
                                     selectedDateStr = dateStr;
@@ -637,6 +1712,7 @@
                         }
                     }
                     renderCalendar();
+                    renderMonthStrip();
                 });
                 document.getElementById('nextMonth').addEventListener('click', () => {
                     if (calendarMode === 'AD') {
@@ -649,6 +1725,7 @@
                         }
                     }
                     renderCalendar();
+                    renderMonthStrip();
                 });
                 
                 setMode('BS');

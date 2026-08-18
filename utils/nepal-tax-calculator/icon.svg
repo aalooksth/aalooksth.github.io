@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <!-- Definitions for Gradients -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1A1C29" />
+      <stop offset="100%" stop-color="#0E0F16" />
+    </linearGradient>
+    <linearGradient id="primaryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4F5BF6" />
+      <stop offset="100%" stop-color="#3B42A8" />
+    </linearGradient>
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCD34D" />
+      <stop offset="100%" stop-color="#F59E0B" />
+    </linearGradient>
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34D399" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+    <filter id="dropShadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="4" dy="8" stdDeviation="6" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Maskable PWA safe boundary background -->
+  <rect width="512" height="512" rx="112" fill="url(#bgGradient)" />
+
+  <!-- Outer Ring (Neon/Tech Accent) -->
+  <rect x="24" y="24" width="464" height="464" rx="96" fill="none" stroke="#2B2D42" stroke-width="8" opacity="0.5" />
+
+  <!-- Main Calculator Card -->
+  <g filter="url(#dropShadow)">
+    <rect x="96" y="96" width="320" height="320" rx="48" fill="url(#primaryGradient)" />
+  </g>
+
+  <!-- Calculator Screen -->
+  <rect x="128" y="128" width="256" height="64" rx="16" fill="#13141F" stroke="#2E314F" stroke-width="2" />
+  
+  <!-- Nepal Flag colored accents inside screen -->
+  <path d="M 144,148 L 160,160 L 144,172 Z" fill="#DC2626" />
+  <path d="M 144,152 L 152,160 L 144,168 Z" fill="#1E3A8A" />
+
+  <!-- Calculator Value Representation (Text Mockup) -->
+  <rect x="240" y="148" width="120" height="8" rx="4" fill="#34D399" opacity="0.8" />
+  <rect x="180" y="164" width="180" height="8" rx="4" fill="#E2E8F0" opacity="0.6" />
+
+  <!-- Calculator Buttons -->
+  <!-- Row 1 -->
+  <rect x="128" y="216" width="48" height="48" rx="12" fill="#2A2F5D" />
+  <text x="152" y="246" font-family="'Roboto', sans-serif" font-size="20" font-weight="bold" fill="#F8FAFC" text-anchor="middle">%</text>
+
+  <rect x="192" y="216" width="48" height="48" rx="12" fill="#2A2F5D" />
+  <text x="216" y="246" font-family="'Roboto', sans-serif" font-size="20" font-weight="bold" fill="#F8FAFC" text-anchor="middle">÷</text>
+
+  <rect x="256" y="216" width="48" height="48" rx="12" fill="url(#goldGradient)" />
+  <text x="280" y="246" font-family="'Roboto', sans-serif" font-size="20" font-weight="bold" fill="#1E293B" text-anchor="middle">Rs</text>
+
+  <rect x="320" y="216" width="64" height="48" rx="12" fill="#EF4444" />
+  <text x="352" y="246" font-family="'Roboto', sans-serif" font-size="16" font-weight="bold" fill="#F8FAFC" text-anchor="middle">DEL</text>
+
+  <!-- Row 2 -->
+  <rect x="128" y="280" width="48" height="48" rx="12" fill="#1E223D" />
+  <text x="152" y="310" font-family="'Roboto', sans-serif" font-size="20" font-weight="bold" fill="#F8FAFC" text-anchor="middle">7</text>
+
+  <rect x="192" y="280" width="48" height="48" rx="12" fill="#1E223D" />
+  <text x="216" y="310" font-family="'Roboto', sans-serif" font-size="20" font-weight="bold" fill="#F8FAFC" text-anchor="middle">8</text>
+
+  <rect x="256" y="280" width="48" height="48" rx="12" fill="#1E223D" />
+  <text x="280" y="310" font-family="'Roboto', sans-serif" font-size="20" font-weight="bold" fill="#F8FAFC" text-anchor="middle">9</text>
+
+  <rect x="320" y="280" width="64" height="48" rx="12" fill="#2A2F5D" />
+  <text x="352" y="310" font-family="'Roboto', sans-serif" font-size="24" font-weight="bold" fill="#F8FAFC" text-anchor="middle">×</text>
+
+  <!-- Row 3 -->
+  <rect x="128" y="344" width="48" height="48" rx="12" fill="#1E223D" />
+  <text x="152" y="374" font-family="'Roboto', sans-serif" font-size="20" font-weight="bold" fill="#F8FAFC" text-anchor="middle">4</text>
+
+  <rect x="192" y="344" width="48" height="48" rx="12" fill="#1E223D" />
+  <text x="216" y="374" font-family="'Roboto', sans-serif" font-size="20" font-weight="bold" fill="#F8FAFC" text-anchor="middle">5</text>
+
+  <rect x="256" y="344" width="48" height="48" rx="12" fill="#1E223D" />
+  <text x="280" y="374" font-family="'Roboto', sans-serif" font-size="20" font-weight="bold" fill="#F8FAFC" text-anchor="middle">6</text>
+
+  <!-- Plus (+) button takes remaining space -->
+  <rect x="320" y="344" width="64" height="48" rx="12" fill="url(#accentGradient)" />
+  <text x="352" y="374" font-family="'Roboto', sans-serif" font-size="24" font-weight="bold" fill="#1E293B" text-anchor="middle">+</text>
+
+</svg>

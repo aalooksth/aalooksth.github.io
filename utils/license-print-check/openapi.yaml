@@ -1,0 +1,64 @@
+openapi: 3.0.3
+info:
+  title: Nepal Smart Driving License Print Status API
+  description: Unified API to check smart driving license print status across Bagamati Province Transport Offices.
+  version: 1.0.0
+servers:
+  - url: https://aloks.com.np/utils/license-print-check
+    description: Production GitHub Pages Server
+paths:
+  /:
+    get:
+      summary: Search Smart Driving License Print Status
+      operationId: checkLicenseStatus
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Driving license number (e.g. 01-06-00000000)
+          schema:
+            type: string
+        - name: format
+          in: query
+          required: false
+          description: Response format (set to 'json' for raw structured JSON output)
+          schema:
+            type: string
+            enum: [json, html]
+            default: html
+      responses:
+        "200":
+          description: License search result details across queried offices.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  query:
+                    type: string
+                  searchedAt:
+                    type: string
+                  summary:
+                    type: object
+                    properties:
+                      isPrinted:
+                        type: boolean
+                      status:
+                        type: string
+                      totalOfficesChecked:
+                        type: integer
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        officeId:
+                          type: string
+                        officeName:
+                          type: string
+                        found:
+                          type: boolean
+                        status:
+                          type: string
+                        details:
+                          type: object

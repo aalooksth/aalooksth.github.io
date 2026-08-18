@@ -13,15 +13,15 @@ Alok Shrestha is a Principal Software Engineer and BI Developer with extensive e
 
 ## Featured Applications & Projects
 1. **Nepal Smart Driving License Print Checker**:
-   - URL: `https://aloks.com.np/license-print-check/`
+   - URL: `https://aloks.com.np/utils/license-print-check/`
    - Purpose: Unified real-time print status & collection guidance across 4 Bagamati Province Transport Management Offices (Ekantakuna, Kalanki, Chabahil, Radhe Radhe).
    - Architecture & Privacy: 100% Client-Side static web app hosted on GitHub Pages. No backend database or query logging. Browser executes direct CORS/proxy calls to public government endpoints (`bagamati.gov.np`).
    - Format Parameter (`&format=json`): Stateless client-side JSON view toggle for accessibility & AI answer engines. Does not log or exfiltrate data.
 2. **Nepal Income Tax Calculator**:
-   - URL: `https://aloks.com.np/nepal-tax-calculator/`
+   - URL: `https://aloks.com.np/utils/nepal-tax-calculator/`
    - Purpose: Real-time tax calculation for single and married individuals under Government of Nepal tax slabs.
 3. **Laptop Migration Hub (Windows OS & Developer Migration Utility)**:
-   - URL: `https://github.com/aalooksth/laptop-migrator`
+   - URL: `https://aloks.com.np/utils/laptop-migrator/` (Documentation) & `https://github.com/aalooksth/laptop-migrator` (Repository)
    - Purpose: Intelligent Windows migration utility for seamless environment synchronization. Backs up & restores IDE unsaved buffers (Antigravity AI, VS Code, Notepad++), Microsoft Office custom ribbons & Excel macros, multi-profile browsers (Chrome, Edge, Firefox), multi-timezone clocks, Wi-Fi network passwords, dotfiles, and Winget application manifests.
    - Packaging: Standalone `.exe` with zero Python dependencies and automated GitHub Actions releases.
 

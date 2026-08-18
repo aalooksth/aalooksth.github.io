@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nepal Cash in Hand Tax Calculator (FY 2083/84 vs 2082/83)</title>
+  <meta name="description" content="Compare your take-home cash in hand and tax liabilities side-by-side for Nepal's income tax structure FY 2082/83 vs the new FY 2083/84.">
+  
+  <script>
+    (function() {
+      const mode = localStorage.getItem('alok_site_theme') || 'auto';
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const isDark = (mode === 'dark') || (mode === 'auto' && prefersDark);
+      document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    })();
+  </script>
+
+  <!-- PWA Settings -->
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/svg+xml" href="./icon.svg">
+  <meta name="theme-color" content="#3f51b5">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="./icon.svg">
+
+  <!-- Style Sheets -->
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- Load Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- Import Map for Material 3 Web Components -->
+  <script type="importmap">
+    {
+      "imports": {
+        "@material/web/": "https://esm.run/@material/web/"
+      }
+    }
+  </script>
+  <script type="module">
+    import '@material/web/all.js';
+  </script>
+</head>
+<body>
+
+  <!-- App Header -->
+  <header>
+    <div class="header-title-container">
+      <img src="./icon.svg" alt="Nepal Tax Logo" style="width: 36px; height: 36px; border-radius: 8px; box-shadow: var(--elevation-1);">
+      <div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <h1>Nepal Tax Compare</h1>
+          <a href="https://aloks.com.np" target="_blank" style="font-size: 11px; font-weight: 700; background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); padding: 2px 8px; border-radius: 9999px; text-decoration: none;">👨‍💻 By Alok ↗</a>
+        </div>
+        <div class="header-subtitle">FY 2083/84 vs. FY 2082/83</div>
+      </div>
+    </div>
+    
+    <!-- Navigation Container -->
+    <div class="nav-container">
+      <button id="nav-calc" class="nav-item active">
+        <span class="material-icons">calculate</span>
+        <span>Calculator</span>
+      </button>
+      <button id="nav-negotiate" class="nav-item">
+        <span class="material-icons">handshake</span>
+        <span>Salary Negotiation</span>
+      </button>
+      <button id="nav-features" class="nav-item">
+        <span class="material-icons">menu_book</span>
+        <span>Features & Guide</span>
+      </button>
+      <button id="nav-ai" class="nav-item">
+        <span class="material-icons">psychology</span>
+        <span>Responsible AI</span>
+      </button>
+    </div>
+    
+    <div class="header-actions">
+      <!-- Back to Main Site -->
+      <a href="../../" style="text-decoration:none;" title="Back to aloks.com.np">
+        <md-outlined-button>
+          <span class="material-icons" slot="icon">home</span>
+          aloks.com.np
+        </md-outlined-button>
+      </a>
+      <a href="../" style="text-decoration:none;" title="Utilities Hub">
+        <md-outlined-button>
+          <span class="material-icons" slot="icon">apps</span>
+          Utilities
+        </md-outlined-button>
+      </a>
+
+      <!-- Theme Switcher -->
+      <md-icon-button id="theme-toggle" aria-label="Toggle Theme">
+        <span class="material-icons" id="theme-icon">brightness_medium</span>
+      </md-icon-button>
+
+      <!-- Install PWA Button -->
+      <md-filled-button id="install-btn" class="hidden">
+        <span class="material-icons" slot="icon">file_download</span>
+        Install App
+      </md-filled-button>
+    </div>
+  </header>
+
+  <!-- PWA Install Banner -->
+  <div id="pwa-banner" class="pwa-banner hidden">
+    <div>
+      <strong>Install Tax Calculator PWA</strong>
+      <p style="font-size: 12px; opacity: 0.9;">Run completely offline, install on home screen, and load instantly.</p>
+    </div>
+    <md-filled-button id="banner-install-btn">Install</md-filled-button>
+  </div>
+
+  <!-- Main Content Area -->
+  <main>
+
+    <!-- Calculator View Panel -->
+    <div id="calculator-view" class="view-panel">
+      
+      <!-- Top controls with Salary Structure tabs & View Mode tabs -->
+      <div class="control-row">
+        <div class="tab-container" id="structure-tabs-container">
+          <button id="tab-same" class="tab-btn active">Same Salary Structure</button>
+          <button id="tab-diff" class="tab-btn">Different Structures</button>
+        </div>
+        
+        <div class="view-mode-container">
+          <button id="view-compare" class="view-btn active">Comparison View</button>
+          <button id="view-82" class="view-btn">FY 2082/83 Only</button>
+          <button id="view-83" class="view-btn">FY 2083/84 Only</button>
+        </div>
+
+        <!-- Mode Y Switch -->
+        <div class="has-tooltip" style="background: var(--md-sys-color-surface-variant); padding: 4px 16px; border-radius: var(--radius-full); display: inline-flex; align-items: center; gap: 8px; box-shadow: inset var(--elevation-1); height: 40px;">
+          <span style="font-family: var(--font-title); font-size: 13px; font-weight: 700; color: var(--md-sys-color-primary);">Mode Y</span>
+          <md-switch id="mode-y" style="transform: scale(0.8);"></md-switch>
+          <span class="tooltip-text" style="bottom: 115%;">Applies Mode Y company settings: forces EPF ON, disables SSF/Remote/Health/Medical, and subtracts 10% basic salary from CIT.</span>
+        </div>
+
+        <button id="btn-reset" class="view-btn" style="background: var(--md-sys-color-error-container); color: var(--md-sys-color-on-error-container); display: flex; align-items: center; gap: 4px;">
+          <span class="material-icons" style="font-size: 16px;">restart_alt</span>
+          <span>Reset</span>
+        </button>
+
+        <button id="btn-share" class="view-btn" style="background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); display: flex; align-items: center; gap: 4px;">
+          <span class="material-icons" style="font-size: 16px;">share</span>
+          <span>Share</span>
+        </button>
+      </div>
+
+      <!-- Sub-tabs for Different Structures (Comparison Mode Selector) -->
+      <div id="diff-mode-container" class="hidden diff-selector-card">
+        <span>Compare Scenario A as:</span>
+        <select id="diff-mode-select">
+          <option value="82_vs_83">Existing Tax (82/83) vs. Scenario B in New Tax (83/84)</option>
+          <option value="83_vs_83">New Tax (83/84) vs. Scenario B in New Tax (83/84)</option>
+        </select>
+      </div>
+
+    <!-- Application Main Grid -->
+    <div class="app-grid" id="main-content-layout">
+
+      <!-- Column 1: Input Panel(s) -->
+      <div id="input-container" style="display: flex; flex-direction: column; gap: 24px;">
+
+        <!-- Profile A (Always visible) -->
+        <div class="card" id="card-profile-a">
+          <div class="card-title" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="material-icons" style="color: var(--md-sys-color-primary);">person</span>
+              <span id="profile-a-title">Salary Profile Details</span>
+            </div>
+            <button id="btn-copy-to-b" class="card-header-btn hidden">
+              <span>Copy to Right</span>
+              <span class="material-icons">arrow_forward</span>
+            </button>
+          </div>
+
+          <div class="form-section">
+            
+            <!-- Basic Salary -->
+            <div class="form-group has-tooltip">
+              <label for="basic-a">Monthly Basic Salary</label>
+              <input type="number" id="basic-a" min="0" value="" placeholder="e.g. 75,000">
+              <span class="tooltip-text">Your base monthly salary, excluding allowances. Used as the base to calculate retirement fund contributions.</span>
+            </div>
+
+            <!-- Allowances -->
+            <div class="form-group has-tooltip">
+              <label for="allowance-a">Monthly Allowances</label>
+              <input type="number" id="allowance-a" min="0" value="" placeholder="e.g. 15,000">
+              <span class="tooltip-text">Regular monthly allowances (e.g. lunch, transport, mobile, housing, cost of living allowance).</span>
+            </div>
+
+            <!-- Bonus -->
+            <div class="form-group has-tooltip">
+              <label for="bonus-a">Annual Bonus / Gratuity / Other Income</label>
+              <input type="number" id="bonus-a" min="0" value="" placeholder="e.g. 100,000">
+              <span class="tooltip-text">Total occasional or annual earnings like festive bonus (Dashain allowance), performance bonus, or gratuity.</span>
+            </div>
+            
+            <!-- Split Bonus Toggle -->
+            <div class="toggle-group has-tooltip" style="margin-top: -8px; margin-bottom: 8px; transform: scale(0.95); transform-origin: left center;">
+              <div class="toggle-label-container">
+                <label for="split-bonus-a">Distribute Bonus Monthly</label>
+                <span class="toggle-desc">Divide annual bonus/gratuity into monthly cash in hand</span>
+              </div>
+              <md-switch id="split-bonus-a"></md-switch>
+              <span class="tooltip-text">If ON, distributes annual bonus and its marginal tax liability evenly over 12 months for a steady monthly paycheck. If OFF, bonus is kept separate.</span>
+            </div>
+
+            <!-- Filing Status Checkbox (Only impacts FY 2082/83) -->
+            <div class="toggle-group has-tooltip">
+              <div class="toggle-label-container">
+                <label for="status-a">Married (Joint Assessment) - 82/83</label>
+                <span class="toggle-desc">Use Married/Joint tax slabs for FY 2082/83 calculation</span>
+              </div>
+              <md-switch id="status-a"></md-switch>
+              <span class="tooltip-text">Filing status for FY 2082/83. Slabs start higher (Rs. 600,000) than single (Rs. 500,000). Note: FY 2083/84 has unified slabs for all.</span>
+            </div>
+
+            <!-- Freelance Income -->
+            <div class="form-group has-tooltip">
+              <label for="freelance-a">Monthly Freelance / Consultancy Income</label>
+              <input type="number" id="freelance-a" min="0" value="" placeholder="e.g. 50,000">
+              <span class="tooltip-text">Freelance or consultancy monthly earnings. Subject to 15% TDS in Nepal. The TDS acts as an advance tax credit offset.</span>
+            </div>
+
+            <!-- Other Income -->
+            <div class="form-group has-tooltip">
+              <label for="other-a">Annual Other Income (Rent, Interest, etc.)</label>
+              <input type="number" id="other-a" min="0" value="" placeholder="e.g. 120,000">
+              <span class="tooltip-text">Other annual taxable incomes (e.g. house rent, investment interest). Rent is typically subject to 10% TDS.</span>
+            </div>
+
+            <!-- Remote Area Category -->
+            <div class="form-group has-tooltip">
+              <label for="remote-a">Remote Area Classification</label>
+              <select id="remote-a">
+                <option value="None">None (Category - None)</option>
+                <option value="A">Category A (Deduction: Rs. 50,000)</option>
+                <option value="B">Category B (Deduction: Rs. 40,000)</option>
+                <option value="C">Category C (Deduction: Rs. 30,000)</option>
+                <option value="D">Category D (Deduction: Rs. 20,000)</option>
+                <option value="E">Category E (Deduction: Rs. 10,000)</option>
+              </select>
+              <span class="tooltip-text">Deduction based on remote category of deployment region under Income Tax Act. Max Rs. 50,000 deduction for Category A.</span>
+            </div>
+
+            <!-- SSF Toggle -->
+            <div class="toggle-group has-tooltip">
+              <div class="toggle-label-container">
+                <label for="ssf-a">Social Security Fund (SSF)</label>
+                <span class="toggle-desc">Employee 11% + Employer 20% (Waives 1% Social Security Tax)</span>
+              </div>
+              <md-switch id="ssf-a" selected></md-switch>
+              <span class="tooltip-text">31% basic salary contribution (11% employee + 20% employer). Enables 1% Social Security Tax waiver on the first slab.</span>
+            </div>
+
+            <!-- EPF Toggle -->
+            <div id="epf-wrapper-a" class="toggle-group has-tooltip">
+              <div class="toggle-label-container">
+                <label for="epf-a">Employees Provident Fund (EPF)</label>
+                <span class="toggle-desc">Employee 10% + Employer 10% Contribution</span>
+              </div>
+              <md-switch id="epf-a"></md-switch>
+              <span class="tooltip-text">20% basic salary contribution (10% employee + 10% employer). Standard provident fund, mutually exclusive with SSF.</span>
+            </div>
+
+            <!-- CIT Input -->
+            <div class="form-group has-tooltip">
+              <label for="cit-a">Monthly Citizen Investment Trust (CIT) Contribution</label>
+              <input type="number" id="cit-a" min="0" value="" placeholder="e.g. 10,000">
+              <span class="tooltip-text">Citizen Investment Trust voluntary contribution. Eligible for tax deduction up to 1/3 of total income or Rs. 500,000 combined limit.</span>
+            </div>
+
+            <!-- Employer Gratuity Toggle -->
+            <div id="gratuity-wrapper-a" class="toggle-group has-tooltip">
+              <div class="toggle-label-container">
+                <label for="gratuity-a">Deposit Gratuity to CIT Fund</label>
+                <span class="toggle-desc">8.33% Basic Salary deposited to CIT Gratuity Fund</span>
+              </div>
+              <md-switch id="gratuity-a"></md-switch>
+              <span class="tooltip-text">When ON, gratuity is deposited to CIT Gratuity Fund (tax-deductible). When OFF, gratuity is paid out directly in cash (taxed).</span>
+            </div>
+
+            <!-- Life Insurance Premium -->
+            <div class="form-group has-tooltip">
+              <label for="life-a">Annual Life Insurance Premium</label>
+              <input type="number" id="life-a" min="0" value="" placeholder="e.g. 25,000 (Max deduction 40k)">
+              <span class="tooltip-text">Annual premium paid for life insurance. Tax-deductible up to Rs. 40,000 annually.</span>
+            </div>
+
+            <!-- Health Insurance Premium -->
+            <div class="form-group has-tooltip">
+              <label for="health-a">Annual Health Insurance Premium</label>
+              <input type="number" id="health-a" min="0" value="" placeholder="e.g. 15,000 (Max deduction 20k)">
+              <span class="tooltip-text">Annual premium paid for health insurance. Tax-deductible up to Rs. 20,000 annually.</span>
+            </div>
+
+            <!-- Medical Expenses -->
+            <div class="form-group has-tooltip">
+              <label for="medical-a">Annual Approved Medical Expenses</label>
+              <input type="number" id="medical-a" min="0" value="" placeholder="e.g. 10,000 (15% credit, max Rs. 1,500)">
+              <span class="tooltip-text">Tax credit of 15% of approved medical bills, directly deducted from your calculated tax. Capped at Rs. 1,500.</span>
+            </div>
+
+            <!-- Female Taxpayer Toggle -->
+            <div class="toggle-group has-tooltip">
+              <div class="toggle-label-container">
+                <label for="female-a">Female Taxpayer Rebate</label>
+                <span class="toggle-desc">10% tax liability rebate (only for employment income)</span>
+              </div>
+              <md-switch id="female-a"></md-switch>
+              <span class="tooltip-text">10% rebate on final calculated tax liability if your sole income source is employment (applies to FY 83/84 unified and FY 82/83 single status).</span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Profile B (Hidden by default, shown in Split structures mode) -->
+        <div class="card hidden" id="card-profile-b">
+          <div class="card-title" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="material-icons" style="color: var(--md-sys-color-secondary);">person_outline</span>
+              <span>Salary Profile B Details (New Tax)</span>
+            </div>
+            <button id="btn-copy-to-a" class="card-header-btn hidden">
+              <span class="material-icons">arrow_back</span>
+              <span>Copy to Left</span>
+            </button>
+          </div>
+
+          <div class="form-section">
+            
+            <!-- Basic Salary -->
+            <div class="form-group has-tooltip">
+              <label for="basic-b">Monthly Basic Salary</label>
+              <input type="number" id="basic-b" min="0" value="" placeholder="e.g. 90,000">
+              <span class="tooltip-text">Your base monthly salary, excluding allowances. Used as the base to calculate retirement fund contributions.</span>
+            </div>
+
+            <!-- Allowances -->
+            <div class="form-group has-tooltip">
+              <label for="allowance-b">Monthly Allowances</label>
+              <input type="number" id="allowance-b" min="0" value="" placeholder="e.g. 20,000">
+              <span class="tooltip-text">Regular monthly allowances (e.g. lunch, transport, mobile, housing, cost of living allowance).</span>
+            </div>
+
+            <!-- Bonus -->
+            <div class="form-group has-tooltip">
+              <label for="bonus-b">Annual Bonus / Gratuity</label>
+              <input type="number" id="bonus-b" min="0" value="" placeholder="e.g. 120,000">
+              <span class="tooltip-text">Total occasional or annual earnings like festive bonus (Dashain allowance), performance bonus, or gratuity.</span>
+            </div>
+
+            <!-- Split Bonus Toggle -->
+            <div class="toggle-group has-tooltip" style="margin-top: -8px; margin-bottom: 8px; transform: scale(0.95); transform-origin: left center;">
+              <div class="toggle-label-container">
+                <label for="split-bonus-b">Distribute Bonus Monthly</label>
+                <span class="toggle-desc">Divide annual bonus/gratuity into monthly cash in hand</span>
+              </div>
+              <md-switch id="split-bonus-b"></md-switch>
+              <span class="tooltip-text">If ON, distributes annual bonus and its marginal tax liability evenly over 12 months for a steady monthly paycheck. If OFF, bonus is kept separate.</span>
+            </div>
+
+            <!-- Filing Status Checkbox (Only impacts FY 2082/83 if relevant) -->
+            <div class="toggle-group has-tooltip">
+              <div class="toggle-label-container">
+                <label for="status-b">Married (Joint Assessment) - Scenario B</label>
+                <span class="toggle-desc">Use Married/Joint tax slabs for scenario comparison</span>
+              </div>
+              <md-switch id="status-b"></md-switch>
+              <span class="tooltip-text">Filing status for comparison scenario. Slabs start higher (Rs. 600,000) than single. Note: FY 2083/84 has unified slabs.</span>
+            </div>
+
+            <!-- Freelance Income -->
+            <div class="form-group has-tooltip">
+              <label for="freelance-b">Monthly Freelance / Consultancy Income</label>
+              <input type="number" id="freelance-b" min="0" value="" placeholder="e.g. 50,000">
+              <span class="tooltip-text">Freelance or consultancy monthly earnings. Subject to 15% TDS in Nepal. The TDS acts as an advance tax credit offset.</span>
+            </div>
+
+            <!-- Other Income -->
+            <div class="form-group has-tooltip">
+              <label for="other-b">Annual Other Income (Rent, Interest, etc.)</label>
+              <input type="number" id="other-b" min="0" value="" placeholder="e.g. 120,000">
+              <span class="tooltip-text">Other annual taxable incomes (e.g. house rent, investment interest). Rent is typically subject to 10% TDS.</span>
+            </div>
+
+            <!-- Remote Area Category -->
+            <div class="form-group has-tooltip">
+              <label for="remote-b">Remote Area Classification</label>
+              <select id="remote-b">
+                <option value="None">None (Category - None)</option>
+                <option value="A">Category A (Deduction: Rs. 50,000)</option>
+                <option value="B">Category B (Deduction: Rs. 40,000)</option>
+                <option value="C">Category C (Deduction: Rs. 30,000)</option>
+                <option value="D">Category D (Deduction: Rs. 20,000)</option>
+                <option value="E">Category E (Deduction: Rs. 10,000)</option>
+              </select>
+              <span class="tooltip-text">Deduction based on remote category of deployment region under Income Tax Act. Max Rs. 50,000 deduction for Category A.</span>
+            </div>
+
+            <!-- SSF Toggle -->
+            <div class="toggle-group has-tooltip">
+              <div class="toggle-label-container">
+                <label for="ssf-b">Social Security Fund (SSF)</label>
+                <span class="toggle-desc">Employee 11% + Employer 20% (Waives 1% Social Security Tax)</span>
+              </div>
+              <md-switch id="ssf-b" selected></md-switch>
+              <span class="tooltip-text">31% basic salary contribution (11% employee + 20% employer). Enables 1% Social Security Tax waiver on the first slab.</span>
+            </div>
+
+            <!-- EPF Toggle -->
+            <div id="epf-wrapper-b" class="toggle-group has-tooltip">
+              <div class="toggle-label-container">
+                <label for="epf-b">Employees Provident Fund (EPF)</label>
+                <span class="toggle-desc">Employee 10% + Employer 10% Contribution</span>
+              </div>
+              <md-switch id="epf-b"></md-switch>
+              <span class="tooltip-text">20% basic salary contribution (10% employee + 10% employer). Standard provident fund, mutually exclusive with SSF.</span>
+            </div>
+
+            <!-- CIT Input -->
+            <div class="form-group has-tooltip">
+              <label for="cit-b">Monthly Citizen Investment Trust (CIT) Contribution</label>
+              <input type="number" id="cit-b" min="0" value="" placeholder="e.g. 10,000">
+              <span class="tooltip-text">Citizen Investment Trust voluntary contribution. Eligible for tax deduction up to 1/3 of total income or Rs. 500,000 combined limit.</span>
+            </div>
+
+            <!-- Employer Gratuity Toggle -->
+            <div id="gratuity-wrapper-b" class="toggle-group has-tooltip">
+              <div class="toggle-label-container">
+                <label for="gratuity-b">Deposit Gratuity to CIT Fund</label>
+                <span class="toggle-desc">8.33% Basic Salary deposited to CIT Gratuity Fund</span>
+              </div>
+              <md-switch id="gratuity-b"></md-switch>
+              <span class="tooltip-text">When ON, gratuity is deposited to CIT Gratuity Fund (tax-deductible). When OFF, gratuity is paid out directly in cash (taxed).</span>
+            </div>
+
+            <!-- Life Insurance Premium -->
+            <div class="form-group has-tooltip">
+              <label for="life-b">Annual Life Insurance Premium</label>
+              <input type="number" id="life-b" min="0" value="" placeholder="e.g. 25,000">
+              <span class="tooltip-text">Annual premium paid for life insurance. Tax-deductible up to Rs. 40,000 annually.</span>
+            </div>
+
+            <!-- Health Insurance Premium -->
+            <div class="form-group has-tooltip">
+              <label for="health-b">Annual Health Insurance Premium</label>
+              <input type="number" id="health-b" min="0" value="" placeholder="e.g. 15,000">
+              <span class="tooltip-text">Annual premium paid for health insurance. Tax-deductible up to Rs. 20,000 annually.</span>
+            </div>
+
+            <!-- Medical Expenses -->
+            <div class="form-group has-tooltip">
+              <label for="medical-b">Annual Approved Medical Expenses</label>
+              <input type="number" id="medical-b" min="0" value="" placeholder="e.g. 10,000">
+              <span class="tooltip-text">Tax credit of 15% of approved medical bills, directly deducted from your calculated tax. Capped at Rs. 1,500.</span>
+            </div>
+
+            <!-- Female Taxpayer Toggle -->
+            <div class="toggle-group has-tooltip">
+              <div class="toggle-label-container">
+                <label for="female-b">Female Taxpayer Rebate</label>
+                <span class="toggle-desc">10% tax liability rebate</span>
+              </div>
+              <md-switch id="female-b"></md-switch>
+              <span class="tooltip-text">10% rebate on final calculated tax liability if your sole income source is employment (applies to FY 83/84 unified and FY 82/83 single status).</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Column 2: Results Panel -->
+      <div class="results-pane">
+
+        <!-- Hero Savings Card (Diff Callout) -->
+        <div class="comparison-badge" id="saving-callout">
+          <div class="badge-text" id="saving-callout-text">Tax Savings with New Taxation Structure</div>
+          <div class="badge-value" id="saving-callout-value">Rs. 0 / year</div>
+        </div>
+
+        <!-- Side-by-Side Summary Cards -->
+        <div class="side-by-side-results">
+          
+          <!-- Column 2A: Existing Taxation (82/83) -->
+          <div class="card result-card existing">
+            <div class="card-title" style="color: var(--md-sys-color-on-surface-variant);">
+              <span class="material-icons">history</span>
+              <span>FY 2082/83 (Existing)</span>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 8px;">
+              <!-- Cash-in-Hand -->
+              <div style="border-bottom: 1px solid var(--md-sys-color-outline-variant); padding-bottom: 6px;">
+                <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 15px;">
+                  <span>Cash-in-Hand (Take-Home)</span>
+                  <span id="cash-monthly-82" style="color: var(--md-sys-color-tertiary);">Rs. 0 / mo</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--md-sys-color-on-surface-variant); margin-top: 2px;">
+                  <span id="cash-monthly-note-82" style="font-weight: 500; color: var(--md-sys-color-primary);"></span>
+                  <span id="cash-annual-82">Rs. 0 / yr</span>
+                </div>
+              </div>
+
+              <!-- Income Tax -->
+              <div style="border-bottom: 1px solid var(--md-sys-color-outline-variant); padding-bottom: 6px;">
+                <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 14px;">
+                  <span>Income Tax Paid</span>
+                  <span id="tax-monthly-82" class="highlight-negative">Rs. 0 / mo</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--md-sys-color-on-surface-variant); margin-top: 2px;">
+                  <span id="tax-monthly-note-82" style="font-weight: 500; color: var(--md-sys-color-error);"></span>
+                  <span id="tax-annual-82">Rs. 0 / yr</span>
+                </div>
+              </div>
+
+              <!-- Cost to Company (CTC) -->
+              <div style="border-bottom: 1px solid var(--md-sys-color-outline-variant); padding-bottom: 6px;">
+                <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 14px;">
+                  <span>Cost to Company (CTC)</span>
+                  <span id="ctc-monthly-82">Rs. 0 / mo</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--md-sys-color-on-surface-variant); margin-top: 2px;">
+                  <span id="ctc-monthly-note-82" style="font-weight: 500; color: var(--md-sys-color-on-surface-variant);"></span>
+                  <span id="ctc-annual-82">Rs. 0 / yr</span>
+                </div>
+              </div>
+
+              <!-- Retirement Savings -->
+              <div>
+                <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 14px;">
+                  <span>Retirement Savings (incl. match)</span>
+                  <span id="savings-monthly-82" style="color: var(--md-sys-color-primary);">Rs. 0 / mo</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--md-sys-color-on-surface-variant); margin-top: 2px;">
+                  <span>Monthly deposits</span>
+                  <span id="savings-annual-82">Rs. 0 / yr</span>
+                </div>
+              </div>
+
+              <!-- Progressive Slab Bar Visualizer -->
+              <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 6px;">
+                <span style="font-size: 12px; font-weight: 700; color: var(--md-sys-color-on-surface-variant);">Tax Slab Allocation:</span>
+                <div class="slab-bar-container" id="slab-bar-container-82"></div>
+                <div class="slab-bar-legend" id="slab-bar-legend-82"></div>
+              </div>
+            </div>
+
+            <!-- Visualization of Income Split (Chart A) -->
+            <div class="chart-container" style="margin-top: 12px;">
+              <div class="chart-title">Annual Income Distribution</div>
+              <svg id="chart-svg-82" class="svg-chart"></svg>
+            </div>
+          </div>
+
+          <!-- Column 2B: New Taxation (83/84) -->
+          <div class="card result-card new">
+            <div class="card-title" style="color: var(--md-sys-color-primary);">
+              <span class="material-icons">trending_up</span>
+              <span>FY 2083/84 (New Slabs)</span>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 8px;">
+              <!-- Cash-in-Hand -->
+              <div style="border-bottom: 1px solid var(--md-sys-color-outline-variant); padding-bottom: 6px;">
+                <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 15px;">
+                  <span>Cash-in-Hand (Take-Home)</span>
+                  <span id="cash-monthly-83" style="color: var(--md-sys-color-tertiary);">Rs. 0 / mo</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--md-sys-color-on-surface-variant); margin-top: 2px;">
+                  <span id="cash-monthly-note-83" style="font-weight: 500; color: var(--md-sys-color-primary);"></span>
+                  <span id="cash-annual-83">Rs. 0 / yr</span>
+                </div>
+              </div>
+
+              <!-- Income Tax -->
+              <div style="border-bottom: 1px solid var(--md-sys-color-outline-variant); padding-bottom: 6px;">
+                <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 14px;">
+                  <span>Income Tax Paid</span>
+                  <span id="tax-monthly-83" class="highlight-negative">Rs. 0 / mo</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--md-sys-color-on-surface-variant); margin-top: 2px;">
+                  <span id="tax-monthly-note-83" style="font-weight: 500; color: var(--md-sys-color-error);"></span>
+                  <span id="tax-annual-83">Rs. 0 / yr</span>
+                </div>
+              </div>
+
+              <!-- Cost to Company (CTC) -->
+              <div style="border-bottom: 1px solid var(--md-sys-color-outline-variant); padding-bottom: 6px;">
+                <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 14px;">
+                  <span>Cost to Company (CTC)</span>
+                  <span id="ctc-monthly-83">Rs. 0 / mo</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--md-sys-color-on-surface-variant); margin-top: 2px;">
+                  <span id="ctc-monthly-note-83" style="font-weight: 500; color: var(--md-sys-color-on-surface-variant);"></span>
+                  <span id="ctc-annual-83">Rs. 0 / yr</span>
+                </div>
+              </div>
+
+              <!-- Retirement Savings -->
+              <div>
+                <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 14px;">
+                  <span>Retirement Savings (incl. match)</span>
+                  <span id="savings-monthly-83" style="color: var(--md-sys-color-primary);">Rs. 0 / mo</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--md-sys-color-on-surface-variant); margin-top: 2px;">
+                  <span>Monthly deposits</span>
+                  <span id="savings-annual-83">Rs. 0 / yr</span>
+                </div>
+              </div>
+
+              <!-- Progressive Slab Bar Visualizer -->
+              <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 6px;">
+                <span style="font-size: 12px; font-weight: 700; color: var(--md-sys-color-on-surface-variant);">Tax Slab Allocation:</span>
+                <div class="slab-bar-container" id="slab-bar-container-83"></div>
+                <div class="slab-bar-legend" id="slab-bar-legend-83"></div>
+              </div>
+            </div>
+
+            <!-- Visualization of Income Split (Chart B) -->
+            <div class="chart-container" style="margin-top: 12px;">
+              <div class="chart-title">Annual Income Distribution</div>
+              <svg id="chart-svg-83" class="svg-chart"></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Smart Tax Saving Recommendations (Optimization Hints) -->
+        <div class="card" id="optimization-tips-card" style="border-left: 6px solid var(--md-sys-color-tertiary); display: none;">
+          <div class="card-title" style="color: var(--md-sys-color-tertiary); border-bottom-color: var(--md-sys-color-tertiary-container);">
+            <span class="material-icons">tips_and_updates</span>
+            <span>Smart Tax Saving Recommendations</span>
+          </div>
+          <div id="optimization-tips-content" style="display: flex; flex-direction: column; gap: 12px; margin-top: 8px;">
+            <!-- Dynamic hints populated by app.js -->
+          </div>
+        </div>
+
+        <!-- Detailed Side-by-Side Calculation Table -->
+        <div class="card table-card">
+          <div class="card-title" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span class="material-icons">receipt_long</span>
+              <span>Detailed Tax & Deductions Breakdown</span>
+            </div>
+            <button id="btn-export-pdf" class="card-header-btn" style="background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container);">
+              <span class="material-icons">picture_as_pdf</span>
+              <span>Export PDF</span>
+            </button>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Calculation Component</th>
+                <th id="table-hdr-a">FY 2082/83</th>
+                <th id="table-hdr-b">FY 2083/84</th>
+                <th>Difference</th>
+              </tr>
+            </thead>
+            <tbody id="comparison-table-body">
+              <!-- Dynamically populated via app.js -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Slab Breakdown Visual Cards -->
+        <div class="card">
+          <div class="card-title">
+            <span class="material-icons">layers</span>
+            <span>Applied Tax Slab Breakdown</span>
+          </div>
+          
+          <div class="slab-breakdown-grid">
+            <div class="slab-col-82">
+              <h4 style="font-family: var(--font-title); margin-bottom: 8px; font-size: 13px; color: var(--md-sys-color-outline);">FY 2082/83 Tax Slabs applied:</h4>
+              <div id="slab-breakdown-82" style="font-size: 12px; display: flex; flex-direction: column; gap: 4px;"></div>
+            </div>
+            <div class="slab-col-83">
+              <h4 style="font-family: var(--font-title); margin-bottom: 8px; font-size: 13px; color: var(--md-sys-color-primary);">FY 2083/84 Tax Slabs applied:</h4>
+              <div id="slab-breakdown-83" style="font-size: 12px; display: flex; flex-direction: column; gap: 4px;"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+    </div>
+
+    <!-- Features & Guide View Panel -->
+    <div id="features-view" class="view-panel hidden">
+      <div class="features-hero">
+        <span class="material-icons hero-icon">stars</span>
+        <h2>Nepal Tax Compare Features & Guide</h2>
+        <p>A comprehensive overview of the progressive tax laws, deductions, credits, and the features built into this application.</p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Feature 1: Unified Slabs -->
+        <div class="card feature-card">
+          <div class="feature-card-header">
+            <span class="material-icons feature-icon" style="color: var(--md-sys-color-primary);">layers</span>
+            <h3>FY 2083/84 Unified Slabs</h3>
+          </div>
+          <p>The budget for FY 2083/84 has completely replaced the separate Single vs. Married tax tables with a single, unified progressive schedule for all resident individuals, significantly increasing the tax-free limit.</p>
+          <ul>
+            <li><strong>Up to NPR 1,000,000:</strong> 1% Social Security Tax (SST)</li>
+            <li><strong>NPR 1,000,001 - 1,500,000:</strong> 10% Income Tax</li>
+            <li><strong>NPR 1,500,001 - 2,500,000:</strong> 20% Income Tax</li>
+            <li><strong>NPR 2,500,001 - 4,000,000:</strong> 27% Income Tax</li>
+            <li><strong>Above NPR 4,000,000:</strong> 29% Income Tax (Reduced from 39%)</li>
+          </ul>
+        </div>
+
+        <!-- Feature 2: Retirement Cap -->
+        <div class="card feature-card">
+          <div class="feature-card-header">
+            <span class="material-icons feature-icon" style="color: var(--md-sys-color-secondary);">shield</span>
+            <h3>Retirement Deductions (Cap: 500k)</h3>
+          </div>
+          <p>Employees contributing to approved retirement funds can deduct their contributions from their taxable income to lower tax liability.</p>
+          <ul>
+            <li><strong>Maximum Deduction:</strong> Lower of actual contributions, 1/3 of assessable income, or **NPR 500,000** annually.</li>
+            <li><strong>SSF Contributions:</strong> Employee 11% + Employer 20% (total 31% basic salary). In this app, employer contributions are added to assessable income and included in the deduction cap calculations.</li>
+            <li><strong>EPF Contributions:</strong> Employee 10% + Employer 10% basic salary.</li>
+            <li><strong>CIT Contribution:</strong> Employees can voluntarily add Citizen Investment Trust contributions.</li>
+          </ul>
+        </div>
+
+        <!-- Feature 3: SST Waiver -->
+        <div class="card feature-card">
+          <div class="feature-card-header">
+            <span class="material-icons feature-icon" style="color: var(--md-sys-color-tertiary);">volunteer_activism</span>
+            <h3>1% SST Waiver for SSF</h3>
+          </div>
+          <p>Salaried individuals contributing to the Social Security Fund (SSF) are eligible for a complete waiver of the 1% Social Security Tax on the first income slab.</p>
+          <ul>
+            <li><strong>SSF Contributors:</strong> Pay **0%** on the first NPR 1,000,000 of taxable income in FY 2083/84 (or first 500k/600k in FY 2082/83).</li>
+            <li><strong>Non-SSF Contributors (EPF/CIT/None):</strong> Pay **1%** on the first slab.</li>
+          </ul>
+        </div>
+
+        <!-- Feature 4: Bonus Distribution -->
+        <div class="card feature-card">
+          <div class="feature-card-header">
+            <span class="material-icons feature-icon" style="color: #60A5FA;">paid</span>
+            <h3>Flex Bonus Distribution</h3>
+          </div>
+          <p>Decide how your annual bonus, gratuity, or other occasional incomes affect your monthly budget. Toggle between two modes:</p>
+          <ul>
+            <li><strong>Distribute Bonus Monthly (ON):</strong> Spreads the net bonus and its marginal tax liability evenly across 12 months for a balanced, regular monthly take-home display.</li>
+            <li><strong>Keep Bonus Separate (OFF):</strong> Excludes the bonus cash and its associated marginal tax from regular monthly cash-in-hand. Net monthly values reflect base pay, and the bonus is shown as a separate payout: <em>(+Rs. XXX bonus when taken)</em>.</li>
+          </ul>
+        </div>
+
+        <!-- Feature 5: Deductions and Credits -->
+        <div class="card feature-card">
+          <div class="feature-card-header">
+            <span class="material-icons feature-icon" style="color: #F87171;">card_membership</span>
+            <h3>Tax Exemptions & Credits</h3>
+          </div>
+          <p>Full support for other deductions and rebates permitted under the Nepal Income Tax Act:</p>
+          <ul>
+            <li><strong>Life Insurance Premium:</strong> Deduct up to NPR 40,000 annually.</li>
+            <li><strong>Health Insurance Premium:</strong> Deduct up to NPR 20,000 annually.</li>
+            <li><strong>Remote Area Allowances:</strong> Flat deductions based on region category (Category A: 50k, B: 40k, C: 30k, D: 20k, E: 10k).</li>
+            <li><strong>Medical Credit:</strong> Tax credit of 15% of approved medical expenses, capped at NPR 1,500.</li>
+            <li><strong>Female Rebate:</strong> 10% discount on final calculated tax liability if income is solely from employment.</li>
+          </ul>
+        </div>
+
+        <!-- Feature 6: PWA and Charts -->
+        <div class="card feature-card">
+          <div class="feature-card-header">
+            <span class="material-icons feature-icon" style="color: #A78BFA;">phonelink</span>
+            <h3>PWA & Interactive Visuals</h3>
+          </div>
+          <p>Built with premium design aesthetics and user convenience in mind:</p>
+          <ul>
+            <li><strong>Progressive Web App (PWA):</strong> Fully installable on iOS, Android, and Desktop. Offline-ready and caches assets for instant load.</li>
+            <li><strong>Responsive Layouts:</strong> Optimizes for mobile viewports, side-by-side comparison, or single-year separate views.</li>
+            <li><strong>Dynamic SVG Charts:</strong> Circular donut visualizations showing a exact breakdown of where every rupee goes.</li>
+            <li><strong>Cost to Company (CTC):</strong> Shows employer match and total package size.</li>
+          </ul>
+        </div>
+
+        <!-- Feature 7: Salary Negotiation Simulator -->
+        <div class="card feature-card">
+          <div class="feature-card-header">
+            <span class="material-icons feature-icon" style="color: #0D9488;">handshake</span>
+            <h3>Salary Negotiation Simulator</h3>
+          </div>
+          <p>Model custom adjustments to your salary package using the dedicated tab sandbox:</p>
+          <ul>
+            <li><strong>Basic & Allowances:</strong> Model adjustments independently for basic salary and allowances.</li>
+            <li><strong>Percent or Fixed:</strong> Apply adjustments as a percentage (e.g., +10%) or a fixed monthly amount (e.g., +Rs. 15,000).</li>
+            <li><strong>Side-by-Side Impact:</strong> View the exact impact of negotiation on take-home salary, tax, retirement, and CTC side-by-side against the base offer.</li>
+          </ul>
+        </div>
+
+        <!-- Feature 8: Secondary Income & TDS Credits -->
+        <div class="card feature-card">
+          <div class="feature-card-header">
+            <span class="material-icons feature-icon" style="color: #FBBF24;">receipt</span>
+            <h3>Secondary Income & TDS Offsets</h3>
+          </div>
+          <p>Account for freelance and other side incomes along with their respective tax deductions:</p>
+          <ul>
+            <li><strong>Freelance Income (15% TDS):</strong> Computes monthly freelance or consultancy earnings and accounts for standard 15% TDS.</li>
+            <li><strong>Other Income (10% TDS):</strong> Accounts for rent, interest, or other annual taxable sources subject to 10% TDS.</li>
+            <li><strong>TDS Tax Credit Offset:</strong> Automatically deducts source-paid TDS from final calculated tax liability, indicating the net tax payable or refund due.</li>
+          </ul>
+        </div>
+
+        <!-- Feature 9: Smart Advice & Slab Visualizer -->
+        <div class="card feature-card">
+          <div class="feature-card-header">
+            <span class="material-icons feature-icon" style="color: var(--md-sys-color-tertiary);">tips_and_updates</span>
+            <h3>Smart Advice & Slab Visualizer</h3>
+          </div>
+          <p>Get proactive guidance on minimizing tax and understanding how your income flows through slabs:</p>
+          <ul>
+            <li><strong>Tax Optimization Tips:</strong> Dynamic advice showing exactly how much tax you can save by maximizing CIT, Life/Health insurance, or Medical Credit.</li>
+            <li><strong>Interactive Slab Visualizer:</strong> Stacked progress bars showing how much of your taxable income falls into each rate bracket with details on hover.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Quick Slab Reference Table -->
+      <div class="card features-table-card">
+        <div class="card-title">
+          <span class="material-icons">query_stats</span>
+          <span>Quick Slabs Reference Table (FY 2082/83 vs FY 2083/84)</span>
+        </div>
+        <div style="overflow-x: auto; margin-top: 12px;">
+          <table class="slabs-info-table">
+            <thead>
+              <tr>
+                <th>Slab Tier</th>
+                <th>FY 2082/83 (Single)</th>
+                <th>FY 2082/83 (Married)</th>
+                <th>FY 2083/84 (Unified Slabs)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>1% Slab (SST)</strong></td>
+                <td>First Rs. 500,000</td>
+                <td>First Rs. 600,000</td>
+                <td>First Rs. 1,000,000</td>
+              </tr>
+              <tr>
+                <td><strong>10% Slab</strong></td>
+                <td>Next Rs. 200,000</td>
+                <td>Next Rs. 200,000</td>
+                <td>Next Rs. 500,000</td>
+              </tr>
+              <tr>
+                <td><strong>20% Slab</strong></td>
+                <td>Next Rs. 300,000</td>
+                <td>Next Rs. 300,000</td>
+                <td>Next Rs. 1,000,000</td>
+              </tr>
+              <tr>
+                <td><strong>27% Slab / 30% Slab</strong></td>
+                <td>Next Rs. 1,000,000 (30%)</td>
+                <td>Next Rs. 900,000 (30%)</td>
+                <td>Next Rs. 1,500,000 (27%)</td>
+              </tr>
+              <tr>
+                <td><strong>36% Slab</strong></td>
+                <td>Next Rs. 3,000,000</td>
+                <td>Next Rs. 3,000,000</td>
+                <td>N/A (Merged)</td>
+              </tr>
+              <tr>
+                <td><strong>Top Slab</strong></td>
+                <td>Above Rs. 5,000,000 (39%)</td>
+                <td>Above Rs. 5,000,000 (39%)</td>
+                <td>Above Rs. 4,000,000 (29%)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Useful Portal Links Section -->
+      <div class="card features-table-card" style="margin-top: 24px;">
+        <div class="card-title">
+          <span class="material-icons" style="color: var(--md-sys-color-primary);">link</span>
+          <span>Useful Official Portals & Resources</span>
+        </div>
+        <p style="font-size: 14px; color: var(--md-sys-color-on-surface-variant); margin-top: 8px; margin-bottom: 16px;">
+          Access the official Nepalese government and organizational portals to manage your tax registration, view contribution statements, or check retirement balances.
+        </p>
+        <div class="links-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
+          
+          <!-- IRD Link -->
+          <a href="https://ird.gov.np" target="_blank" class="portal-link-item" style="text-decoration: none; color: inherit;">
+            <div class="card" style="margin: 0; padding: 16px; height: 100%; border: 1px solid var(--md-sys-color-outline-variant);">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <span class="material-icons" style="color: #EF4444; font-size: 28px;">account_balance</span>
+                <div>
+                  <h4 style="margin: 0; font-family: var(--font-title); font-size: 15px; color: var(--md-sys-color-on-surface);">Inland Revenue Department (IRD)</h4>
+                  <p style="margin: 4px 0 0 0; font-size: 11px; color: var(--md-sys-color-on-surface-variant);">Tax filings, PAN registration, tax calculators & official circulars.</p>
+                </div>
+              </div>
+            </div>
+          </a>
+
+          <!-- SSF Link -->
+          <a href="https://ssf.gov.np" target="_blank" class="portal-link-item" style="text-decoration: none; color: inherit;">
+            <div class="card" style="margin: 0; padding: 16px; height: 100%; border: 1px solid var(--md-sys-color-outline-variant);">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <span class="material-icons" style="color: #10B981; font-size: 28px;">groups</span>
+                <div>
+                  <h4 style="margin: 0; font-family: var(--font-title); font-size: 15px; color: var(--md-sys-color-on-surface);">Social Security Fund (SSF)</h4>
+                  <p style="margin: 4px 0 0 0; font-size: 11px; color: var(--md-sys-color-on-surface-variant);">Contributor logins, social security schemes, claims & statements.</p>
+                </div>
+              </div>
+            </div>
+          </a>
+
+          <!-- CIT / NLK Link -->
+          <a href="https://nlk.org.np" target="_blank" class="portal-link-item" style="text-decoration: none; color: inherit;">
+            <div class="card" style="margin: 0; padding: 16px; height: 100%; border: 1px solid var(--md-sys-color-outline-variant);">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <span class="material-icons" style="color: #3B82F6; font-size: 28px;">savings</span>
+                <div>
+                  <h4 style="margin: 0; font-family: var(--font-title); font-size: 15px; color: var(--md-sys-color-on-surface);">Citizen Investment Trust (CIT)</h4>
+                  <p style="margin: 4px 0 0 0; font-size: 11px; color: var(--md-sys-color-on-surface-variant);">Nagarik Lagani Kosh. E-returns, statements, and schemes.</p>
+                </div>
+              </div>
+            </div>
+          </a>
+
+          <!-- EPF Link -->
+          <a href="https://epf.org.np" target="_blank" class="portal-link-item" style="text-decoration: none; color: inherit;">
+            <div class="card" style="margin: 0; padding: 16px; height: 100%; border: 1px solid var(--md-sys-color-outline-variant);">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <span class="material-icons" style="color: #F59E0B; font-size: 28px;">account_balance_wallet</span>
+                <div>
+                  <h4 style="margin: 0; font-family: var(--font-title); font-size: 15px; color: var(--md-sys-color-on-surface);">Employees Provident Fund (EPF)</h4>
+                  <p style="margin: 4px 0 0 0; font-size: 11px; color: var(--md-sys-color-on-surface-variant);">Karmachari Sanchaya Kosh. Logins, statements, and loan portals.</p>
+                </div>
+              </div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Salary Negotiation View Panel -->
+    <div id="negotiate-view" class="view-panel hidden">
+      <div class="features-hero" style="background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);">
+        <span class="material-icons hero-icon" style="color: #fcd34d;">handshake</span>
+        <h2>Salary Negotiation Simulator</h2>
+        <p>Model custom adjustments to basic salary and allowances, and view side-by-side impact on cash-in-hand, tax, retirement savings, and CTC without affecting your main calculation inputs.</p>
+      </div>
+
+      <div class="app-grid dual-input-layout">
+        <!-- Inputs Card (Left / Top) -->
+        <div id="nego-input-container" class="dual-inputs" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
+          
+          <!-- Base Profile Selection Card -->
+          <div class="card">
+            <div class="card-title">
+              <span class="material-icons" style="color: var(--md-sys-color-primary);">settings</span>
+              <span>1. Select Base Profile</span>
+            </div>
+            <div class="form-section">
+              <div class="form-group has-tooltip">
+                <label for="nego-base-profile">Base Profile to Adjust</label>
+                <select id="nego-base-profile">
+                  <option value="profileA_82">Profile A (FY 2082/83)</option>
+                  <option value="profileA_83">Profile A (FY 2083/84)</option>
+                  <option value="profileB_83">Profile B (FY 2083/84)</option>
+                </select>
+                <span class="tooltip-text">Select which salary configuration from the main calculator tab to use as your negotiation baseline.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Adjustments Card -->
+          <div class="card">
+            <div class="card-title">
+              <span class="material-icons" style="color: var(--md-sys-color-secondary);">edit</span>
+              <span>2. Adjustments</span>
+            </div>
+            <div class="form-section">
+              <!-- Basic Salary Adjustment Group -->
+              <div style="border-bottom: 1px solid var(--md-sys-color-outline-variant); padding-bottom: 12px; display: flex; flex-direction: column; gap: 8px;">
+                <label style="font-weight: 700;">Basic Salary Adjustment</label>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="nego-basic-type">Type</label>
+                    <select id="nego-basic-type">
+                      <option value="percent">Percentage (%)</option>
+                      <option value="fixed">Fixed Amount (Rs.)</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="nego-basic-action">Direction</label>
+                    <select id="nego-basic-action">
+                      <option value="increase">Increase (+)</option>
+                      <option value="decrease">Decrease (-)</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group" style="margin-top: 4px;">
+                  <label for="nego-basic-val">Adjustment Value</label>
+                  <input type="number" id="nego-basic-val" min="0" placeholder="e.g. 10 for 10% or 15000 for Rs.15k">
+                </div>
+              </div>
+
+              <!-- Allowances Adjustment Group -->
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <label style="font-weight: 700;">Allowances Adjustment</label>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="nego-allowance-type">Type</label>
+                    <select id="nego-allowance-type">
+                      <option value="percent">Percentage (%)</option>
+                      <option value="fixed">Fixed Amount (Rs.)</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="nego-allowance-action">Direction</label>
+                    <select id="nego-allowance-action">
+                      <option value="increase">Increase (+)</option>
+                      <option value="decrease">Decrease (-)</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group" style="margin-top: 4px;">
+                  <label for="nego-allowance-val">Adjustment Value</label>
+                  <input type="number" id="nego-allowance-val" min="0" placeholder="e.g. 5 for 5% or 5000 for Rs.5k">
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Results Pane (Right / Bottom) -->
+        <div class="results-pane">
+          <!-- Side-by-Side Summary Cards -->
+          <div class="side-by-side-results">
+            
+            <!-- Base Offer Result Card -->
+            <div class="card result-card existing" style="border-left-color: var(--md-sys-color-outline);">
+              <div class="card-title" style="color: var(--md-sys-color-on-surface-variant);">
+                <span class="material-icons">history</span>
+                <span>Base Salary Offer</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 8px;">
+                <!-- Cash in Hand -->
+                <div style="border-bottom: 1px solid var(--md-sys-color-outline-variant); padding-bottom: 6px;">
+                  <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 15px;">
+                    <span>Cash-in-Hand (Take-Home)</span>
+                    <span id="nego-cash-monthly-base" style="color: var(--md-sys-color-tertiary);">Rs. 0 / mo</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--md-sys-color-on-surface-variant); margin-top: 2px;">
+                    <span id="nego-cash-monthly-note-base" style="font-weight: 500; color: var(--md-sys-color-primary);"></span>
+                    <span id="nego-cash-annual-base">Rs. 0 / yr</span>
+                  </div>
+                </div>
+                <!-- Income Tax -->
+                <div style="border-bottom: 1px solid var(--md-sys-color-outline-variant); padding-bottom: 6px;">
+                  <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 14px;">
+                    <span>Income Tax Paid</span>
+                    <span id="nego-tax-monthly-base" class="highlight-negative">Rs. 0 / mo</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--md-sys-color-on-surface-variant); margin-top: 2px;">
+                    <span id="nego-tax-monthly-note-base" style="font-weight: 500; color: var(--md-sys-color-error);"></span>
+                    <span id="nego-tax-annual-base">Rs. 0 / yr</span>
+                  </div>
+                </div>
+                <!-- CTC -->
+                <div style="border-bottom: 1px solid var(--md-sys-color-outline-variant); padding-bottom: 6px;">
+                  <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 14px;">
+                    <span>Cost to Company (CTC)</span>
+                    <span id="nego-ctc-monthly-base">Rs. 0 / mo</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--md-sys-color-on-surface-variant); margin-top: 2px;">
+                    <span id="nego-ctc-monthly-note-base" style="font-weight: 500; color: var(--md-sys-color-on-surface-variant);"></span>
+                    <span id="nego-ctc-annual-base">Rs. 0 / yr</span>
+                  </div>
+                </div>
+                <!-- Retirement Savings -->
+                <div>
+                  <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 14px;">
+                    <span>Retirement Savings (incl. match)</span>
+                    <span id="nego-savings-monthly-base" style="color: var(--md-sys-color-primary);">Rs. 0 / mo</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--md-sys-color-on-surface-variant); margin-top: 2px;">
+                    <span>Monthly deposits</span>
+                    <span id="nego-savings-annual-base">Rs. 0 / yr</span>
+                  </div>
+                </div>
+                <!-- Progressive Slab Bar -->
+                <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 6px;">
+                  <span style="font-size: 12px; font-weight: 700; color: var(--md-sys-color-on-surface-variant);">Tax Slab Allocation:</span>
+                  <div class="slab-bar-container" id="nego-slab-bar-container-base"></div>
+                  <div class="slab-bar-legend" id="nego-slab-bar-legend-base"></div>
+                </div>
+              </div>
+              <div class="chart-container" style="margin-top: 12px;">
+                <div class="chart-title">Annual Income Distribution</div>
+                <svg id="nego-chart-svg-base" class="svg-chart"></svg>
+              </div>
+            </div>
+
+            <!-- Negotiated Offer Result Card -->
+            <div class="card result-card new" style="border-left-color: #0d9488;">
+              <div class="card-title" style="color: #0d9488;">
+                <span class="material-icons">handshake</span>
+                <span>Negotiated Salary Offer</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 8px;">
+                <!-- Cash in Hand -->
+                <div style="border-bottom: 1px solid var(--md-sys-color-outline-variant); padding-bottom: 6px;">
+                  <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 15px;">
+                    <span>Cash-in-Hand (Take-Home)</span>
+                    <span id="nego-cash-monthly-nego" style="color: var(--md-sys-color-tertiary);">Rs. 0 / mo</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--md-sys-color-on-surface-variant); margin-top: 2px;">
+                    <span id="nego-cash-monthly-note-nego" style="font-weight: 500; color: var(--md-sys-color-primary);"></span>
+                    <span id="nego-cash-annual-nego">Rs. 0 / yr</span>
+                  </div>
+                </div>
+                <!-- Income Tax -->
+                <div style="border-bottom: 1px solid var(--md-sys-color-outline-variant); padding-bottom: 6px;">
+                  <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 14px;">
+                    <span>Income Tax Paid</span>
+                    <span id="nego-tax-monthly-nego" class="highlight-negative">Rs. 0 / mo</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--md-sys-color-on-surface-variant); margin-top: 2px;">
+                    <span id="nego-tax-monthly-note-nego" style="font-weight: 500; color: var(--md-sys-color-error);"></span>
+                    <span id="nego-tax-annual-nego">Rs. 0 / yr</span>
+                  </div>
+                </div>
+                <!-- CTC -->
+                <div style="border-bottom: 1px solid var(--md-sys-color-outline-variant); padding-bottom: 6px;">
+                  <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 14px;">
+                    <span>Cost to Company (CTC)</span>
+                    <span id="nego-ctc-monthly-nego">Rs. 0 / mo</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--md-sys-color-on-surface-variant); margin-top: 2px;">
+                    <span id="nego-ctc-monthly-note-nego" style="font-weight: 500; color: var(--md-sys-color-on-surface-variant);"></span>
+                    <span id="nego-ctc-annual-nego">Rs. 0 / yr</span>
+                  </div>
+                </div>
+                <!-- Retirement Savings -->
+                <div>
+                  <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 14px;">
+                    <span>Retirement Savings (incl. match)</span>
+                    <span id="nego-savings-monthly-nego" style="color: var(--md-sys-color-primary);">Rs. 0 / mo</span>
+                  </div>
+                  <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--md-sys-color-on-surface-variant); margin-top: 2px;">
+                    <span>Monthly deposits</span>
+                    <span id="nego-savings-annual-nego">Rs. 0 / yr</span>
+                  </div>
+                </div>
+                <!-- Progressive Slab Bar -->
+                <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 6px;">
+                  <span style="font-size: 12px; font-weight: 700; color: var(--md-sys-color-on-surface-variant);">Tax Slab Allocation:</span>
+                  <div class="slab-bar-container" id="nego-slab-bar-container-nego"></div>
+                  <div class="slab-bar-legend" id="nego-slab-bar-legend-nego"></div>
+                </div>
+              </div>
+              <div class="chart-container" style="margin-top: 12px;">
+                <div class="chart-title">Annual Income Distribution</div>
+                <svg id="nego-chart-svg-nego" class="svg-chart"></svg>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Detailed Row-by-Row Table Card -->
+          <div class="card table-card">
+            <div class="card-title">
+              <span class="material-icons">receipt_long</span>
+              <span>Negotiation Detailed Impact Table</span>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Salary / Calculation Item</th>
+                  <th>Base Salary Offer</th>
+                  <th>Negotiated Offer</th>
+                  <th>Net Difference</th>
+                </tr>
+              </thead>
+              <tbody id="nego-comparison-table-body">
+                <!-- Dynamically populated via app.js -->
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Responsible AI View Panel -->
+    <div id="ai-use-view" class="view-panel hidden">
+      <div class="ai-hero">
+        <span class="material-icons hero-icon">psychology</span>
+        <h2>Responsible AI Manifesto</h2>
+        <p>A reminder to developers and creators on utilizing Artificial Intelligence to solve unique, unsolved problems rather than rebuilding existing commodities.</p>
+      </div>
+
+      <div class="ai-grid">
+        <!-- Card 1: Rebuilding vs. Creating -->
+        <div class="card ai-card">
+          <div class="ai-card-header">
+            <span class="material-icons ai-icon" style="color: var(--md-sys-color-primary);">lightbulb</span>
+            <h3>Build What Doesn't Exist</h3>
+          </div>
+          <div class="ai-card-content">
+            <p>Artificial Intelligence represents a monumental leap in human productivity. However, with great power comes the responsibility of intent. Recreating standard, commoditized tools (like generic calculators, basic todo lists, or standard templates) wastes energy and human potential.</p>
+            <p style="margin-top: 12px; font-weight: 500; color: var(--md-sys-color-primary);">AI is best utilized to build custom, tailored solutions to localized problems that have no existing pre-packaged alternatives.</p>
+          </div>
+        </div>
+
+        <!-- Card 2: The Inspiration Behind This Tool -->
+        <div class="card ai-card">
+          <div class="ai-card-header">
+            <span class="material-icons ai-icon" style="color: var(--md-sys-color-secondary);">explore</span>
+            <h3>Case Study: Nepal Tax Compare</h3>
+          </div>
+          <div class="ai-card-content">
+            <p>This calculator is a prime example of the <strong>"Build What Doesn't Exist"</strong> mandate. While standard global tax calculators exist, none addressed the complex, concurrent, side-by-side transition from the dual tax slabs of FY 2082/83 to the new unified tax structure of FY 2083/84 in Nepal, accounting for specialized local deductions like SSF tax exemptions, remote allowances, and CIT limits in an offline-ready PWA.</p>
+            <p style="margin-top: 12px; font-weight: 500; color: var(--md-sys-color-secondary);">We built this to solve a specific, unmet localized need.</p>
+          </div>
+        </div>
+
+        <!-- Card 3: The True Cost of Replication -->
+        <div class="card ai-card">
+          <div class="ai-card-header">
+            <span class="material-icons ai-icon" style="color: var(--md-sys-color-error);">eco</span>
+            <h3>The Environmental & Cognitive Cost</h3>
+          </div>
+          <div class="ai-card-content">
+            <p>Every AI generation consumes computational cycles, electrical power, and water for cooling data centers. Using these immense resources to duplicate existing open-source code or rebuild wheels contributes to carbon emissions without adding novel utility to the digital ecosystem.</p>
+            <p style="margin-top: 12px; font-weight: 500; color: var(--md-sys-color-error);">Innovate responsibly. Dedicate GPU hours to original thoughts and bridging functional gaps.</p>
+          </div>
+        </div>
+
+        <!-- Card 4: How to Apply Responsible AI -->
+        <div class="card ai-card">
+          <div class="ai-card-header">
+            <span class="material-icons ai-icon" style="color: var(--md-sys-color-tertiary);">verified</span>
+            <h3>The AI Creator's Checklist</h3>
+          </div>
+          <div class="ai-card-content">
+            <ul>
+              <li><strong>Search First:</strong> Verify if a high-quality, open-source tool already satisfies the requirement.</li>
+              <li><strong>Target Gaps:</strong> Identify where existing solutions fail—due to lack of localization, poor user experience, or static limitations.</li>
+              <li><strong>Augment, Don't Clone:</strong> If you must build in an existing space, add substantial new value (e.g. offline PWA capabilities, interactive visualizations, and side-by-side comparisons).</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card ai-callout-card">
+        <span class="material-icons">info</span>
+        <div>
+          <strong>A Core Principle for AI pair-programming:</strong>
+          <p style="margin-top: 4px; font-size: 13px;">"Use AI to expand the boundaries of software, bringing solutions to places and peoples that were underserved by technology, rather than overcrowding the well-trodden paths."</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer Info -->
+  <footer style="border-top: 1px solid var(--md-sys-color-outline-variant); padding: 24px 16px; margin-top: 48px; text-align: center;">
+    <div style="margin-bottom: 12px; display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; font-size: 13px;">
+      <span style="font-weight: 700; opacity: 0.9;">Portals:</span>
+      <a href="../" style="color: var(--md-sys-color-primary); text-decoration: none; font-weight: 500;">Utilities Hub</a>
+      <span style="opacity: 0.3;">|</span>
+      <a href="../laptop-migrator/" style="color: var(--md-sys-color-primary); text-decoration: none; font-weight: 500;">Laptop Migration Hub</a>
+      <span style="opacity: 0.3;">|</span>
+      <a href="../license-print-check/" style="color: var(--md-sys-color-primary); text-decoration: none; font-weight: 500;">License Print Checker</a>
+      <span style="opacity: 0.3;">|</span>
+      <a href="../nepali-calendar/" style="color: var(--md-sys-color-primary); text-decoration: none; font-weight: 500;">Nepali Calendar</a>
+      <span style="opacity: 0.3;">|</span>
+      <a href="https://ird.gov.np" target="_blank" rel="noopener" style="color: var(--md-sys-color-primary); text-decoration: none; font-weight: 500;">IRD Portal</a>
+    </div>
+    
+    <div style="margin: 12px 0; font-size: 14px; color: var(--md-sys-color-on-surface);">
+      &copy; 2026 <strong>Alok Shrestha</strong> &bull; <a href="https://aloks.com.np" target="_blank" style="color: var(--md-sys-color-primary); text-decoration: none; font-weight: 600;">aloks.com.np</a>
+    </div>
+    
+    <div style="font-size: 12px; color: var(--md-sys-color-on-surface-variant); margin-bottom: 8px;">
+      For assistance contact Alok &mdash; <a href="mailto:hello@aloks.com.np" style="color: var(--md-sys-color-primary); text-decoration: none;">hello@aloks.com.np</a>
+    </div>
+
+    <div style="max-width: 650px; margin: 12px auto 0 auto; line-height: 1.4; opacity: 0.7; font-size: 11px;">
+      Disclaimer: This calculator is based on the proposed budget and tax slab adjustments for Fiscal Year 2083/84 and the active tax rates of Fiscal Year 2082/83 under Government of Nepal tax regulations.
+    </div>
+  </footer>
+
+  <!-- Main Controller Application Scripts -->
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

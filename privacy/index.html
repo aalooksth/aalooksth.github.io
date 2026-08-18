@@ -9,7 +9,7 @@
     <title>Privacy Policy | Alok Shrestha</title>
     <meta name="title" content="Privacy Policy | Alok Shrestha">
     <meta name="description"
-        content="Privacy Policy for aloks.com.np (aalooksth.github.io) explaining data usage, Google Analytics, and Microsoft Clarity integration.">
+        content="Privacy Policy for aloks.com.np explaining client-side data privacy across utilities (License Checker, Tax Calculator, Nepali Calendar, Laptop Migrator) and telemetry.">
     <meta name="robots" content="index, follow">
     <meta name="author" content="Alok Shrestha">
 
@@ -19,7 +19,7 @@
     <!-- Preload fonts and styles -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Mukta:wght@400;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -49,28 +49,31 @@
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
 
+    <!-- Top Navigation Bar -->
     <nav class="navbar">
         <div class="container nav-container">
-            <a href="/" class="logo">Alok<span>.</span></a>
+            <a href="../" class="logo">Alok<span>.</span></a>
             <ul class="nav-links">
-                <li><a href="/#home">Home</a></li>
-                <li><a href="/#skills">Skills</a></li>
-                <li><a href="/#experience">Experience</a></li>
-                <li><a href="/#education">Education</a></li>
-                <li><a href="/license-print-check" class="btn btn-secondary" aria-label="License Print Check"><i
-                            class="fa-solid fa-id-card"></i> License Print Checker</a></li>
+                <li><a href="../#home">Home</a></li>
+                <li><a href="../#skills">Skills</a></li>
+                <li><a href="../#projects">Projects</a></li>
+                <li><a href="../#experience">Experience</a></li>
+                <li><a href="../#education">Education</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle">Portals ▼</a>
                     <ul class="dropdown-menu">
-                        <li><a href="https://blog.aloks.com.np" target="_blank" aria-label="Blog Subdomain">Blog</a>
-                        </li>
-                        <li><a href="https://api.aloks.com.np" target="_blank" aria-label="API Subdomain">API Tester</a>
-                        </li>
-                        <li><a href="https://connect.aloks.com.np" target="_blank"
-                                aria-label="Connect Subdomain">Connect</a></li>
+                        <li><a href="../utils/">Utilities Hub</a></li>
+                        <li><a href="../utils/laptop-migrator/">Laptop Migration Hub</a></li>
+                        <li><a href="../utils/license-print-check/">License Print Checker</a></li>
+                        <li><a href="../utils/nepal-tax-calculator/">Tax Calculator</a></li>
+                        <li><a href="../utils/nepali-calendar/">Nepali Calendar</a></li>
+                        <li><a href="https://blog.aloks.com.np" target="_blank" aria-label="Blog Subdomain">Blog</a></li>
+                        <li><a href="https://api.aloks.com.np" target="_blank" aria-label="API Subdomain">API Tester</a></li>
+                        <li><a href="https://connect.aloks.com.np" target="_blank" aria-label="Connect Subdomain">Connect</a></li>
                     </ul>
                 </li>
-                <li><a href="/#contact" class="btn btn-outline">Contact</a></li>
+                <li><a href="../#contact" class="btn btn-outline">Contact</a></li>
+                <li id="siteClock" style="font-size: 0.85rem; font-weight: 600; color: var(--primary); text-align: center; margin: 0 1rem; display: flex; flex-direction: column; justify-content: center;"></li>
                 <li>
                     <button type="button" id="themeToggleBtn" class="btn-icon" title="Toggle Theme">
                         <i class="fa-solid fa-moon dark-icon"></i>
@@ -87,80 +90,115 @@
         </div>
     </nav>
 
-    <main style="padding-top: 120px; padding-bottom: 60px;">
-        <div class="container" style="max-width: 800px; margin: 0 auto;">
-            <h1 class="section-title" style="margin-bottom: 1rem;">Privacy Policy</h1>
-            <p style="color: var(--text-muted); margin-bottom: 2rem; text-align: center;">Last updated: July 31, 2026
+    <!-- Main Content -->
+    <main style="padding-top: 130px; padding-bottom: 60px; min-height: 80vh;">
+        <div class="container" style="max-width: 860px; margin: 0 auto;">
+            <h1 class="section-title" style="margin-bottom: 0.5rem; text-align: center;">Privacy Policy</h1>
+            <p style="color: var(--text-muted); margin-bottom: 2.5rem; text-align: center; font-size: 0.95rem;">
+                Last updated: August 18, 2026 &bull; Committed to Client-Side Privacy & Transparency
             </p>
 
-            <div
-                style="display: flex; flex-direction: column; gap: 1.5rem; line-height: 1.7; color: var(--text-color);">
-                <section>
-                    <h2 style="margin-bottom: 0.5rem; color: var(--primary);">Overview</h2>
-                    <p>This Privacy Policy applies to <strong>aloks.com.np</strong> (hosted via GitHub Pages as
-                        <code>aalooksth.github.io</code>). Your privacy is respected, and this document explains how web
-                        analytics tools are used to measure traffic and improve user experience on this website.</p>
-                </section>
-
-                <section>
-                    <h2 style="margin-bottom: 0.5rem; color: var(--primary);">Analytics & Tracking Technologies</h2>
-                    <p>Third-party analytics tools are utilized to understand visitor interactions, usage patterns, and
-                        site performance:</p>
-                    <ul
-                        style="margin-left: 1.5rem; margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
-                        <li>
-                            <strong>Google Analytics:</strong> Collects anonymous telemetry and site traffic data (such
-                            as page views, device/browser information, and user interaction metrics). Learn more at <a
-                                href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer"
-                                style="color: var(--secondary);">Google's Privacy & Terms</a>.
-                        </li>
-                        <li>
-                            <strong>Microsoft Clarity:</strong> Captures behavioural metrics, heatmaps, and session
-                            replay features to analyze user engagement and optimize usability. For details on
-                            Microsoft's data collection, visit <a
-                                href="https://privacy.microsoft.com/en-us/privacystatement" target="_blank"
-                                rel="noopener noreferrer" style="color: var(--secondary);">Microsoft Privacy
-                                Statement</a>.
-                        </li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h2 style="margin-bottom: 0.5rem; color: var(--primary);">Cookies</h2>
-                    <p>Cookies and similar storage technologies are set by Google Analytics and Microsoft Clarity to
-                        track unique sessions and aggregate analytics data. You can disable or block cookies through
-                        your web browser settings at any time.</p>
-                </section>
-
-                <section>
-                    <h2 style="margin-bottom: 0.5rem; color: var(--primary);">Smart License Print Check Privacy & Zero Data Retention</h2>
-                    <p>The <strong>Nepal Smart Driving License Print & Collection Status Checker</strong> utility (`/license-print-check/`) is designed with strict client-side data privacy:</p>
-                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
-                        <li><strong>No Server-Side Logging or Retention:</strong> Submitted driving license numbers are processed exclusively in your browser memory (`client-side`). No license numbers or search queries are stored, logged, or sent to any custom database or server owned by Alok Shrestha.</li>
-                        <li><strong>Direct Public Endpoints:</strong> All search queries (`fetch()`) are executed directly from your browser to public endpoints maintained by respective Transport Management Offices (TMOs).</li>
-                        <li><strong>Local Browser Storage Only:</strong> Recent search history is stored locally on your device (`localStorage`) for your convenience and can be cleared at any time using the "Clear All" button.</li>
-                        <li><strong>AEO / API Format Parameter (`&format=json`):</strong> The `&format=json` URL parameter is a stateless client-side rendering toggle. It formats the public office response into raw JSON in your browser for assistive tools or automated agents, without transmitting data to any third party.</li>
-                    </ul>
-                </section>
-
-                <section>
-                    <h2 style="margin-bottom: 0.5rem; color: var(--primary);">Contact Information</h2>
-                    <p>If you have any questions regarding this Privacy Policy, feel free to get in touch via email at
-                        <a href="mailto:aalooksth@gmail.com" style="color: var(--secondary);">aalooksth@gmail.com</a>.
+            <div style="display: flex; flex-direction: column; gap: 2rem; line-height: 1.7; color: var(--text-color);">
+                
+                <section class="util-card" style="margin-bottom: 0; padding: 1.75rem;">
+                    <h2 style="margin-bottom: 0.75rem; color: var(--primary); font-size: 1.3rem;">
+                        <i class="fa-solid fa-shield-halved"></i> Privacy Commitment Overview
+                    </h2>
+                    <p>
+                        This Privacy Policy applies to <strong>aloks.com.np</strong> (hosted via GitHub Pages as <code>aalooksth.github.io</code>) and all accompanying browser utilities. Your privacy and digital autonomy are paramount. All computational tools, calculators, calendars, and migration guides are designed to execute <strong>100% client-side in your web browser</strong> without storing your personal data on any server.
                     </p>
                 </section>
+
+                <section class="util-card" style="margin-bottom: 0; padding: 1.75rem;">
+                    <h2 style="margin-bottom: 0.75rem; color: var(--primary); font-size: 1.3rem;">
+                        <i class="fa-solid fa-screwdriver-wrench"></i> Utilities & Tool-Specific Data Policies
+                    </h2>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-top: 1rem;">
+                        <div>
+                            <h3 style="font-size: 1.05rem; color: var(--text-color); margin-bottom: 0.35rem;">
+                                🪪 Smart License Print Checker (<code>/utils/license-print-check/</code>)
+                            </h3>
+                            <ul style="margin-left: 1.25rem; display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.95rem;">
+                                <li><strong>Zero Server Logging:</strong> Entered driving license numbers and queries are processed entirely in browser memory. No license numbers are logged, collected, or stored in any remote database.</li>
+                                <li><strong>Direct Public Inquiries:</strong> Status checks query publicly accessible transport office records directly from your browser.</li>
+                                <li><strong>Local Search History:</strong> History is saved strictly in your device's <code>localStorage</code> and can be permanently wiped with one click.</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h3 style="font-size: 1.05rem; color: var(--text-color); margin-bottom: 0.35rem;">
+                                📊 Nepal Income Tax Calculator (<code>/utils/nepal-tax-calculator/</code>)
+                            </h3>
+                            <ul style="margin-left: 1.25rem; display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.95rem;">
+                                <li><strong>Local Calculations:</strong> Salary amounts, SSF/EPF/CIT figures, insurance rebates, and tax comparisons are calculated on-the-fly using browser JavaScript. No financial data is ever sent across the network.</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h3 style="font-size: 1.05rem; color: var(--text-color); margin-bottom: 0.35rem;">
+                                📅 Nepali Date Calendar & Festival Planner (<code>/utils/nepali-calendar/</code>)
+                            </h3>
+                            <ul style="margin-left: 1.25rem; display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.95rem;">
+                                <li><strong>Private Events Storage:</strong> All scheduled notes, birthdays, and custom reminders reside solely in your browser's <code>localStorage</code>.</li>
+                                <li><strong>Export/Import Portability:</strong> You have full control to export your schedule to a JSON file or import backups without cloud dependency.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="util-card" style="margin-bottom: 0; padding: 1.75rem;">
+                    <h2 style="margin-bottom: 0.75rem; color: var(--primary); font-size: 1.3rem;">
+                        <i class="fa-solid fa-chart-line"></i> Analytics & Telemetry
+                    </h2>
+                    <p>
+                        Standard anonymous analytics tools are utilized solely to monitor site health, traffic, and feature usability:
+                    </p>
+                    <ul style="margin-left: 1.25rem; margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.6rem; font-size: 0.95rem;">
+                        <li>
+                            <strong>Google Analytics:</strong> Aggregates high-level metrics such as page visits, referring URLs, browser types, and general geographic regions. Visit <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" style="color: var(--secondary);">Google's Privacy & Terms</a>.
+                        </li>
+                        <li>
+                            <strong>Microsoft Clarity:</strong> Provides anonymous aggregated heatmaps to help identify UI bottlenecks and enhance site navigation. Visit <a href="https://privacy.microsoft.com/en-us/privacystatement" target="_blank" rel="noopener noreferrer" style="color: var(--secondary);">Microsoft Privacy Statement</a>.
+                        </li>
+                    </ul>
+                </section>
+
+                <section class="util-card" style="margin-bottom: 0; padding: 1.75rem;">
+                    <h2 style="margin-bottom: 0.75rem; color: var(--primary); font-size: 1.3rem;">
+                        <i class="fa-solid fa-envelope"></i> Contact & Questions
+                    </h2>
+                    <p>
+                        If you have questions, feedback, or suggestions regarding this privacy policy or any of the utilities on this website, please reach out directly:
+                    </p>
+                    <div style="margin-top: 0.75rem;">
+                        <a href="mailto:hello@aloks.com.np" class="btn btn-primary btn-sm">
+                            <i class="fa-solid fa-envelope"></i> hello@aloks.com.np
+                        </a>
+                    </div>
+                </section>
+
             </div>
         </div>
     </main>
 
-    <footer>
-        <div class="container"
-            style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-            <p>&copy; 2026 Alok Shrestha.</p>
-            <p><a href="/privacy/" style="color: var(--text-muted); text-decoration: underline;">Privacy Policy</a></p>
+    <!-- Unified Footer -->
+    <footer class="site-footer">
+        <div class="container footer-container">
+            <div class="footer-left">
+                <p class="footer-copy">&copy; 2026 <strong>Alok Shrestha</strong> &bull; <a href="https://aloks.com.np" class="footer-link">aloks.com.np</a></p>
+                <p class="footer-help">For assistance contact Alok &mdash; <a href="mailto:hello@aloks.com.np" class="footer-link">hello@aloks.com.np</a></p>
+            </div>
+            <div class="footer-right">
+                <a href="https://github.com/aalooksth" target="_blank" class="footer-link" title="GitHub"><i class="fa-brands fa-github"></i> GitHub</a>
+                <a href="https://np.linkedin.com/in/aalooksth" target="_blank" class="footer-link" title="LinkedIn"><i class="fa-brands fa-linkedin"></i> LinkedIn</a>
+                <a href="./" class="footer-link" style="color: var(--primary); font-weight: 700;">Privacy Policy</a>
+            </div>
         </div>
     </footer>
 
+    <!-- Scripts -->
+    <script src="../js/nepali-date-converter.umd.js"></script>
     <script src="../js/script.js"></script>
 </body>
 

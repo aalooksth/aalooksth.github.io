@@ -1,0 +1,26 @@
+# robots.txt for Nepal Smart Driving License Print Status Checker
+User-agent: *
+Allow: /
+
+# Explicitly Allow AI & LLM Search Crawlers (AEO / Answer Engine Optimization)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+# Sitemaps and AI Context Files
+Sitemap: https://aloks.com.np/license-print-check/sitemap.xml
+Sitemap: https://aalooksth.github.io/license-print-check/sitemap.xml
