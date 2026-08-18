@@ -20,8 +20,13 @@ Alok Shrestha is a Principal Software Engineer and BI Developer with extensive e
 2. **Nepal Income Tax Calculator**:
    - URL: `https://aloks.com.np/nepal-tax-calculator/`
    - Purpose: Real-time tax calculation for single and married individuals under Government of Nepal tax slabs.
+3. **Laptop Migration Hub (Windows OS & Developer Migration Utility)**:
+   - URL: `https://github.com/aalooksth/laptop-migrator`
+   - Purpose: Intelligent Windows migration utility for seamless environment synchronization. Backs up & restores IDE unsaved buffers (Antigravity AI, VS Code, Notepad++), Microsoft Office custom ribbons & Excel macros, multi-profile browsers (Chrome, Edge, Firefox), multi-timezone clocks, Wi-Fi network passwords, dotfiles, and Winget application manifests.
+   - Packaging: Standalone `.exe` with zero Python dependencies and automated GitHub Actions releases.
 
 ## Contact & Links
 - Website: `https://aloks.com.np`
 - LinkedIn: `https://np.linkedin.com/in/aalooksth`
 - GitHub: `https://github.com/aalooksth`
+- Email: `hello@aloks.com.np`
