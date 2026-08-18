@@ -688,6 +688,48 @@ section {
     margin-top: 0.4rem;
 }
 
+/* Reusable Utility Sub-Navigation Bar / Quick Strip */
+.utils-subnav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding: 0.6rem 0.75rem;
+    margin-bottom: 2rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    scrollbar-width: thin;
+}
+
+.subnav-item {
+    padding: 0.45rem 0.95rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    white-space: nowrap;
+    transition: var(--transition);
+    border: 1px solid transparent;
+}
+
+.subnav-item:hover {
+    color: var(--primary);
+    background: var(--bg-subtle);
+}
+
+.subnav-item.active {
+    color: #ffffff;
+    background: var(--primary);
+    border-color: var(--primary);
+    box-shadow: 0 2px 8px rgba(30, 64, 175, 0.25);
+}
+
 /* Timeline Work & Education Visualizations */
 .work-visuals {
     margin-top: 1.25rem;

@@ -15,12 +15,9 @@
     })();
   </script>
 
-  <!-- PWA Settings -->
-  <link rel="manifest" href="./manifest.json">
-  <link rel="icon" type="image/svg+xml" href="./icon.svg">
-  <meta name="theme-color" content="#3f51b5">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
+  <link rel="shortcut icon" href="../../favicon.ico">
   <link rel="apple-touch-icon" href="./icon.svg">
 
   <!-- Style Sheets -->
@@ -103,6 +100,18 @@
       </md-filled-button>
     </div>
   </header>
+ 
+  <!-- Utility Sub-Navigation Quick Bar -->
+  <div style="max-width: 1200px; margin: 12px auto 0; padding: 0 16px;">
+    <div style="display: flex; gap: 8px; overflow-x: auto; padding: 8px 12px; background: var(--md-sys-color-surface-container); border-radius: 12px; border: 1px solid var(--md-sys-color-outline-variant);">
+      <a href="../" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none; color: var(--md-sys-color-on-surface-variant); white-space: nowrap;">🏠 All Tools</a>
+      <a href="../license-print-check/" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none; color: var(--md-sys-color-on-surface-variant); white-space: nowrap;">🪪 License Print</a>
+      <a href="../laptop-migrator/" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none; color: var(--md-sys-color-on-surface-variant); white-space: nowrap;">💻 Laptop Migrator</a>
+      <a href="./" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none; background: var(--md-sys-color-primary); color: var(--md-sys-color-on-primary); white-space: nowrap;">💰 Tax Calculator</a>
+      <a href="../nepali-calendar/" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none; color: var(--md-sys-color-on-surface-variant); white-space: nowrap;">📅 Nepali Calendar</a>
+      <a href="../meeting-dnd/" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none; color: var(--md-sys-color-on-surface-variant); white-space: nowrap;">🔴 Meeting DND Sign</a>
+    </div>
+  </div>
 
   <!-- PWA Install Banner -->
   <div id="pwa-banner" class="pwa-banner hidden">
