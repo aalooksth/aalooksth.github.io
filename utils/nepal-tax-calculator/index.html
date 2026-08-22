@@ -15,6 +15,13 @@
     })();
   </script>
 
+  <!-- PWA Web App Manifest & Meta Tags -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#3f51b5">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Nepal Tax">
+
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
   <link rel="shortcut icon" href="../../favicon.ico">
@@ -1314,7 +1321,7 @@
     </div>
     
     <div style="font-size: 12px; color: var(--md-sys-color-on-surface-variant); margin-bottom: 8px;">
-      For assistance contact Alok &mdash; <a href="mailto:hello@aloks.com.np" style="color: var(--md-sys-color-primary); text-decoration: none;">hello@aloks.com.np</a>
+      Made with ❤️ in 🇳🇵 by Alok &mdash; <a href="mailto:hello@aloks.com.np" style="color: var(--md-sys-color-primary); text-decoration: none;">hello@aloks.com.np</a>
     </div>
 
     <div style="max-width: 650px; margin: 12px auto 0 auto; line-height: 1.4; opacity: 0.7; font-size: 11px;">
@@ -1324,5 +1331,16 @@
 
   <!-- Main Controller Application Scripts -->
   <script type="module" src="./app.js"></script>
+
+  <!-- Register Service Worker for PWA -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('Tax Calculator ServiceWorker registered scope: ', reg.scope))
+          .catch(err => console.warn('Tax Calculator SW registration failed: ', err));
+      });
+    }
+  </script>
 </body>
 </html>

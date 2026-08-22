@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Utilities | Alok Shrestha</title>
-    <meta name="description" content="Helpful utilities including a Title Bar Text Changer and a custom Nepali Date Calendar & Converter.">
+    <title>Utilities Hub | Alok Shrestha</title>
+    <meta name="description" content="Searchable and filterable hub of open-source Windows desktop apps, civic web tools, finance calculators, and productivity utilities by Alok Shrestha.">
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
@@ -21,16 +21,17 @@
     {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "name": "Utilities | Alok Shrestha",
-      "description": "Helpful utilities including a Title Bar Text Changer and a custom Nepali Date Calendar & Converter.",
+      "name": "Utilities Hub | Alok Shrestha",
+      "description": "Searchable and filterable hub of open-source Windows desktop apps, civic web tools, finance calculators, and productivity utilities.",
       "url": "https://aloks.com.np/utils/"
     }
     </script>
     
     <style>
         .utils-container {
-            padding: 8rem 1.5rem 4rem;
-            max-width: 800px;
+            padding: 7.5rem 1.5rem 4rem;
+            max-width: 1100px;
+            width: 95%;
             margin: 0 auto;
             min-height: 80vh;
         }
@@ -48,14 +49,28 @@
             border-color: var(--primary);
         }
         .util-card h2 {
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
             color: var(--text-color);
             display: flex;
             align-items: center;
             gap: 0.75rem;
+            font-size: 1.35rem;
+            font-weight: 800;
         }
         .util-card h2 i {
             color: var(--primary);
+        }
+        .tag-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.65rem;
+            background: var(--bg-subtle);
+            border: 1px solid var(--border-color);
+            border-radius: 9999px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--text-color);
         }
         .form-group {
             margin-bottom: 1rem;
@@ -82,18 +97,19 @@
             border-color: var(--primary);
             box-shadow: 0 0 0 2px rgba(30, 64, 175, 0.1);
         }
-        .converter-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
+        .filter-btn {
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            background: var(--bg-surface);
+            font-family: inherit;
         }
-        @media (max-width: 600px) {
-            .converter-grid {
-                grid-template-columns: 1fr;
-            }
+        .filter-btn.active {
+            color: #ffffff !important;
+            background: var(--primary) !important;
+            border-color: var(--primary) !important;
+            box-shadow: 0 2px 8px rgba(30, 64, 175, 0.25);
         }
-        
-        </style>
+    </style>
 </head>
 <body>
     <div class="blob blob-1"></div>
@@ -105,9 +121,9 @@
             <ul class="nav-links">
                 <li><a href="../#home">Home</a></li>
                 <li><a href="../#skills">Skills</a></li>
-                <li><a href="../#projects">Projects</a></li>
                 <li><a href="../#experience">Experience</a></li>
                 <li><a href="../#education">Education</a></li>
+                <li><a href="../#projects">Featured Tools</a></li>
                 <li><a href="./" style="font-weight: 700; color: var(--primary);">Utilities 🛠️</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle">More ▼</a>
@@ -119,11 +135,25 @@
                 </li>
                 <li><a href="../#contact" class="btn btn-outline">Contact</a></li>
                 <li id="siteClock" style="font-size: 0.85rem; font-weight: 600; color: var(--primary); text-align: center; margin: 0 1rem; display: flex; flex-direction: column; justify-content: center;"></li>
-                <li>
-                    <button type="button" id="themeToggleBtn" class="btn-icon" title="Toggle Theme">
-                        <i class="fa-solid fa-moon dark-icon"></i>
-                        <i class="fa-solid fa-sun light-icon"></i>
+                <!-- Intuitive Theme Switcher Dropdown -->
+                <li class="theme-dropdown-wrapper">
+                    <button type="button" id="themeToggleBtn" class="btn-icon" title="Theme Selector (Light ☀️ / System 💻 / Dark 🌑)">
+                        <i class="fa-solid fa-sun"></i>
                     </button>
+                    <div id="themeDropdownMenu" class="theme-dropdown-menu">
+                        <button type="button" class="theme-opt" data-mode="light">
+                            <span><i class="fa-solid fa-sun" style="color: #f59e0b;"></i> Light ☀️</span>
+                            <i class="fa-solid fa-check check-mark"></i>
+                        </button>
+                        <button type="button" class="theme-opt" data-mode="auto">
+                            <span><i class="fa-solid fa-desktop" style="color: #0284c7;"></i> System 💻</span>
+                            <i class="fa-solid fa-check check-mark"></i>
+                        </button>
+                        <button type="button" class="theme-opt" data-mode="dark">
+                            <span><i class="fa-solid fa-moon" style="color: #8b5cf6;"></i> Dark 🌑</span>
+                            <i class="fa-solid fa-check check-mark"></i>
+                        </button>
+                    </div>
                 </li>
             </ul>
             <div class="hamburger">
@@ -137,72 +167,151 @@
     <main class="utils-container">
         <h1 class="section-title">Utilities Hub</h1>
 
-        <!-- Utility Sub-Navigation Quick Bar -->
-        <div class="utils-subnav">
-            <a href="./" class="subnav-item active"><i class="fa-solid fa-layer-group"></i> All Tools</a>
-            <a href="license-print-check/" class="subnav-item"><i class="fa-solid fa-id-card"></i> License Print</a>
-            <a href="laptop-migrator/" class="subnav-item"><i class="fa-solid fa-laptop-code"></i> Laptop Migrator</a>
-            <a href="nepal-tax-calculator/" class="subnav-item"><i class="fa-solid fa-calculator"></i> Tax Calculator</a>
-            <a href="nepali-calendar/" class="subnav-item"><i class="fa-solid fa-calendar-days"></i> Nepali Calendar</a>
-            <a href="meeting-dnd/" class="subnav-item"><i class="fa-solid fa-headset"></i> Meeting DND Sign</a>
+        <!-- Utility Search & Category Filter Controls -->
+        <div class="search-filter-container" style="margin-bottom: 2.25rem;">
+            <div style="position: relative; margin-bottom: 1rem;">
+                <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 1.25rem; top: 50%; transform: translateY(-50%); color: var(--primary); font-size: 1.1rem;"></i>
+                <input type="text" id="utilSearchInput" placeholder="🔍 Search utilities by title, keyword, or tag (e.g. Nepali date, tax, screenshot, telemetry, migration)..." style="width: 100%; padding: 0.95rem 1rem 0.95rem 3.2rem; border-radius: var(--radius-md); border: 1.5px solid var(--border-strong); background: var(--card-bg); color: var(--text-color); font-size: 1rem; box-shadow: var(--shadow-sm); outline: none; transition: var(--transition);">
+            </div>
+            
+            <div class="filter-categories" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <button type="button" class="subnav-item active filter-btn" data-category="all"><i class="fa-solid fa-layer-group"></i> All Tools</button>
+                <button type="button" class="subnav-item filter-btn" data-category="desktop"><i class="fa-solid fa-desktop"></i> Desktop Utilities 💻</button>
+                <button type="button" class="subnav-item filter-btn" data-category="civic"><i class="fa-solid fa-id-card"></i> Civic & Government 🇳🇵</button>
+                <button type="button" class="subnav-item filter-btn" data-category="finance"><i class="fa-solid fa-calculator"></i> Finance & Tax 💰</button>
+                <button type="button" class="subnav-item filter-btn" data-category="web"><i class="fa-solid fa-globe"></i> Web & Productivity 🌐</button>
+            </div>
+        </div>
+
+        <!-- No Results Fallback Message -->
+        <div id="noResultsMsg" style="display: none; padding: 3rem 1.5rem; text-align: center; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: var(--radius-md); margin-bottom: 2rem;">
+            <i class="fa-solid fa-folder-open" style="font-size: 2.5rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
+            <h3 style="color: var(--text-color); font-size: 1.2rem; margin-bottom: 0.5rem;">No matching utilities found</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Try adjusting your search query or switching to 'All Tools'.</p>
+        </div>
+
+        <!-- Utility 1: Edge Glance Windows Clock & System Bar -->
+        <div id="edge-glance" class="util-card" data-category="desktop" data-tags="desktop windows clock nepali-date telemetry media fluent2 open-source python" style="border-left: 4px solid #2d7d9a;">
+            <h2><i class="fa-solid fa-clock" style="color: #2d7d9a;"></i> Edge Glance &mdash; Windows Screen-Edge Clock & System Flyout</h2>
+            <p style="margin-bottom: 1rem; color: var(--text-muted); line-height: 1.6;">
+                Ultra-responsive, modern Windows 11 Fluent 2 desktop utility. Hidden until mouse reaches screen edge. Features live hero clock, 🇳🇵 Bikram Sambat (B.S.) Nepali Date, real-time CPU/RAM/Network telemetry, media playback controls, weather, quick tools, and auto-start.
+            </p>
+            <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1.25rem;">
+                <span class="tag-badge"><i class="fa-brands fa-windows" style="color: #0284c7;"></i> Windows 10/11</span>
+                <span class="tag-badge"><i class="fa-solid fa-clock" style="color: #2d7d9a;"></i> Fluent 2 Clock</span>
+                <span class="tag-badge"><i class="fa-solid fa-calendar-days" style="color: #dc2626;"></i> 🇳🇵 Bikram Sambat</span>
+                <span class="tag-badge"><i class="fa-solid fa-microchip" style="color: #0284c7;"></i> Hardware Telemetry</span>
+                <span class="tag-badge"><i class="fa-solid fa-music" style="color: #8b5cf6;"></i> Media Controls</span>
+            </div>
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                <a href="https://github.com/aalooksth/edge-glance#readme" target="_blank" class="btn btn-secondary"><i class="fa-solid fa-book"></i> Readme & User Guide</a>
+                <a href="https://github.com/aalooksth/edge-glance" target="_blank" class="btn btn-primary" style="background: #2d7d9a; border-color: #2d7d9a;"><i class="fa-brands fa-github"></i> GitHub Repository</a>
+                <a href="https://github.com/aalooksth/edge-glance/releases" target="_blank" class="btn btn-outline"><i class="fa-solid fa-download"></i> Download .EXE</a>
+            </div>
         </div>
         
-        <!-- Utility 1: License Print Checker -->
-        <div class="util-card" style="border-left: 4px solid #059669;">
-            <h2><i class="fa-solid fa-id-card"></i> Smart Driving License Print Checker</h2>
-            <p style="margin-bottom: 1.25rem; color: var(--text-muted);">
-                Unified real-time print status & collection guidance across all 4 Bagamati Province Transport Management Offices (Ekantakuna, Kalanki, Chabahil, Radhe Radhe). 100% Client-side.
+        <!-- Utility 2: SnapShot Screen Capture -->
+        <div id="snapshot" class="util-card" data-category="desktop" data-tags="desktop windows screen-capture screenshot annotation vector google-lens hotkey python" style="border-left: 4px solid #8b5cf6;">
+            <h2><i class="fa-solid fa-scissors" style="color: #8b5cf6;"></i> SnapShot &mdash; Standalone Python Screen Capture Utility</h2>
+            <p style="margin-bottom: 1rem; color: var(--text-muted); line-height: 1.6;">
+                Fast, standalone desktop screen capture utility built with Python & PySide6. Features custom crop region selection, live vector annotations (Pen, Arrows, Text, Rect, Blur), mouse wheel stroke resizing, global hotkey (PrintScreen), Google Lens visual search, and zero admin privileges required.
             </p>
+            <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1.25rem;">
+                <span class="tag-badge"><i class="fa-solid fa-shield-cat" style="color: #10b981;"></i> Zero Admin</span>
+                <span class="tag-badge"><i class="fa-solid fa-pen-nib" style="color: #8b5cf6;"></i> Vector Annotations</span>
+                <span class="tag-badge"><i class="fa-solid fa-sliders" style="color: #0284c7;"></i> Wheel Stroke Resizing</span>
+                <span class="tag-badge"><i class="fa-solid fa-keyboard" style="color: #f59e0b;"></i> PrintScreen Hotkey</span>
+                <span class="tag-badge"><i class="fa-solid fa-magnifying-glass" style="color: #3b82f6;"></i> Google Lens</span>
+            </div>
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                <a href="https://github.com/aalooksth/snap-shot#readme" target="_blank" class="btn btn-secondary"><i class="fa-solid fa-book"></i> Readme & User Guide</a>
+                <a href="https://github.com/aalooksth/snap-shot" target="_blank" class="btn btn-primary" style="background: #8b5cf6; border-color: #8b5cf6;"><i class="fa-brands fa-github"></i> GitHub Repository</a>
+                <a href="https://github.com/aalooksth/snap-shot/blob/main/USER_GUIDE.md" target="_blank" class="btn btn-outline"><i class="fa-solid fa-book-open"></i> Full Reference Manual</a>
+            </div>
+        </div>
+        
+        <!-- Utility 3: License Print Checker -->
+        <div id="license-print" class="util-card" data-category="civic" data-tags="civic smart-license nepal transport bagamati print-check ekantakuna kalanki chabahil radhe-radhe" style="border-left: 4px solid #059669;">
+            <h2><i class="fa-solid fa-id-card" style="color: #059669;"></i> Smart Driving License Print Checker</h2>
+            <p style="margin-bottom: 1rem; color: var(--text-muted); line-height: 1.6;">
+                Unified real-time print status & collection guidance across all 4 Bagamati Province Transport Management Offices (Ekantakuna, Kalanki, Chabahil, Radhe Radhe). 100% Client-side with zero data tracking.
+            </p>
+            <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1.25rem;">
+                <span class="tag-badge"><i class="fa-solid fa-id-card" style="color: #059669;"></i> License Status</span>
+                <span class="tag-badge"><i class="fa-solid fa-map-location-dot" style="color: #0284c7;"></i> 4 Offices</span>
+                <span class="tag-badge"><i class="fa-solid fa-shield-halved" style="color: #10b981;"></i> 100% Client-Side</span>
+            </div>
             <a href="license-print-check/" class="btn btn-secondary"><i class="fa-solid fa-arrow-right"></i> Open License Print Checker</a>
         </div>
 
-        <!-- Utility 2: Laptop Migration Hub -->
-        <div class="util-card" style="border-left: 4px solid #0284c7;">
-            <h2><i class="fa-solid fa-laptop-code"></i> Laptop Migration Hub</h2>
-            <p style="margin-bottom: 1.25rem; color: var(--text-muted);">
+        <!-- Utility 4: Laptop Migration Hub -->
+        <div id="laptop-migrator" class="util-card" data-category="desktop" data-tags="desktop windows migration backup restore developer ide office browser wifi dotfiles python open-source" style="border-left: 4px solid #0284c7;">
+            <h2><i class="fa-solid fa-laptop-code" style="color: #0284c7;"></i> Laptop Migration Hub</h2>
+            <p style="margin-bottom: 1rem; color: var(--text-muted); line-height: 1.6;">
                 Intelligent modular Windows migration tool. Back up and restore developer environments, IDE unsaved scratch buffers (VS Code, Antigravity AI, Notepad++), Microsoft Office custom ribbons & macros, browser profiles, multi-timezone clocks, and Wi-Fi network profiles.
             </p>
+            <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1.25rem;">
+                <span class="tag-badge"><i class="fa-solid fa-code" style="color: #0284c7;"></i> IDE Buffers</span>
+                <span class="tag-badge"><i class="fa-solid fa-file-excel" style="color: #107c41;"></i> Office Ribbons</span>
+                <span class="tag-badge"><i class="fa-solid fa-globe" style="color: #0284c7;"></i> Browsers</span>
+                <span class="tag-badge"><i class="fa-solid fa-wifi" style="color: #059669;"></i> Wi-Fi Passwords</span>
+            </div>
             <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-                <a href="laptop-migrator/" class="btn btn-secondary"><i class="fa-solid fa-circle-info"></i> View Capabilities</a>
+                <a href="https://github.com/aalooksth/laptop-migrator#readme" target="_blank" class="btn btn-secondary"><i class="fa-solid fa-book"></i> Readme & User Guide</a>
                 <a href="https://github.com/aalooksth/laptop-migrator" target="_blank" class="btn btn-primary"><i class="fa-brands fa-github"></i> GitHub Repository</a>
                 <a href="https://github.com/aalooksth/laptop-migrator/releases" target="_blank" class="btn btn-outline"><i class="fa-solid fa-download"></i> Download .EXE</a>
             </div>
         </div>
 
-        <!-- Utility 3: Nepal Income Tax Calculator -->
-        <div class="util-card" style="border-left: 4px solid #10b981;">
-            <h2><i class="fa-solid fa-calculator"></i> Nepal Income Tax & Take-Home Calculator</h2>
-            <p style="margin-bottom: 1.25rem; color: var(--text-muted);">
+        <!-- Utility 5: Nepal Income Tax Calculator -->
+        <div id="tax-calculator" class="util-card" data-category="finance" data-tags="finance nepal tax salary take-home tax-slabs social-security cash-in-hand" style="border-left: 4px solid #10b981;">
+            <h2><i class="fa-solid fa-calculator" style="color: #10b981;"></i> Nepal Income Tax & Take-Home Calculator</h2>
+            <p style="margin-bottom: 1rem; color: var(--text-muted); line-height: 1.6;">
                 Compare your take-home cash in hand and tax liabilities side-by-side for Nepal's income tax structure under Government of Nepal tax slabs.
             </p>
+            <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1.25rem;">
+                <span class="tag-badge"><i class="fa-solid fa-calculator" style="color: #10b981;"></i> Tax Slabs</span>
+                <span class="tag-badge"><i class="fa-solid fa-money-bill-wave" style="color: #059669;"></i> Cash in Hand</span>
+                <span class="tag-badge"><i class="fa-solid fa-piggy-bank" style="color: #f59e0b;"></i> SSF & Provident</span>
+            </div>
             <a href="nepal-tax-calculator/" class="btn btn-secondary"><i class="fa-solid fa-arrow-right"></i> Open Tax Calculator</a>
         </div>
 
-        <!-- Utility 4: Nepali Calendar -->
-        <div class="util-card" style="border-left: 4px solid #f59e0b;">
-            <h2><i class="fa-solid fa-calendar-days"></i> Nepali Date Calendar & Festival Planner</h2>
-            <p style="margin-bottom: 1.25rem; color: var(--text-muted);">
+        <!-- Utility 6: Nepali Calendar -->
+        <div id="nepali-calendar" class="util-card" data-category="web" data-tags="web calendar nepali-date bikram-sambat tithi festival converter age-calculator ics" style="border-left: 4px solid #f59e0b;">
+            <h2><i class="fa-solid fa-calendar-days" style="color: #f59e0b;"></i> Nepali Date Calendar & Festival Planner</h2>
+            <p style="margin-bottom: 1rem; color: var(--text-muted); line-height: 1.6;">
                 Full interactive Nepali Calendar (Bikram Sambat) with two-way date conversion, Tithi indicators, repeating event scheduler, phone calendar (.ics) export, and BS age calculation.
             </p>
+            <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1.25rem;">
+                <span class="tag-badge"><i class="fa-solid fa-calendar" style="color: #f59e0b;"></i> Bikram Sambat</span>
+                <span class="tag-badge"><i class="fa-solid fa-arrow-right-arrow-left" style="color: #0284c7;"></i> Two-Way Convert</span>
+                <span class="tag-badge"><i class="fa-solid fa-file-export" style="color: #8b5cf6;"></i> .ICS Export</span>
+            </div>
             <a href="nepali-calendar/" class="btn btn-secondary"><i class="fa-solid fa-arrow-right"></i> Open Nepali Calendar</a>
         </div>
 
-        <!-- Utility 5: Meeting in Progress DND Sign -->
-        <div class="util-card" style="border-left: 4px solid #dc2626;">
-            <h2><i class="fa-solid fa-headset"></i> Meeting in Progress & Do Not Disturb Desk Sign</h2>
-            <p style="margin-bottom: 1.25rem; color: var(--text-muted);">
+        <!-- Utility 7: Meeting in Progress DND Sign -->
+        <div id="meeting-dnd" class="util-card" data-category="web" data-tags="web meeting dnd sign kiosk remote-work timer screen-awake on-air" style="border-left: 4px solid #dc2626;">
+            <h2><i class="fa-solid fa-headset" style="color: #dc2626;"></i> Meeting in Progress & Do Not Disturb Desk Sign</h2>
+            <p style="margin-bottom: 1rem; color: var(--text-muted); line-height: 1.6;">
                 Smart full-screen desk sign & ON AIR meeting indicator. Keeps screen awake with live countdown timer, custom status presets, and glowing indicators for remote workers and office desks.
             </p>
-            <a href="meeting-dnd/" class="btn btn-secondary" style="background: #dc2626; color: #ffffff;"><i class="fa-solid fa-expand"></i> Open Meeting Sign (Kiosk)</a>
+            <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1.25rem;">
+                <span class="tag-badge"><i class="fa-solid fa-desktop" style="color: #dc2626;"></i> Kiosk Mode</span>
+                <span class="tag-badge"><i class="fa-solid fa-clock" style="color: #f59e0b;"></i> Live Timer</span>
+                <span class="tag-badge"><i class="fa-solid fa-sun" style="color: #059669;"></i> Screen Awake</span>
+            </div>
+            <a href="meeting-dnd/" class="btn btn-secondary" style="background: #dc2626; color: #ffffff; border-color: #dc2626;"><i class="fa-solid fa-expand"></i> Open Meeting Sign (Kiosk)</a>
         </div>
 
-        <!-- Utility 6: Title Bar Changer -->
-        <div class="util-card">
-            <h2><i class="fa-solid fa-text-width"></i> Title Bar Text Changer</h2>
-            <p style="margin-bottom: 1.5rem; color: var(--text-muted);">Change the browser tab title in real-time by typing in the input field below.</p>
+        <!-- Utility 8: Title Bar Changer -->
+        <div id="title-changer" class="util-card" data-category="web" data-tags="web tab title real-time utility browser text-changer">
+            <h2><i class="fa-solid fa-text-width" style="color: var(--primary);"></i> Title Bar Text Changer</h2>
+            <p style="margin-bottom: 1.25rem; color: var(--text-muted);">Change the browser tab title in real-time by typing in the input field below.</p>
             <div class="form-group">
                 <label for="titleInput">Tab Title</label>
-                <input type="text" id="titleInput" placeholder="Enter custom title..." oninput="document.title = this.value || 'Utilities | Alok Shrestha';">
+                <input type="text" id="titleInput" placeholder="Enter custom title..." oninput="document.title = this.value || 'Utilities Hub | Alok Shrestha';">
             </div>
         </div>
     </main>
@@ -211,7 +320,7 @@
         <div class="container footer-container">
             <div class="footer-left">
                 <p class="footer-copy">&copy; 2026 <strong>Alok Shrestha</strong> &bull; <a href="https://aloks.com.np" class="footer-link">aloks.com.np</a></p>
-                <p class="footer-help">For assistance contact Alok &mdash; <a href="mailto:hello@aloks.com.np" class="footer-link">hello@aloks.com.np</a></p>
+                <p class="footer-help">Made with ❤️ in 🇳🇵 by Alok &mdash; <a href="mailto:hello@aloks.com.np" class="footer-link">hello@aloks.com.np</a></p>
             </div>
             <div class="footer-right">
                 <a href="https://github.com/aalooksth" target="_blank" class="footer-link" title="GitHub"><i class="fa-brands fa-github"></i> GitHub</a>
@@ -220,6 +329,56 @@
             </div>
         </div>
     </footer>
+
+    <!-- Live Search & Filtering Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('utilSearchInput');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const utilCards = document.querySelectorAll('.util-card');
+            const noResultsMsg = document.getElementById('noResultsMsg');
+
+            let activeCategory = 'all';
+
+            function applyFilter() {
+                const query = (searchInput.value || '').toLowerCase().trim();
+                let matchCount = 0;
+
+                utilCards.forEach(card => {
+                    const category = card.getAttribute('data-category');
+                    const tags = (card.getAttribute('data-tags') || '').toLowerCase();
+                    const text = card.textContent.toLowerCase();
+
+                    const matchesCategory = (activeCategory === 'all' || category === activeCategory);
+                    const matchesQuery = !query || text.includes(query) || tags.includes(query);
+
+                    if (matchesCategory && matchesQuery) {
+                        card.style.display = 'block';
+                        matchCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                if (noResultsMsg) {
+                    noResultsMsg.style.display = matchCount === 0 ? 'block' : 'none';
+                }
+            }
+
+            if (searchInput) {
+                searchInput.addEventListener('input', applyFilter);
+            }
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    activeCategory = btn.getAttribute('data-category');
+                    applyFilter();
+                });
+            });
+        });
+    </script>
 
     <!-- Core Site Scripts -->
     <script src="../js/nepali-date-converter.umd.js"></script>

@@ -6,10 +6,17 @@
     <title>Nepali Calendar, Festival Planner & Date Tools | Alok Shrestha</title>
     <meta name="description" content="Interactive bilingual Nepali Date Calendar (Bikram Sambat) and AD/BS Converter with Nepali festivals, Tithi indicators, repeating events, BS age calculator, A4 print, and full-screen kiosk display.">
     
+    <!-- PWA Web App Manifest & Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1e40af">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Nepali Calendar">
+
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
     <link rel="shortcut icon" href="../../favicon.ico">
-    <link rel="apple-touch-icon" href="https://github.com/aalooksth.png">
+    <link rel="apple-touch-icon" href="./icon.svg">
     
     <!-- Fonts and Styles -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Mukta:wght@400;600;700;800&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
@@ -19,9 +26,52 @@
     <style>
         .utils-container {
             padding: 7.5rem 1.5rem 4rem;
-            max-width: 980px;
+            max-width: 1400px;
+            width: 95%;
             margin: 0 auto;
             min-height: 80vh;
+        }
+
+        /* Mobile Responsive Calendar Grid & Full Space Utilization */
+        @media (max-width: 768px) {
+            .utils-container {
+                padding: 4.5rem 0.25rem 2rem;
+                width: 100%;
+                max-width: 100%;
+            }
+            .util-card {
+                padding: 0.75rem 0.35rem;
+                border-radius: var(--radius-md);
+            }
+            .cal-controls {
+                padding: 0.65rem 0.5rem;
+            }
+            .cal-header-day {
+                padding: 0.4rem 0.1rem;
+                font-size: 0.72rem;
+            }
+            .cal-day {
+                padding: 0.25rem 0.15rem;
+                min-height: 56px;
+            }
+            .date-main {
+                font-size: 0.85rem;
+            }
+            .date-sub {
+                font-size: 0.65rem;
+            }
+            .tithi-tag {
+                font-size: 0.58rem;
+                padding: 0 2px;
+                max-width: 100%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .event-dot {
+                width: 4px;
+                height: 4px;
+            }
         }
         .util-card {
             background: var(--card-bg);
@@ -441,11 +491,25 @@
                 </li>
                 <li><a href="../../#contact" class="btn btn-outline">Contact</a></li>
                 <li id="siteClock" style="font-size: 0.85rem; font-weight: 600; color: var(--primary); text-align: center; margin: 0 1rem; display: flex; flex-direction: column; justify-content: center;"></li>
-                <li>
-                    <button type="button" id="themeToggleBtn" class="btn-icon" title="Toggle Theme">
-                        <i class="fa-solid fa-moon dark-icon"></i>
-                        <i class="fa-solid fa-sun light-icon"></i>
+                <!-- Intuitive Theme Switcher Dropdown -->
+                <li class="theme-dropdown-wrapper">
+                    <button type="button" id="themeToggleBtn" class="btn-icon" title="Theme Selector (Light ☀️ / System 💻 / Dark 🌑)">
+                        <i class="fa-solid fa-sun"></i>
                     </button>
+                    <div id="themeDropdownMenu" class="theme-dropdown-menu">
+                        <button type="button" class="theme-opt" data-mode="light">
+                            <span><i class="fa-solid fa-sun" style="color: #f59e0b;"></i> Light ☀️</span>
+                            <i class="fa-solid fa-check check-mark"></i>
+                        </button>
+                        <button type="button" class="theme-opt" data-mode="auto">
+                            <span><i class="fa-solid fa-desktop" style="color: #0284c7;"></i> System 💻</span>
+                            <i class="fa-solid fa-check check-mark"></i>
+                        </button>
+                        <button type="button" class="theme-opt" data-mode="dark">
+                            <span><i class="fa-solid fa-moon" style="color: #8b5cf6;"></i> Dark 🌑</span>
+                            <i class="fa-solid fa-check check-mark"></i>
+                        </button>
+                    </div>
                 </li>
             </ul>
             <div class="hamburger">
@@ -675,7 +739,7 @@
         <div class="container footer-container">
             <div class="footer-left">
                 <p class="footer-copy">&copy; 2026 <strong>Alok Shrestha</strong> &bull; <a href="https://aloks.com.np" class="footer-link">aloks.com.np</a></p>
-                <p class="footer-help">For assistance contact Alok &mdash; <a href="mailto:hello@aloks.com.np" class="footer-link">hello@aloks.com.np</a></p>
+                <p class="footer-help">Made with ❤️ in 🇳🇵 by Alok &mdash; <a href="mailto:hello@aloks.com.np" class="footer-link">hello@aloks.com.np</a></p>
             </div>
             <div class="footer-right">
                 <a href="https://github.com/aalooksth" target="_blank" class="footer-link" title="GitHub"><i class="fa-brands fa-github"></i> GitHub</a>
@@ -1733,9 +1797,20 @@
                     renderMonthStrip();
                 });
                 
-                setMode('BS');
+            setMode('BS');
             }, 100);
         });
+    </script>
+
+    <!-- Register Service Worker for Nepali Calendar PWA -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('Nepali Calendar Service Worker registered scope: ', reg.scope))
+                    .catch(err => console.warn('Nepali Calendar SW registration failed: ', err));
+            });
+        }
     </script>
 </body>
 </html>

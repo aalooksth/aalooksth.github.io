@@ -151,7 +151,7 @@ body {
     background: var(--navbar-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    z-index: 1000;
+    z-index: 1010;
     border-bottom: 1px solid var(--border-color);
     padding: 0.85rem 0;
     transition: var(--transition);
@@ -245,7 +245,11 @@ body {
     color: var(--primary);
 }
 
-/* Theme Toggle Button */
+/* Theme Switcher & Dropdown */
+.theme-dropdown-wrapper {
+    position: relative;
+}
+
 .btn-icon {
     width: 36px;
     height: 36px;
@@ -264,22 +268,88 @@ body {
     background-color: var(--bg-subtle);
 }
 
-body.dark-theme .light-icon { display: block; }
-body.dark-theme .dark-icon { display: none; }
-body.light-theme .light-icon { display: none; }
-body.light-theme .dark-icon { display: block; }
+.theme-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: var(--card-bg);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    padding: 0.4rem;
+    display: none;
+    flex-direction: column;
+    gap: 0.25rem;
+    box-shadow: var(--shadow-md);
+    z-index: 1005;
+    min-width: 145px;
+}
+
+.theme-dropdown-menu.show {
+    display: flex;
+}
+
+.theme-opt {
+    background: transparent;
+    border: none;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-color);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    text-align: left;
+    transition: var(--transition);
+    width: 100%;
+}
+
+.theme-opt:hover, .theme-opt.active {
+    background: var(--bg-subtle);
+    color: var(--primary);
+}
+
+.theme-opt .check-mark {
+    display: none;
+    font-size: 0.75rem;
+}
+
+.theme-opt.active .check-mark {
+    display: inline-block;
+}
 
 .hamburger {
     display: none;
     cursor: pointer;
+    z-index: 1003;
+    position: relative;
+    padding: 0.25rem;
+    background: transparent;
+    border: none;
 }
 
 .hamburger div {
     width: 24px;
-    height: 2px;
+    height: 2.5px;
     background-color: var(--text-color);
-    margin: 5px;
+    margin: 4px 0;
     transition: var(--transition);
+    border-radius: 2px;
+}
+
+/* Hamburger to X Morph Animation */
+.hamburger.toggle .line1 {
+    transform: rotate(-45deg) translate(-5px, 5px);
+}
+
+.hamburger.toggle .line2 {
+    opacity: 0;
+}
+
+.hamburger.toggle .line3 {
+    transform: rotate(45deg) translate(-5px, -5px);
 }
 
 /* Buttons */
@@ -983,25 +1053,51 @@ footer {
 }
 
 @media (max-width: 768px) {
+    .hamburger {
+        display: flex !important;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 38px;
+        height: 38px;
+    }
+
     .nav-links {
         position: fixed;
         top: 64px;
         right: -100%;
-        width: 80%;
-        max-width: 300px;
+        width: 85%;
+        max-width: 320px;
         height: calc(100vh - 64px);
-        background: var(--nav-mobile-bg);
+        background: var(--card-bg);
         border-left: 1px solid var(--border-color);
         flex-direction: column;
         align-items: flex-start;
-        padding: 2rem;
-        gap: 1.5rem;
-        transition: var(--transition);
+        padding: 1.5rem;
+        gap: 1.1rem;
+        transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         box-shadow: var(--shadow-lg);
+        z-index: 1008 !important;
+        overflow-y: auto !important;
     }
     
     .nav-links.active {
         right: 0;
+    }
+
+    .nav-links li {
+        width: 100%;
+    }
+
+    .nav-links a {
+        display: block;
+        font-size: 1rem;
+        padding: 0.35rem 0;
+        width: 100%;
+    }
+
+    .dropdown {
+        width: 100%;
     }
     
     .dropdown-menu {
@@ -1011,17 +1107,26 @@ footer {
         transform: none;
         box-shadow: none;
         border: none;
-        background: transparent;
-        padding-left: 1rem;
+        background: var(--bg-subtle);
+        border-radius: var(--radius-sm);
+        margin-top: 0.5rem;
+        padding: 0.5rem 1rem;
         display: none;
+        flex-direction: column;
+        gap: 0.5rem;
+        width: 100%;
     }
     
     .dropdown.active .dropdown-menu {
-        display: block;
+        display: flex !important;
     }
-    
-    .hamburger {
-        display: block;
+
+    .theme-dropdown-menu {
+        position: relative;
+        top: 0;
+        right: 0;
+        width: 100%;
+        margin-top: 0.5rem;
     }
 
     .section-title {
@@ -1413,5 +1518,84 @@ body.time-night #seasonal-bottom {
         flex-direction: column;
         align-items: flex-start;
         gap: 1rem;
+    }
+    .nav-links {
+        z-index: 1002 !important;
+        overflow-y: auto !important;
+    }
+}
+
+/* Mobile Nav Backdrop Overlay */
+.nav-backdrop {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - 64px);
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1005;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+}
+
+.nav-backdrop.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Print-Friendly Styles */
+@media print {
+    .navbar,
+    .hamburger,
+    .site-footer,
+    #three-canvas,
+    #seasonal-top,
+    #seasonal-bottom,
+    .blob,
+    .utils-subnav,
+    .search-filter-container,
+    .btn,
+    .btn-icon,
+    .next-event-banner,
+    .month-strip,
+    .cal-controls,
+    .theme-dropdown-menu,
+    .nav-backdrop {
+        display: none !important;
+    }
+
+    body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        font-size: 11pt !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .utils-container,
+    .page-container,
+    .container {
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+
+    .util-card,
+    .skill-category,
+    .feature-card,
+    .contact-card,
+    .calendar-container {
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: none !important;
+        background: #ffffff !important;
+        color: #000000 !important;
+        page-break-inside: avoid;
+    }
+
+    a {
+        text-decoration: none !important;
+        color: #000000 !important;
     }
 }
