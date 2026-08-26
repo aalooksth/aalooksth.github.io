@@ -123,18 +123,44 @@
 
         <!-- Vendor Multi-Selector -->
         <div class="form-group">
-          <label class="form-label">
-            Vendors (Choose Multiple)
-            <span class="form-sublabel">Select or add custom vendors</span>
-          </label>
-          <div class="pill-group" id="vendorPillsContainer">
-            <!-- Rendered by app.js -->
+          <div class="form-label-row">
+            <label class="form-label" for="vendorSearchInput">
+              Vendors Multi-Select
+              <span class="form-sublabel">Search, filter, or check vendors</span>
+            </label>
+            <span class="vendor-count-badge" id="vendorSelectedCount">0 selected</span>
           </div>
 
-          <!-- Add Custom Vendor Input -->
-          <div class="tag-input-wrapper">
-            <input type="text" id="customVendorInput" class="input-text" placeholder="Type vendor name (e.g. Loloi) &amp; press Enter">
-            <button type="button" class="btn btn-secondary btn-sm" id="addVendorBtn">+ Add</button>
+          <!-- Active Selected Vendors Summary -->
+          <div class="selected-vendors-box" id="selectedVendorsBox">
+            <div class="selected-vendors-header">
+              <span class="selected-title">Active Filters:</span>
+              <button type="button" class="btn-link-sm" id="clearAllVendorsBtn" style="display: none;">Clear All</button>
+            </div>
+            <div class="pill-group" id="selectedVendorPillsContainer">
+              <!-- Selected pills rendered by app.js -->
+            </div>
+          </div>
+
+          <!-- Searchable Vendor List Component -->
+          <div class="searchable-select-container">
+            <div class="vendor-search-bar">
+              <input type="text" id="vendorSearchInput" class="input-text" placeholder="🔍 Type to search 89 vendors or add custom vendor...">
+              <button type="button" class="btn btn-secondary btn-sm" id="addVendorBtn">+ Add</button>
+            </div>
+
+            <div class="vendor-select-actions">
+              <span class="vendor-match-count" id="vendorMatchCount">89 vendors available</span>
+              <div class="vendor-action-links">
+                <button type="button" class="btn-link-sm" id="selectAllFilteredVendorsBtn">Select Filtered</button>
+                <span class="dot-separator">•</span>
+                <button type="button" class="btn-link-sm" id="deselectAllVendorsBtn">Deselect All</button>
+              </div>
+            </div>
+
+            <div class="vendor-checklist-scroll" id="vendorChecklistContainer" role="group" aria-label="Vendor list">
+              <!-- Checkbox items rendered by app.js -->
+            </div>
           </div>
         </div>
 
@@ -233,7 +259,7 @@
 
     <!-- Footer -->
     <footer class="app-footer">
-      <p class="contact-note">For assistance contact Alok - <a href="mailto:hello@aloks.com.np">hello@aloks.com.np</a></p>
+      <p class="contact-note">Made with ❤️ in 🇳🇵 by Alok - <a href="mailto:hello@aloks.com.np">hello@aloks.com.np</a></p>
       <p>&copy; 2026 Shopify Admin Product Search URL Maker. Lightweight &amp; Fast.</p>
     </footer>
 

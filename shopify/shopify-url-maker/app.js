@@ -17,6 +17,7 @@
     vendors: ['Annie Selke MW', 'Annie Selke Sale'],
     statuses: [],
     customQuery: '',
+    vendorSearchQuery: '',
     theme: 'system',
     logs: [],
     history: []
@@ -29,9 +30,15 @@
     orderSelect: document.getElementById('orderSelect'),
     selectedColumnsInput: document.getElementById('selectedColumnsInput'),
     customQueryInput: document.getElementById('customQueryInput'),
-    vendorPillsContainer: document.getElementById('vendorPillsContainer'),
-    customVendorInput: document.getElementById('customVendorInput'),
+    selectedVendorPillsContainer: document.getElementById('selectedVendorPillsContainer'),
+    vendorSelectedCount: document.getElementById('vendorSelectedCount'),
+    clearAllVendorsBtn: document.getElementById('clearAllVendorsBtn'),
+    vendorSearchInput: document.getElementById('vendorSearchInput'),
     addVendorBtn: document.getElementById('addVendorBtn'),
+    vendorMatchCount: document.getElementById('vendorMatchCount'),
+    selectAllFilteredVendorsBtn: document.getElementById('selectAllFilteredVendorsBtn'),
+    deselectAllVendorsBtn: document.getElementById('deselectAllVendorsBtn'),
+    vendorChecklistContainer: document.getElementById('vendorChecklistContainer'),
     statusPillsContainer: document.getElementById('statusPillsContainer'),
     urlOutputDisplay: document.getElementById('urlOutputDisplay'),
     copyUrlBtn: document.getElementById('copyUrlBtn'),
@@ -48,20 +55,101 @@
     toastContainer: document.getElementById('toastContainer')
   };
 
-  // Pre-configured popular vendors
+  // Pre-configured popular vendors (Extracted from Shopify Admin filter metadata)
   const DEFAULT_PRESET_VENDORS = [
+    'Abani',
+    'Addison Rugs',
+    'Amer',
+    'AminCo',
+    'AminCo Clearance',
+    'Anji Mountain Bamboo Rug, Co.',
     'Annie Selke MW',
     'Annie Selke Sale',
+    'Antrim',
+    'Bashian',
+    'Bokara Rug Co.',
+    'Boston & Post',
+    'Boutique Rugs',
+    'Capel',
+    'Capel Custom',
+    'Chandra',
+    'Classic Home Rugs',
+    'Colonial Mills',
+    'Couristan',
+    'Dalyn Clearance',
+    'Dalyn Customizable',
+    'Dalyn Rug',
     'Dash & Albert',
     'Dash & Albert Custom',
+    'Dash & Albert Pads',
+    'Delos, Inc.',
+    'Dynamic Rugs',
+    'Flagship Carpets',
+    'Flokati',
+    'Foothill Oriental Rugs',
+    'Global Views',
+    'Hauteloom',
+    'Homespice Decor',
+    'HRI',
+    'Jade',
+    'Jaipur Closeout',
     'Jaipur Living',
-    'Loloi',
-    'Surya',
-    'Safavieh'
+    'Joy Carpets, Inc.',
+    'Kalaty Clearance',
+    'Kalaty Rug Co.',
+    'Kaleen',
+    'Kane Carpet',
+    'Karastan',
+    'Kas Clearance',
+    'Kas Oriental',
+    'Lavin Rugs',
+    'Linon Home Decor',
+    'Livabliss',
+    'Loloi Rugs',
+    'Louis De Poortere',
+    'LR Home',
+    'Luxacor',
+    'Mercer Street',
+    'Modern Nature Design',
+    'Momeni',
+    'Momeni Closeout',
+    'Momeni Sale',
+    'Mulberry',
+    'N/A',
+    'Nourison',
+    'Nourison Clearance',
+    'Nourison Pillows',
+    'Nourison Sale',
+    'Nuloom',
+    'Obeetee',
+    'Private Label',
+    'RDR Gift Card',
+    'RDR Pads',
+    'Rhody Rug',
+    'Route',
+    'Rugs Done Right',
+    'Rugs Done Right Custom',
+    'Safa Clearance',
+    'Safavieh Clearance',
+    'Safavieh Pads',
+    'Shalom Brothers',
+    'Spicher and Company',
+    'St. Croix Clearance',
+    'Store Clearance',
+    'Surya Closeout',
+    'Surya Pads',
+    'Surya Pillows',
+    'Surya Rug Co.',
+    'The Rug Market',
+    'Tibet Rug Company',
+    'Tibet Rug Company Liquidation',
+    'Trans-Ocean Inc.',
+    'Unique Loom',
+    'United Weavers'
   ];
 
   // Available statuses
-  const STATUS_OPTIONS = ['ACTIVE', 'DRAFT', 'ARCHIVED'];
+  const STATUS_OPTIONS = ['ACTIVE', 'DRAFT', 'ARCHIVED', 'UNLISTED'];
 
   // --- LOGGING UTILITY ---
   function logEvent(level, message, detail = null) {
@@ -242,7 +330,7 @@
 
   function loadStateFromHash() {
     if (!window.location.hash || window.location.hash.length < 2) {
-      renderVendorPills();
+      renderVendorSection();
       renderStatusPills();
       generateShopifyUrl();
       return;
@@ -259,45 +347,105 @@
       if (Array.isArray(parsed.statuses)) state.statuses = parsed.statuses;
       if (parsed.customQuery !== undefined) elements.customQueryInput.value = parsed.customQuery;
 
-      renderVendorPills();
+      renderVendorSection();
       renderStatusPills();
       generateShopifyUrl();
 
       logEvent('INFO', 'Loaded application state from URL hash', parsed);
     } catch (err) {
       logEvent('WARN', 'Failed to parse URL hash state', { error: err.message });
-      renderVendorPills();
+      renderVendorSection();
       renderStatusPills();
       generateShopifyUrl();
     }
   }
 
-  // --- VENDOR PILLS & TAG INPUT RENDERING ---
-  function renderVendorPills() {
-    elements.vendorPillsContainer.innerHTML = '';
+  // --- SEARCHABLE VENDOR MULTI-SELECT RENDERING ---
+  function renderVendorSection() {
+    renderSelectedVendorPills();
+    renderVendorChecklist();
+  }
 
-    // Render combined unique vendor options
-    const allOptions = Array.from(new Set([...DEFAULT_PRESET_VENDORS, ...state.vendors]));
+  function renderSelectedVendorPills() {
+    elements.selectedVendorPillsContainer.innerHTML = '';
+    elements.vendorSelectedCount.textContent = `${state.vendors.length} selected`;
+    elements.clearAllVendorsBtn.style.display = state.vendors.length > 0 ? 'inline-block' : 'none';
 
-    allOptions.forEach(vendor => {
-      const isSelected = state.vendors.includes(vendor);
+    if (state.vendors.length === 0) {
+      elements.selectedVendorPillsContainer.innerHTML = `
+        <div class="vendor-empty-state" style="padding: 4px 8px; width: 100%;">
+          No vendors selected. Search and check vendors from the list below.
+        </div>
+      `;
+      return;
+    }
+
+    state.vendors.forEach(vendor => {
       const pill = document.createElement('div');
-      pill.className = `pill-option ${isSelected ? 'selected' : ''}`;
+      pill.className = 'pill-option selected';
       pill.innerHTML = `
         <span>${escapeHtml(vendor)}</span>
-        ${isSelected ? '<button type="button" class="tag-remove" aria-label="Remove vendor">&times;</button>' : ''}
+        <button type="button" class="tag-remove" aria-label="Remove vendor">&times;</button>
       `;
 
-      pill.addEventListener('click', (e) => {
-        if (e.target.classList.contains('tag-remove')) {
-          e.stopPropagation();
-          toggleVendor(vendor, false);
-        } else {
-          toggleVendor(vendor, !isSelected);
-        }
+      pill.querySelector('.tag-remove').addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleVendor(vendor, false);
       });
 
-      elements.vendorPillsContainer.appendChild(pill);
+      elements.selectedVendorPillsContainer.appendChild(pill);
+    });
+  }
+
+  function getFilteredVendors() {
+    const allOptions = Array.from(new Set([...DEFAULT_PRESET_VENDORS, ...state.vendors]));
+    const q = (state.vendorSearchQuery || '').toLowerCase().trim();
+    if (!q) return { allOptions, filtered: allOptions };
+
+    const filtered = allOptions.filter(v => v.toLowerCase().includes(q));
+    return { allOptions, filtered };
+  }
+
+  function renderVendorChecklist() {
+    elements.vendorChecklistContainer.innerHTML = '';
+    const { allOptions, filtered } = getFilteredVendors();
+
+    const q = (state.vendorSearchQuery || '').trim();
+    if (q) {
+      elements.vendorMatchCount.textContent = `Showing ${filtered.length} of ${allOptions.length} vendors`;
+    } else {
+      elements.vendorMatchCount.textContent = `${allOptions.length} vendors available`;
+    }
+
+    if (filtered.length === 0) {
+      elements.vendorChecklistContainer.innerHTML = `
+        <div class="vendor-empty-state">
+          No matching vendors found for "<strong>${escapeHtml(q)}</strong>".<br>
+          Press <strong>Enter</strong> or click <strong>+ Add</strong> to add as a custom vendor.
+        </div>
+      `;
+      return;
+    }
+
+    filtered.forEach(vendor => {
+      const isSelected = state.vendors.includes(vendor);
+      const label = document.createElement('label');
+      label.className = `vendor-checkbox-item ${isSelected ? 'selected' : ''}`;
+
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.checked = isSelected;
+
+      checkbox.addEventListener('change', (e) => {
+        toggleVendor(vendor, e.target.checked);
+      });
+
+      const span = document.createElement('span');
+      span.textContent = vendor;
+
+      label.appendChild(checkbox);
+      label.appendChild(span);
+      elements.vendorChecklistContainer.appendChild(label);
     });
   }
 
@@ -310,26 +458,54 @@
       state.vendors.splice(index, 1);
       logEvent('INFO', `Vendor removed: ${vendor}`);
     }
-    renderVendorPills();
+    renderVendorSection();
     updateStateAndHash();
   }
 
   function handleAddCustomVendor() {
-    const val = elements.customVendorInput.value.trim();
+    const val = (elements.vendorSearchInput.value || '').trim();
     if (!val) return;
 
-    // Handle comma-separated custom inputs
     const newVendors = val.split(',').map(v => v.trim()).filter(Boolean);
+    let addedCount = 0;
+
     newVendors.forEach(vendor => {
       if (!state.vendors.includes(vendor)) {
         state.vendors.push(vendor);
+        addedCount++;
       }
     });
 
-    elements.customVendorInput.value = '';
-    renderVendorPills();
+    elements.vendorSearchInput.value = '';
+    state.vendorSearchQuery = '';
+
+    renderVendorSection();
     updateStateAndHash();
-    showToast(`Added vendor: ${newVendors.join(', ')}`);
+
+    if (addedCount > 0) {
+      showToast(`Selected vendor(s): ${newVendors.join(', ')}`);
+    }
+  }
+
+  function selectAllFilteredVendors() {
+    const { filtered } = getFilteredVendors();
+    let added = 0;
+    filtered.forEach(vendor => {
+      if (!state.vendors.includes(vendor)) {
+        state.vendors.push(vendor);
+        added++;
+      }
+    });
+    renderVendorSection();
+    updateStateAndHash();
+    showToast(`Selected ${added} filtered vendor(s)`);
+  }
+
+  function clearAllVendors() {
+    state.vendors = [];
+    renderVendorSection();
+    updateStateAndHash();
+    showToast('Cleared all vendor filters');
   }
 
   // --- STATUS PILLS RENDERING ---
@@ -424,7 +600,7 @@
         elements.customQueryInput.value = customParts;
       }
 
-      renderVendorPills();
+      renderVendorSection();
       renderStatusPills();
       updateStateAndHash();
       showToast('Loaded configuration from URL history! ⚡');
@@ -564,14 +740,23 @@
       input.addEventListener('input', updateStateAndHash);
     });
 
-    // Custom Vendor Add
-    elements.addVendorBtn.addEventListener('click', handleAddCustomVendor);
-    elements.customVendorInput.addEventListener('keydown', (e) => {
+    // Searchable Vendor Multi-Select Events
+    elements.vendorSearchInput.addEventListener('input', (e) => {
+      state.vendorSearchQuery = e.target.value;
+      renderVendorChecklist();
+    });
+
+    elements.vendorSearchInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
         handleAddCustomVendor();
       }
     });
+
+    elements.addVendorBtn.addEventListener('click', handleAddCustomVendor);
+    elements.clearAllVendorsBtn.addEventListener('click', clearAllVendors);
+    elements.selectAllFilteredVendorsBtn.addEventListener('click', selectAllFilteredVendors);
+    elements.deselectAllVendorsBtn.addEventListener('click', clearAllVendors);
 
     // Copy URL Button
     elements.copyUrlBtn.addEventListener('click', () => {

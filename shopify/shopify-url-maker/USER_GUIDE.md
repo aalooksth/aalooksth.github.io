@@ -30,8 +30,10 @@ It supports:
 2. **Saved View ID**: Enter your Shopify product saved view ID (defaults to `819195150620`). Leave empty if not applicable.
 
 ### 2. Multi-Vendor Selection
-- **Presets**: Click any of the pre-configured vendor tags (e.g. `Annie Selke MW`, `Dash & Albert`, `Jaipur Living`, `Loloi`, `Surya`, etc.) to toggle them on or off.
-- **Custom Vendor**: Type any custom vendor name in the text box and press **Enter** or click **+ Add**. You can also enter comma-separated vendor names (e.g., `Vendor A, Vendor B`).
+- **Searchable Multi-Select List**: Scroll or search through all 89 vendors using the interactive search bar (`🔍 Search 89 vendors...`). Check or uncheck vendors to add or remove them from active filters.
+- **Active Filter Summary**: Currently selected vendors appear at the top as active pills with `×` remove buttons, accompanied by a **Clear All** shortcut button.
+- **Bulk Actions**: Use **Select Filtered** to quickly select all vendors matching your search query, or **Deselect All** to reset vendor selection.
+- **Custom Vendors**: Type any unlisted vendor name into the search bar and press **Enter** or click **+ Add** to add custom vendors. Multiple vendors can also be added at once using comma separation (e.g. `Vendor A, Vendor B`).
 - Selected vendors are combined in the query as comma-separated values inside double quotes (`vendor:"Vendor1,Vendor2"`).
 
 ### 3. Multi-Status Selection

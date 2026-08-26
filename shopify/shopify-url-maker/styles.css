@@ -371,6 +371,156 @@ body {
   margin-top: 8px;
 }
 
+/* Searchable Vendor Multi-Select Component */
+.form-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.vendor-count-badge {
+  font-size: 0.775rem;
+  font-weight: 600;
+  color: var(--accent-color);
+  background-color: var(--accent-light);
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+}
+
+.selected-vendors-box {
+  background-color: var(--bg-surface-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 10px;
+  margin-top: 4px;
+}
+
+.selected-vendors-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.selected-title {
+  font-size: 0.775rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-link, .btn-link-sm {
+  background: none;
+  border: none;
+  color: var(--accent-color);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  transition: color 0.15s ease;
+}
+
+.btn-link-sm {
+  font-size: 0.75rem;
+}
+
+.btn-link:hover, .btn-link-sm:hover {
+  color: var(--accent-color-hover);
+}
+
+.searchable-select-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+  background-color: var(--bg-surface-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 10px;
+}
+
+.vendor-search-bar {
+  display: flex;
+  gap: 8px;
+}
+
+.vendor-select-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 2px;
+  font-size: 0.775rem;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.dot-separator {
+  margin: 0 4px;
+  opacity: 0.5;
+}
+
+.vendor-checklist-scroll {
+  max-height: 220px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-right: 4px;
+}
+
+/* Custom Scrollbar for Vendor Checklist */
+.vendor-checklist-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.vendor-checklist-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.vendor-checklist-scroll::-webkit-scrollbar-thumb {
+  background-color: var(--border-color);
+  border-radius: 3px;
+}
+
+.vendor-checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.vendor-checkbox-item:hover {
+  background-color: var(--bg-surface);
+}
+
+.vendor-checkbox-item.selected {
+  background-color: var(--accent-light);
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+.vendor-checkbox-item input[type="checkbox"] {
+  accent-color: var(--accent-color);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.vendor-empty-state {
+  padding: 16px;
+  text-align: center;
+  font-size: 0.825rem;
+  color: var(--text-muted);
+}
+
 .tag-list {
   display: flex;
   flex-wrap: wrap;
